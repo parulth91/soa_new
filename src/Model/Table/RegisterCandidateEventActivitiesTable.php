@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * RegisterCandidateEventActivities Model
  *
  * @property \App\Model\Table\EventActivityListsTable|\Cake\ORM\Association\BelongsTo $EventActivityLists
+ * @property \App\Model\Table\GenderListsTable|\Cake\ORM\Association\BelongsTo $GenderLists
  *
  * @method \App\Model\Entity\RegisterCandidateEventActivity get($primaryKey, $options = [])
  * @method \App\Model\Entity\RegisterCandidateEventActivity newEntity($data = null, array $options = [])
@@ -43,6 +44,9 @@ class RegisterCandidateEventActivitiesTable extends Table
         $this->belongsTo('EventActivityLists', [
             'foreignKey' => 'event_activity_list_id',
             'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('GenderLists', [
+            'foreignKey' => 'gender_list_id'
         ]);
     }
 
@@ -80,6 +84,18 @@ class RegisterCandidateEventActivitiesTable extends Table
             ->requirePresence('action_ip', 'create')
             ->notEmpty('action_ip');
 
+        $validator
+            ->scalar('name')
+            ->allowEmpty('name');
+
+        $validator
+            ->date('dob')
+            ->allowEmpty('dob');
+
+        $validator
+            ->scalar('registration_number')
+            ->allowEmpty('registration_number');
+
         return $validator;
     }
 
@@ -93,6 +109,7 @@ class RegisterCandidateEventActivitiesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
+        $rules->add($rules->existsIn(['gender_list_id'], 'GenderLists'));
 
         return $rules;
     }

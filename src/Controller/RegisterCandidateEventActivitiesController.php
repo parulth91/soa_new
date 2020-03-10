@@ -21,7 +21,7 @@ class RegisterCandidateEventActivitiesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['EventActivityLists']
+            'contain' => ['EventActivityLists', 'GenderLists']
         ];
         $registerCandidateEventActivities = $this->paginate($this->RegisterCandidateEventActivities);
 
@@ -38,7 +38,7 @@ class RegisterCandidateEventActivitiesController extends AppController
     public function view($id = null)
     {
         $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->get($id, [
-            'contain' => ['EventActivityLists']
+            'contain' => ['EventActivityLists', 'GenderLists']
         ]);
 
         $this->set('registerCandidateEventActivity', $registerCandidateEventActivity);
@@ -65,7 +65,8 @@ class RegisterCandidateEventActivitiesController extends AppController
             $this->Flash->error(__('The register candidate event activity could not be saved. Please, try again.'));
         }
         $eventActivityLists = $this->RegisterCandidateEventActivities->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists'));
+        $genderLists = $this->RegisterCandidateEventActivities->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists', 'genderLists'));
     }
 
     /**
@@ -97,7 +98,8 @@ class RegisterCandidateEventActivitiesController extends AppController
             $this->Flash->error(__('The register candidate event activity could not be saved. Please, try again.'));
         }
         $eventActivityLists = $this->RegisterCandidateEventActivities->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists'));
+        $genderLists = $this->RegisterCandidateEventActivities->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists', 'genderLists'));
     }
 
     /**

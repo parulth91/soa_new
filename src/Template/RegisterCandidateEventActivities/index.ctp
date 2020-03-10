@@ -16,6 +16,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('action_ip'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
+            <th><?= $this->Paginator->sort('name'); ?></th>
+            <th><?= $this->Paginator->sort('dob'); ?></th>
+            <th><?= $this->Paginator->sort('gender_list_id'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
@@ -33,6 +36,11 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($registerCandidateEventActivity->created) ?></td>
             <td><?= h($registerCandidateEventActivity->action_ip) ?></td>
             <td><?= h($registerCandidateEventActivity->modified) ?></td>
+            <td><?= h($registerCandidateEventActivity->name) ?></td>
+            <td><?= h($registerCandidateEventActivity->dob) ?></td>
+            <td>
+                <?= $registerCandidateEventActivity->has('gender_list') ? $this->Html->link($registerCandidateEventActivity->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $registerCandidateEventActivity->gender_list->id]) : '' ?>
+            </td>
             <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $registerCandidateEventActivity->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                 <?= $this->Html->link('', ['action' => 'edit', $registerCandidateEventActivity->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>

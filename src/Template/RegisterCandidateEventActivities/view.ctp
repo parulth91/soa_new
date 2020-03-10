@@ -17,6 +17,18 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($registerCandidateEventActivity->action_ip) ?></td>
         </tr>
         <tr>
+            <td><?= __('Name') ?></td>
+            <td><?= h($registerCandidateEventActivity->name) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Gender List') ?></td>
+            <td><?= $registerCandidateEventActivity->has('gender_list') ? $this->Html->link($registerCandidateEventActivity->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $registerCandidateEventActivity->gender_list->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Registration Number') ?></td>
+            <td><?= h($registerCandidateEventActivity->registration_number) ?></td>
+        </tr>
+        <tr>
             <td><?= __('Id') ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
         </tr>
@@ -39,6 +51,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <tr>
             <td><?= __('Modified') ?></td>
             <td><?= h($registerCandidateEventActivity->modified) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Dob') ?></td>
+            <td><?= h($registerCandidateEventActivity->dob) ?></td>
         </tr>
         <tr>
             <td><?= __('Active') ?></td>
