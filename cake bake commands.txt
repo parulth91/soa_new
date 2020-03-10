@@ -1,0 +1,17 @@
+cake bake all activity_lists -t BootstrapUI
+cake bake all age_group_lists -t BootstrapUI
+cake bake all blood_group_lists -t BootstrapUI
+cake bake all country_lists -t BootstrapUI
+cake bake all district_lists -t BootstrapUI
+cake bake all event_activity_lists -t BootstrapUI
+cake bake all event_lists -t BootstrapUI
+cake bake all game_types_lists -t BootstrapUI
+cake bake all gender_lists -t BootstrapUI
+cake bake all state_lists -t BootstrapUI
+cake bake all weight_category_lists-t BootstrapUI
+
+
+cake bake all register_candidate_event_activities -t BootstrapUI
+cake bake all reporting_lists -t BootstrapUI
+
+

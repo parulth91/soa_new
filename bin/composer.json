@@ -1,0 +1,5 @@
+{
+    "require": {
+        "dereuromark/cakephp-databaselog": "^2.4"
+    }
+}
