@@ -21,7 +21,7 @@ class RegisterCandidateEventActivitiesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['EventActivityLists', 'GenderLists']
+            'contain' => ['EventActivityLists', 'GenderLists', 'EventTeamDetails']
         ];
         $registerCandidateEventActivities = $this->paginate($this->RegisterCandidateEventActivities);
 
@@ -38,7 +38,7 @@ class RegisterCandidateEventActivitiesController extends AppController
     public function view($id = null)
     {
         $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->get($id, [
-            'contain' => ['EventActivityLists', 'GenderLists']
+            'contain' => ['EventActivityLists', 'GenderLists', 'EventTeamDetails']
         ]);
 
         $this->set('registerCandidateEventActivity', $registerCandidateEventActivity);
@@ -66,7 +66,8 @@ class RegisterCandidateEventActivitiesController extends AppController
         }
         $eventActivityLists = $this->RegisterCandidateEventActivities->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
         $genderLists = $this->RegisterCandidateEventActivities->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists', 'genderLists'));
+        $eventTeamDetails = $this->RegisterCandidateEventActivities->EventTeamDetails->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists', 'genderLists', 'eventTeamDetails'));
     }
 
     /**
@@ -99,7 +100,8 @@ class RegisterCandidateEventActivitiesController extends AppController
         }
         $eventActivityLists = $this->RegisterCandidateEventActivities->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
         $genderLists = $this->RegisterCandidateEventActivities->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists', 'genderLists'));
+        $eventTeamDetails = $this->RegisterCandidateEventActivities->EventTeamDetails->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('registerCandidateEventActivity', 'eventActivityLists', 'genderLists', 'eventTeamDetails'));
     }
 
     /**

@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\EventActivityListsTable|\Cake\ORM\Association\BelongsTo $EventActivityLists
  * @property \App\Model\Table\GenderListsTable|\Cake\ORM\Association\BelongsTo $GenderLists
+ * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
  *
  * @method \App\Model\Entity\RegisterCandidateEventActivity get($primaryKey, $options = [])
  * @method \App\Model\Entity\RegisterCandidateEventActivity newEntity($data = null, array $options = [])
@@ -48,6 +49,9 @@ class RegisterCandidateEventActivitiesTable extends Table
         $this->belongsTo('GenderLists', [
             'foreignKey' => 'gender_list_id'
         ]);
+        $this->belongsTo('EventTeamDetails', [
+            'foreignKey' => 'event_team_detail_id'
+        ]);
     }
 
     /**
@@ -63,12 +67,39 @@ class RegisterCandidateEventActivitiesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('full_name')
+            ->allowEmpty('full_name');
+
+        $validator
+            ->date('dob')
+            ->allowEmpty('dob');
+
+        $validator
+            ->scalar('registration_number')
+            ->allowEmpty('registration_number');
+
+        $validator
             ->integer('weight')
             ->allowEmpty('weight');
 
         $validator
             ->integer('age')
             ->allowEmpty('age');
+
+        $validator
+            ->boolean('event_qualifying_status')
+            ->requirePresence('event_qualifying_status', 'create')
+            ->notEmpty('event_qualifying_status');
+
+        $validator
+            ->boolean('attendance_status')
+            ->requirePresence('attendance_status', 'create')
+            ->notEmpty('attendance_status');
+
+        $validator
+            ->boolean('certificate_download_status')
+            ->requirePresence('certificate_download_status', 'create')
+            ->notEmpty('certificate_download_status');
 
         $validator
             ->boolean('active')
@@ -84,18 +115,6 @@ class RegisterCandidateEventActivitiesTable extends Table
             ->requirePresence('action_ip', 'create')
             ->notEmpty('action_ip');
 
-        $validator
-            ->scalar('name')
-            ->allowEmpty('name');
-
-        $validator
-            ->date('dob')
-            ->allowEmpty('dob');
-
-        $validator
-            ->scalar('registration_number')
-            ->allowEmpty('registration_number');
-
         return $validator;
     }
 
@@ -110,6 +129,7 @@ class RegisterCandidateEventActivitiesTable extends Table
     {
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
         $rules->add($rules->existsIn(['gender_list_id'], 'GenderLists'));
+        $rules->add($rules->existsIn(['event_team_detail_id'], 'EventTeamDetails'));
 
         return $rules;
     }

@@ -13,12 +13,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= $registerCandidateEventActivity->has('event_activity_list') ? $this->Html->link($registerCandidateEventActivity->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $registerCandidateEventActivity->event_activity_list->id]) : '' ?></td>
         </tr>
         <tr>
-            <td><?= __('Action Ip') ?></td>
-            <td><?= h($registerCandidateEventActivity->action_ip) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Name') ?></td>
-            <td><?= h($registerCandidateEventActivity->name) ?></td>
+            <td><?= __('Full Name') ?></td>
+            <td><?= h($registerCandidateEventActivity->full_name) ?></td>
         </tr>
         <tr>
             <td><?= __('Gender List') ?></td>
@@ -27,6 +23,14 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <tr>
             <td><?= __('Registration Number') ?></td>
             <td><?= h($registerCandidateEventActivity->registration_number) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Event Team Detail') ?></td>
+            <td><?= $registerCandidateEventActivity->has('event_team_detail') ? $this->Html->link($registerCandidateEventActivity->event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $registerCandidateEventActivity->event_team_detail->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Action Ip') ?></td>
+            <td><?= h($registerCandidateEventActivity->action_ip) ?></td>
         </tr>
         <tr>
             <td><?= __('Id') ?></td>
@@ -45,6 +49,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= $this->Number->format($registerCandidateEventActivity->action_by) ?></td>
         </tr>
         <tr>
+            <td><?= __('Dob') ?></td>
+            <td><?= h($registerCandidateEventActivity->dob) ?></td>
+        </tr>
+        <tr>
             <td><?= __('Created') ?></td>
             <td><?= h($registerCandidateEventActivity->created) ?></td>
         </tr>
@@ -53,8 +61,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($registerCandidateEventActivity->modified) ?></td>
         </tr>
         <tr>
-            <td><?= __('Dob') ?></td>
-            <td><?= h($registerCandidateEventActivity->dob) ?></td>
+            <td><?= __('Event Qualifying Status') ?></td>
+            <td><?= $registerCandidateEventActivity->event_qualifying_status ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Attendance Status') ?></td>
+            <td><?= $registerCandidateEventActivity->attendance_status ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Certificate Download Status') ?></td>
+            <td><?= $registerCandidateEventActivity->certificate_download_status ? __('Yes') : __('No'); ?></td>
         </tr>
         <tr>
             <td><?= __('Active') ?></td>

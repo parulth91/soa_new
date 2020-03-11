@@ -8,20 +8,25 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $event_activity_list_id
+ * @property string $full_name
+ * @property \Cake\I18n\FrozenDate $dob
+ * @property int $gender_list_id
+ * @property string $registration_number
+ * @property int $event_team_detail_id
  * @property int $weight
  * @property int $age
+ * @property bool $event_qualifying_status
+ * @property bool $attendance_status
+ * @property bool $certificate_download_status
  * @property bool $active
  * @property int $action_by
  * @property \Cake\I18n\FrozenTime $created
  * @property string $action_ip
  * @property \Cake\I18n\FrozenTime $modified
- * @property string $name
- * @property \Cake\I18n\FrozenDate $dob
- * @property int $gender_list_id
- * @property string $registration_number
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
  * @property \App\Model\Entity\GenderList $gender_list
+ * @property \App\Model\Entity\EventTeamDetail $event_team_detail
  */
 class RegisterCandidateEventActivity extends Entity
 {
@@ -37,18 +42,23 @@ class RegisterCandidateEventActivity extends Entity
      */
     protected $_accessible = [
         'event_activity_list_id' => true,
+        'full_name' => true,
+        'dob' => true,
+        'gender_list_id' => true,
+        'registration_number' => true,
+        'event_team_detail_id' => true,
         'weight' => true,
         'age' => true,
+        'event_qualifying_status' => true,
+        'attendance_status' => true,
+        'certificate_download_status' => true,
         'active' => true,
         'action_by' => true,
         'created' => true,
         'action_ip' => true,
         'modified' => true,
-        'name' => true,
-        'dob' => true,
-        'gender_list_id' => true,
-        'registration_number' => true,
         'event_activity_list' => true,
-        'gender_list' => true
+        'gender_list' => true,
+        'event_team_detail' => true
     ];
 }

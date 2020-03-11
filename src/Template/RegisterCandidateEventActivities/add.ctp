@@ -20,22 +20,7 @@ echo $this->Form->create($registerCandidateEventActivity);
             </div>
                 <div class=col-md-2>
             <?php
-            echo $this->Form->control('weight');
-            ?>
-                </div>
-                <div class=col-md-2>
-            <?php
-            echo $this->Form->control('age');
-            ?>
-        </div>
-                <div class=col-md-2>
-            <?php
-            echo $this->Form->control('active');
-            ?>
-        </div>
-                <div class=col-md-2>
-            <?php
-            echo $this->Form->control('name');
+            echo $this->Form->control('full_name');
             ?>
         </div>
                 <div class=col-md-2>
@@ -51,6 +36,41 @@ echo $this->Form->create($registerCandidateEventActivity);
                 <div class=col-md-2>
             <?php
             echo $this->Form->control('registration_number');
+            ?>
+        </div>
+          <div class=col-md-2>
+                <?php
+                echo $this->Form->input('event_team_detail_id', ['type'=>'select','empty'=>'Select','options' => $eventTeamDetails]);
+                ?>
+            </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('weight');
+            ?>
+        </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('age');
+            ?>
+        </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('event_qualifying_status');
+            ?>
+        </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('attendance_status');
+            ?>
+        </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('certificate_download_status');
+            ?>
+        </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('active');
             ?>
         </div>
             
