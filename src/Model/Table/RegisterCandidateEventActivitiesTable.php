@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\EventActivityListsTable|\Cake\ORM\Association\BelongsTo $EventActivityLists
  * @property \App\Model\Table\GenderListsTable|\Cake\ORM\Association\BelongsTo $GenderLists
  * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
+ * @property \App\Model\Table\StateListsTable|\Cake\ORM\Association\BelongsTo $StateLists
  *
  * @method \App\Model\Entity\RegisterCandidateEventActivity get($primaryKey, $options = [])
  * @method \App\Model\Entity\RegisterCandidateEventActivity newEntity($data = null, array $options = [])
@@ -51,6 +52,9 @@ class RegisterCandidateEventActivitiesTable extends Table
         ]);
         $this->belongsTo('EventTeamDetails', [
             'foreignKey' => 'event_team_detail_id'
+        ]);
+        $this->belongsTo('StateLists', [
+            'foreignKey' => 'state_list_id'
         ]);
     }
 
@@ -130,6 +134,7 @@ class RegisterCandidateEventActivitiesTable extends Table
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
         $rules->add($rules->existsIn(['gender_list_id'], 'GenderLists'));
         $rules->add($rules->existsIn(['event_team_detail_id'], 'EventTeamDetails'));
+        $rules->add($rules->existsIn(['state_list_id'], 'StateLists'));
 
         return $rules;
     }

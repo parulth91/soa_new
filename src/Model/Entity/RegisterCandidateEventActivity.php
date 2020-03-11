@@ -23,10 +23,12 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property string $action_ip
  * @property \Cake\I18n\FrozenTime $modified
+ * @property int $state_list_id
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
  * @property \App\Model\Entity\GenderList $gender_list
  * @property \App\Model\Entity\EventTeamDetail $event_team_detail
+ * @property \App\Model\Entity\StateList $state_list
  */
 class RegisterCandidateEventActivity extends Entity
 {
@@ -57,8 +59,10 @@ class RegisterCandidateEventActivity extends Entity
         'created' => true,
         'action_ip' => true,
         'modified' => true,
+        'state_list_id' => true,
         'event_activity_list' => true,
         'gender_list' => true,
-        'event_team_detail' => true
+        'event_team_detail' => true,
+        'state_list' => true
     ];
 }

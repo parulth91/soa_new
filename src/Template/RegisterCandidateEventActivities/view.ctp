@@ -33,6 +33,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($registerCandidateEventActivity->action_ip) ?></td>
         </tr>
         <tr>
+            <td><?= __('State List') ?></td>
+            <td><?= $registerCandidateEventActivity->has('state_list') ? $this->Html->link($registerCandidateEventActivity->state_list->description, ['controller' => 'StateLists', 'action' => 'view', $registerCandidateEventActivity->state_list->id]) : '' ?></td>
+        </tr>
+        <tr>
             <td><?= __('Id') ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
         </tr>

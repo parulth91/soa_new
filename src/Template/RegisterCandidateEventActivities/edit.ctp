@@ -73,6 +73,11 @@ echo $this->Form->create($registerCandidateEventActivity);
             echo $this->Form->control('active');
             ?>
         </div>
+          <div class=col-md-2>
+                <?php
+                echo $this->Form->input('state_list_id', ['type'=>'select','empty'=>'Select','options' => $stateLists]);
+                ?>
+            </div>
             
 </fieldset>
 <?=
