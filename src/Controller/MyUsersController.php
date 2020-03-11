@@ -89,16 +89,16 @@ class MyUsersController extends AppController {
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-
-        $this->set(compact('user'));
+        $stateLists = $this->MyUsers->StateLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('user','stateLists'));
     }
 
     public function usersDetail($id = null) {
 //        $this->paginate = [
 //            'contain' => []
 //        ];
-        $MyUsers = $this->MyUsers->find('all')
-                ->where(['id NOT IN ' => ['1', '2', '3', '4', '5', '6', '7']]);
+        $MyUsers = $this->MyUsers->find('all')->contain(['stateLists'])
+                ->where(['MyUsers.id NOT IN ' => ['1']]);
         $users = $this->paginate($MyUsers, ['limit' => '2000']);
 
         $this->set(compact('users'));

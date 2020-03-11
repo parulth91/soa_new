@@ -68,7 +68,8 @@ class User extends Entity
         'action_by' => true,
         'action_ip' => true,
         'password_changed' => true,
-        'social_accounts' => true
+        'social_accounts' => true,
+        'state_list' => true
     ];
 
     /**

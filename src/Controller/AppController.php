@@ -64,7 +64,7 @@ class AppController extends Controller {
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
 //        $this->loadComponent('Ajax');
-       
+      
         $this->loadComponent('CakeDC/Users.UsersAuth');
         //  $this->loadComponent('DatabaseAuth');
         // $this->loadComponent('RequestHandler', ['enableBeforeRedirect' => false]);
@@ -97,6 +97,7 @@ class AppController extends Controller {
 //    $this->loadComponent('Search.Prg', [
 //        'actions' => ['index']
 //    ]);
+        
     }
 
     public function json($data) {

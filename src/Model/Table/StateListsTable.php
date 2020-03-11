@@ -11,6 +11,9 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CountryListsTable|\Cake\ORM\Association\BelongsTo $CountryLists
  * @property \App\Model\Table\DistrictListsTable|\Cake\ORM\Association\HasMany $DistrictLists
+ * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\HasMany $EventTeamDetails
+ * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\HasMany $RegisterCandidateEventActivities
+ * @property |\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\StateList get($primaryKey, $options = [])
  * @method \App\Model\Entity\StateList newEntity($data = null, array $options = [])
@@ -46,6 +49,15 @@ class StateListsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('DistrictLists', [
+            'foreignKey' => 'state_list_id'
+        ]);
+        $this->hasMany('EventTeamDetails', [
+            'foreignKey' => 'state_list_id'
+        ]);
+        $this->hasMany('RegisterCandidateEventActivities', [
+            'foreignKey' => 'state_list_id'
+        ]);
+        $this->hasMany('Users', [
             'foreignKey' => 'state_list_id'
         ]);
     }

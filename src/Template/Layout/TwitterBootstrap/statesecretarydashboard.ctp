@@ -9,25 +9,29 @@ echo $this->Html->css('bootstrap/bootstrap.css');
 echo $this->Html->css('bootstrap/font.css');
 echo $this->Html->script(['jquery/jquery.js', 'jquery/jquery-1.12.0.min']);
 echo $this->Html->script(['jquery/validation.js']);
+//echo $this->Html->script(['jquery-2.1.3']);
+//echo $this->Html->script(['jspdf']);
+//echo $this->Html->script(['pdfFromHTML']);
 
 ?>
-  
-   
-   
- 
+
     <?= $this->Html->script('calendarjs/jquery-ui') ?> 
     <?= $this->Html->script('calendarjs/script') ?> 
-  
-   
+
+
     <?= $this->Html->css('jquery-ui') ?>
     <?= $this->Html->css('jquery.timepicker.min') ?>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--Meta declaration for hindi content-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--/Meta declaration for hindi content-->
+
 <body>
 
 
     <div class="wrapper">
         <!-- Sidebar Holder -->
-      <?php
+     <?php
         //debug($_SESSION['Auth']['User']['role']);die;
         if ($_SESSION['Auth']['User']['role'] == 'superadmin') {
             echo $this->element('sidebar-superadmin');
@@ -36,7 +40,7 @@ echo $this->Html->script(['jquery/validation.js']);
         } else if ($_SESSION['Auth']['User']['role'] == 'stateSecretary') {
             echo $this->element('sidebar-stateSecretary');
             // $this->extend('../Layout/TwitterBootstrap/admindashboard');
-        }else {
+        } else {
             echo "Unauthorized login user Unit";
             die;
             //$this->extend('../Layout/TwitterBootstrap/userdashboard');
@@ -66,15 +70,27 @@ echo $this->Html->script(['jquery/validation.js']);
 
                     </div>
 
+
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav navbar-right btn btn-danger" style=" text-align: center;   padding-left: 12px;">
                             <!--                                <li><a href="#">Page</a></li>
                                                             <li><a href="#">Page</a></li>
                                                             <li><a href="#">Page</a></li>-->
                             <?= $this->User->logout(); ?>
                         </ul>
+                        <br><br> 
+                        <div class="col-md-2" style=" float: right;">
+                    <?php // echo $this->Form->button('Back to Page', array('name' => 'btn')); ?>
+                            <button type="button" class="btn btn-info" id="print" onclick="goBack()">Back to Previous Page</button>  
+                        </div>
+
                     </div>
+
                 </div>
+
+
+
+
             </nav>
 
 
@@ -100,7 +116,11 @@ echo $this->Html->script(['jquery/validation.js']);
 
 
 
-
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 
 
 
@@ -377,5 +397,11 @@ echo $this->Html->script(['jquery/validation.js']);
         }
 
     </style>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
 </body>
 </html>

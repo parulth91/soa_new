@@ -19,29 +19,39 @@
                 </li>       
             </ul>
         </li>
-
-
-
         <li>
-            <a href="#reports" data-toggle="collapse" aria-expanded="false">
+            <a href="#register" data-toggle="collapse" aria-expanded="false">
                 <i class="glyphicon glyphicon-screenshot"></i>
-                Reports
+                Register
             </a>
-            <ul class="collapse list-unstyled" id="reports">
-                <li><?= $this->Html->link(__('General'), ['controller' => 'Reports', 'action' => 'general']) ?> </li>
-            </ul>
-        </li>
+            <ul class="collapse list-unstyled" id="register">
+                <li><?= $this->Html->link(__('List of events'), ['controller' => 'RegisterCandidates', 'action' => 'view_all']) ?> </li></li>
+        <li><?= $this->Html->link(__('RegisterCandidateEventActivities'), ['controller' => 'RegisterCandidateEventActivities', 'action' => 'index']) ?>
 
-
-
-  
-
-        
-
-  
     </ul>
+</li>
 
-    <ul class="list-unstyled CTAs">
-        <li><a href="#" class="download">SOA</a></li>
+
+<li>
+    <a href="#reports" data-toggle="collapse" aria-expanded="false">
+        <i class="glyphicon glyphicon-screenshot"></i>
+        Reports
+    </a>
+    <ul class="collapse list-unstyled" id="reports">
+        <li><?= $this->Html->link(__('General'), ['controller' => 'Reports', 'action' => 'general']) ?> </li>
     </ul>
+</li>
+
+
+
+
+
+
+
+
+</ul>
+
+<ul class="list-unstyled CTAs">
+    <li><a href="#" class="download">SOA</a></li>
+</ul>
 </nav>

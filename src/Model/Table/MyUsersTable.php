@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use CakeDC\Users\Model\Table\UsersTable;
@@ -7,12 +8,12 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+
 /**
  * Application specific Users Table with non plugin conform field(s)
  */
-class MyUsersTable extends UsersTable
-{
-    
+class MyUsersTable extends UsersTable {
+
     /**
      * Role Constants
      */
@@ -32,8 +33,7 @@ class MyUsersTable extends UsersTable
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
         $this->setTable('users');
@@ -49,38 +49,35 @@ class MyUsersTable extends UsersTable
             'foreignKey' => 'user_id',
             'className' => 'CakeDC/Users.SocialAccounts'
         ]);
-   
-     
 
+        $this->belongsTo('StateLists', [
+            'foreignKey' => 'state_list_id'
+        ]);
 
-     
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id'
         ]);
-    
-     
-      
     }
+
     /**
      * Adds some rules for password confirm
      * @param Validator $validator Cake validator object.
      * @return Validator
      */
-    public function validationPasswordConfirm(Validator $validator)
-    {
+    public function validationPasswordConfirm(Validator $validator) {
         $validator
-            ->requirePresence('password_confirm', 'create')
-            ->notEmpty('password_confirm');
+                ->requirePresence('password_confirm', 'create')
+                ->notEmpty('password_confirm');
 
         $validator
-            ->requirePresence('password', 'create')
-            ->notEmpty('password')
-            ->add('password', [
-                'password_confirm_check' => [
-                    'rule' => ['compareWith', 'password_confirm'],
-                    'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
-                    'allowEmpty' => false
-                ]]);
+                ->requirePresence('password', 'create')
+                ->notEmpty('password')
+                ->add('password', [
+                    'password_confirm_check' => [
+                        'rule' => ['compareWith', 'password_confirm'],
+                        'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
+                        'allowEmpty' => false
+        ]]);
 
         return $validator;
     }
@@ -91,10 +88,9 @@ class MyUsersTable extends UsersTable
      * @param Validator $validator Cake validator object.
      * @return Validator
      */
-    public function validationCurrentPassword(Validator $validator)
-    {
+    public function validationCurrentPassword(Validator $validator) {
         $validator
-            ->notEmpty('current_password');
+                ->notEmpty('current_password');
 
         return $validator;
     }
@@ -105,42 +101,41 @@ class MyUsersTable extends UsersTable
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
-            ->allowEmpty('id', 'create');
+                ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('username', 'create')
-            ->notEmpty('username');
+                ->requirePresence('username', 'create')
+                ->notEmpty('username');
 
         $validator
-            ->requirePresence('password', 'create')
-            ->notEmpty('password');
+                ->requirePresence('password', 'create')
+                ->notEmpty('password');
 
         $validator
-            ->notEmpty('first_name');
+                ->notEmpty('first_name');
 
         $validator
-            ->notEmpty('last_name');
+                ->notEmpty('last_name');
 
         $validator
-            ->allowEmpty('token');
+                ->allowEmpty('token');
 
         $validator
-            ->add('token_expires', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('token_expires');
+                ->add('token_expires', 'valid', ['rule' => 'datetime'])
+                ->allowEmpty('token_expires');
 
         $validator
-            ->allowEmpty('api_token');
+                ->allowEmpty('api_token');
 
         $validator
-            ->add('activation_date', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('activation_date');
+                ->add('activation_date', 'valid', ['rule' => 'datetime'])
+                ->allowEmpty('activation_date');
 
         $validator
-            ->add('tos_date', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('tos_date');
+                ->add('tos_date', 'valid', ['rule' => 'datetime'])
+                ->allowEmpty('tos_date');
 
         return $validator;
     }
@@ -151,8 +146,7 @@ class MyUsersTable extends UsersTable
      *
      * @return Validator
      */
-    public function validationRegister(Validator $validator)
-    {
+    public function validationRegister(Validator $validator) {
         $validator = $this->validationDefault($validator);
         $validator = $this->validationPasswordConfirm($validator);
 
@@ -166,8 +160,7 @@ class MyUsersTable extends UsersTable
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
+    public function buildRules(RulesChecker $rules) {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
             'message' => __d('CakeDC/Users', 'Username already exists')
@@ -182,4 +175,5 @@ class MyUsersTable extends UsersTable
 
         return $rules;
     }
+
 }

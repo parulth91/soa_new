@@ -48,6 +48,7 @@ class UsersTable extends Table
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id'
         ]);
+        
     }
 
     /**

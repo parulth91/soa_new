@@ -17,6 +17,8 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\CountryList $country_list
  * @property \App\Model\Entity\DistrictList[] $district_lists
+ * @property \App\Model\Entity\EventTeamDetail[] $event_team_details
+ * @property \App\Model\Entity\RegisterCandidateEventActivity[] $register_candidate_event_activities
  */
 class StateList extends Entity
 {
@@ -39,6 +41,8 @@ class StateList extends Entity
         'action_ip' => true,
         'modified' => true,
         'country_list' => true,
-        'district_lists' => true
+        'district_lists' => true,
+        'event_team_details' => true,
+        'register_candidate_event_activities' => true
     ];
 }

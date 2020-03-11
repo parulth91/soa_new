@@ -48,7 +48,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <td><strong>Username</td>
                 <td><?php echo $user->username; ?></td>
                 <td><strong>Email</td>
-<!--                <td><?php //echo $user->email;  ?></td>-->
+<!--                <td><?php //echo $user->email;    ?></td>-->
                 <td><?php
                     echo $this->Form->input('email', ['label' => false,
                         'id' => 'email',
@@ -77,14 +77,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     if ($user->activation_date != NULL) {
                         echo $user->role;
                     } else {
-                     /*   $options = ['deoUnit' => 'DEO Unit', 'soUnit' => 'SO Unit', 'mainUnit' => 'Unit Head', 'esttUser' => 'HQ Estt User'];*/
-                     $options = ['stateSecretary' => 'State Secretary']; 
+                        /*   $options = ['deoUnit' => 'DEO Unit', 'soUnit' => 'SO Unit', 'mainUnit' => 'Unit Head', 'esttUser' => 'HQ Estt User']; */
+                        $options = ['stateSecretary' => 'State Secretary'];
                         echo $this->Form->control('role', [
-                        'type' => 'select',
-                        'empty' => 'select',
-                        'options' => $options,
-                        'label' => false, 'placeholder' => 'Select Role', 'required' => true]);
-                         
+                            'type' => 'select',
+                            'empty' => 'select',
+                            'options' => $options,
+                            'label' => false, 'placeholder' => 'Select Role', 'required' => true]);
                     }
                     ?>
                 </td>
@@ -99,27 +98,51 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         'required' => 'true',
                         'autocomplete' => "off"
                     ]);
-                    ?></td>
+                    ?>
+                </td>
+                <td><strong>State</td>
+                <td>
+                    <?php
+                    echo $this->Form->input('state_list_id', ['label' => false,
+                        'type' => 'select', 
+                        'empty' => 'Select',
+                         'required' => 'true',
+                        'autocomplete' => "off",
+                        'options' => $stateLists
+                            ]);
+                    ?>
+                    <?php
+//                    echo $this->Form->input('phone_no', ['label' => false,
+//                        'id' => 'phone_no',
+//                        'type' => 'numeric',
+//                        'maxlength' => "10",
+//                        'minlength' => "10",
+//                        'onkeypress' => "return (alphachar(event, numeric));",
+//                        'required' => 'true',
+//                        'autocomplete' => "off"
+//                    ]);
+                    ?>
+                </td>
   <!--               <td><strong>Regimental Number</td>
                <td><?php
-                    //echo $this->Form->input('regimental_number', ['label' => false,
-                       // 'id' => 'regimental_number',
-                       // 'type' => 'numeric',
-                     //   'maxlength' => "9",
-                     //   'minlength' => "9",
-                     //   'onkeypress' => "return (alphachar(event, numeric));",
-                     //   'required' => 'true',
-                     //   'autocomplete' => "off"
-                  //  ]);
-                    ?></td>-->
+                //echo $this->Form->input('regimental_number', ['label' => false,
+                // 'id' => 'regimental_number',
+                // 'type' => 'numeric',
+                //   'maxlength' => "9",
+                //   'minlength' => "9",
+                //   'onkeypress' => "return (alphachar(event, numeric));",
+                //   'required' => 'true',
+                //   'autocomplete' => "off"
+                //  ]);
+                ?></td>-->
             </tr>
 
         </tbody>
 
     </table>
     <div class=col-md-6><?php
-                    echo $this->Form->control('active');
-                    ?></div>
+        echo $this->Form->control('active');
+        ?></div>
 
 </fieldset>
 <?= $this->Form->button(__("Save")); ?>

@@ -37,21 +37,9 @@ echo $this->Html->script(['jquery/validation.js']);
             echo $this->element('sidebar-superadmin');
 
             //$this->extend('../Layout/TwitterBootstrap/superadmindashboard');    
-        } else if ($_SESSION['Auth']['User']['role'] == 'admin') {
-            echo $this->element('sidebar-admin');
+        } else if ($_SESSION['Auth']['User']['role'] == 'stateSecretary') {
+            echo $this->element('sidebar-stateSecretary');
             // $this->extend('../Layout/TwitterBootstrap/admindashboard');
-        } elseif ($_SESSION['Auth']['User']['role'] == 'esttUser') {
-            echo $this->element('sidebar-esttUser');
-            //$this->extend('../Layout/TwitterBootstrap/userdashboard');
-        } elseif ($_SESSION['Auth']['User']['role'] == 'deoUnit') {
-            echo $this->element('sidebar-deoUnitUser');
-            // $this->extend('../Layout/TwitterBootstrap/volunteerdashboard');
-        }elseif ($_SESSION['Auth']['User']['role'] == 'soUnit') {
-            echo $this->element('sidebar-soUnitUser');
-            // $this->extend('../Layout/TwitterBootstrap/volunteerdashboard');
-        }elseif ($_SESSION['Auth']['User']['role'] == 'mainUnit') {
-            echo $this->element('sidebar-mainUnitUser');
-            // $this->extend('../Layout/TwitterBootstrap/volunteerdashboard');
         } else {
             echo "Unauthorized login user Unit";
             die;

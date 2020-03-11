@@ -38,7 +38,7 @@ class StateListsController extends AppController
     public function view($id = null)
     {
         $stateList = $this->StateLists->get($id, [
-            'contain' => ['CountryLists', 'DistrictLists']
+            'contain' => ['CountryLists', 'DistrictLists', 'EventTeamDetails', 'RegisterCandidateEventActivities']
         ]);
 
         $this->set('stateList', $stateList);
