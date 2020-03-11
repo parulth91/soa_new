@@ -38,7 +38,7 @@ class EventActivityListsController extends AppController
     public function view($id = null)
     {
         $eventActivityList = $this->EventActivityLists->get($id, [
-            'contain' => ['EventLists', 'ActivityLists']
+            'contain' => ['EventLists', 'ActivityLists', 'EventTeamDetails', 'RegisterCandidateEventActivities', 'TeamTieSheets']
         ]);
 
         $this->set('eventActivityList', $eventActivityList);

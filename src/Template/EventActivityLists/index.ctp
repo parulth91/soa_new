@@ -1,7 +1,6 @@
 <?php
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
-
 ?>
 
 <table class="table table-striped" cellpadding="0" cellspacing="0">
@@ -16,39 +15,42 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('event_lists_id'); ?></th>
             <th><?= $this->Paginator->sort('activity_lists_id'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
+            <th><?= $this->Paginator->sort('registration_fees'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($eventActivityLists as $eventActivityList): ?>
-        <tr>
-            <td><?= $this->Number->format($eventActivityList->id) ?></td>
-            <td><?= h($eventActivityList->description) ?></td>
-                        <td><?= $eventActivityList->active ? __('Yes') : __('No'); ?></td>
-                                    <td><?= $this->Number->format($eventActivityList->action_by) ?></td>
-            <td><?= h($eventActivityList->created) ?></td>
-            <td><?= h($eventActivityList->action_ip) ?></td>
-            <td>
-                <?= $eventActivityList->has('event_list') ? $this->Html->link($eventActivityList->event_list->description, ['controller' => 'EventLists', 'action' => 'view', $eventActivityList->event_list->id]) : '' ?>
-            </td>
-            <td>
-                <?= $eventActivityList->has('activity_list') ? $this->Html->link($eventActivityList->activity_list->description, ['controller' => 'ActivityLists', 'action' => 'view', $eventActivityList->activity_list->id]) : '' ?>
-            </td>
-            <td><?= h($eventActivityList->modified) ?></td>
-            <td class="actions">
-                <?= $this->Html->link('', ['action' => 'view', $eventActivityList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
-                <?= $this->Html->link('', ['action' => 'edit', $eventActivityList->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
-                <?= $this->Form->postLink('', ['action' => 'delete', $eventActivityList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventActivityList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
-            </td>
-        </tr>
+            <tr>
+                <td><?= $this->Number->format($eventActivityList->id) ?></td>
+                <td><?= h($eventActivityList->description) ?></td>
+                <td><?= $eventActivityList->active ? __('Yes') : __('No'); ?></td>
+                <td><?= $this->Number->format($eventActivityList->action_by) ?></td>
+                <td><?= h($eventActivityList->created) ?></td>
+                <td><?= h($eventActivityList->action_ip) ?></td>
+                <td>
+                    <?= $eventActivityList->has('event_list') ? $this->Html->link($eventActivityList->event_list->description, ['controller' => 'EventLists', 'action' => 'view', $eventActivityList->event_list->id]) : '' ?>
+                </td>
+                <td>
+                    <?= $eventActivityList->has('activity_list') ? $this->Html->link($eventActivityList->activity_list->description, ['controller' => 'ActivityLists', 'action' => 'view', $eventActivityList->activity_list->id]) : '' ?>
+                </td>
+                <td><?= h($eventActivityList->modified) ?></td>
+                <td><?= $this->Number->format($eventActivityList->registration_fees) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link('', ['controller' => 'TeamTieSheets', 'action' => 'edit', $eventActivityList->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-home']) ?>
+                    <?= $this->Html->link('', ['action' => 'view', $eventActivityList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
+                    <?= $this->Html->link('', ['action' => 'edit', $eventActivityList->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
+                    <?= $this->Form->postLink('', ['action' => 'delete', $eventActivityList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventActivityList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
+                </td>
+            </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 <div class="paginator">
     <ul class="pagination">
-          <?= $this->Paginator->first('<< ' . __('first')) ?>
+        <?= $this->Paginator->first('<< ' . __('first')) ?>
         <?= $this->Paginator->prev('< ' . __('previous')) ?>
-      
+
         <?= $this->Paginator->numbers(['before' => '', 'after' => '']) ?>
         <?= $this->Paginator->next(__('next') . ' >') ?>
         <?= $this->Paginator->last(__('last') . ' >>') ?>

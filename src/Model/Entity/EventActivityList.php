@@ -15,9 +15,13 @@ use Cake\ORM\Entity;
  * @property int $event_lists_id
  * @property int $activity_lists_id
  * @property \Cake\I18n\FrozenTime $modified
+ * @property float $registration_fees
  *
  * @property \App\Model\Entity\EventList $event_list
  * @property \App\Model\Entity\ActivityList $activity_list
+ * @property \App\Model\Entity\EventTeamDetail[] $event_team_details
+ * @property \App\Model\Entity\RegisterCandidateEventActivity[] $register_candidate_event_activities
+ * @property \App\Model\Entity\TeamTieSheet[] $team_tie_sheets
  */
 class EventActivityList extends Entity
 {
@@ -40,7 +44,11 @@ class EventActivityList extends Entity
         'event_lists_id' => true,
         'activity_lists_id' => true,
         'modified' => true,
+        'registration_fees' => true,
         'event_list' => true,
-        'activity_list' => true
+        'activity_list' => true,
+        'event_team_details' => true,
+        'register_candidate_event_activities' => true,
+        'team_tie_sheets' => true
     ];
 }

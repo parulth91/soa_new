@@ -11,6 +11,9 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\EventListsTable|\Cake\ORM\Association\BelongsTo $EventLists
  * @property \App\Model\Table\ActivityListsTable|\Cake\ORM\Association\BelongsTo $ActivityLists
+ * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\HasMany $EventTeamDetails
+ * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\HasMany $RegisterCandidateEventActivities
+ * @property \App\Model\Table\TeamTieSheetsTable|\Cake\ORM\Association\HasMany $TeamTieSheets
  *
  * @method \App\Model\Entity\EventActivityList get($primaryKey, $options = [])
  * @method \App\Model\Entity\EventActivityList newEntity($data = null, array $options = [])
@@ -49,6 +52,15 @@ class EventActivityListsTable extends Table
             'foreignKey' => 'activity_lists_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('EventTeamDetails', [
+            'foreignKey' => 'event_activity_list_id'
+        ]);
+        $this->hasMany('RegisterCandidateEventActivities', [
+            'foreignKey' => 'event_activity_list_id'
+        ]);
+        $this->hasMany('TeamTieSheets', [
+            'foreignKey' => 'event_activity_list_id'
+        ]);
     }
 
     /**
@@ -82,6 +94,10 @@ class EventActivityListsTable extends Table
             ->scalar('action_ip')
             ->requirePresence('action_ip', 'create')
             ->notEmpty('action_ip');
+
+        $validator
+            ->decimal('registration_fees')
+            ->allowEmpty('registration_fees');
 
         return $validator;
     }

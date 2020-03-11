@@ -33,6 +33,11 @@ echo $this->Form->create($eventActivityList);
                 echo $this->Form->input('activity_lists_id', ['type'=>'select','empty'=>'Select','options' => $activityLists]);
                 ?>
             </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('registration_fees');
+            ?>
+        </div>
             
 </fieldset>
 <?=
