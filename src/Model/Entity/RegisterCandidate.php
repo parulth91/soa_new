@@ -32,6 +32,11 @@ class RegisterCandidate extends Entity
      */
     protected $_accessible = [
         'event_activity_list_id' => true,
+        'full_name' => true,
+        'dob' => true,
+        'gender_list_id' => true,
+        'registration_number' => true,
+        'event_team_detail_id' => true,
         'weight' => true,
         'age' => true,
         'active' => true,
@@ -39,6 +44,10 @@ class RegisterCandidate extends Entity
         'created' => true,
         'action_ip' => true,
         'modified' => true,
-        'event_activity_list' => true
+        'state_list_id' => true,
+        'event_activity_list' => true,
+        'gender_list' => true,
+        'event_team_detail' => true,
+        'state_list' => true
     ];
 }

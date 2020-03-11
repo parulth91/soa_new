@@ -38,7 +38,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
                 <td class="actions">
 
-                    <?= $this->Html->link('Register', ['action' => 'studentregister', $List->id], ['Register Now', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
+                    <?= $this->Html->link('Register', ['action' => 'studentRegister', $List->id], ['Register Now', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

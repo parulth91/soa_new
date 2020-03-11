@@ -17,7 +17,6 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th>DOB</th>
             <th><?= $this->Paginator->sort('phone_no'); ?></th>
             <th><?= $this->Paginator->sort('Secretary of state'); ?></th>
-            <th><?= $this->Paginator->sort('regimental_number'); ?></th>
 <!--            <th><?= $this->Paginator->sort('tos_date'); ?></th>-->
             <th><?= $this->Paginator->sort('active'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
@@ -47,7 +46,6 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <td><?= h($user->phone_no) ?></td>
                 <td><?= h($user->StateLists['description']) ?></td>
                
-                <td><?= h($user->regimental_number) ?></td>
                 <td><?= $user->active ? __('Yes') : __('No'); ?></td>
                 <td>   <?=
                 $this->Html->link(__d('CakeDC/Users', 'Edit'), ['action' => 'editUsers', $user->id], ['title' => __('Edit'),

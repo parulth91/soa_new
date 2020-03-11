@@ -87,6 +87,7 @@ return [
                 'logout', 'login',
                 'changePassword',
                 'view',
+                'viewAll',
                 'vacancyEntryXls'],
         ],
 
