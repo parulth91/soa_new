@@ -144,7 +144,7 @@ class RegisterCandidatesController extends AppController {
         // to display some fields from eventactivities  table
         $eventActivityListTable = TableRegistry::get('event_activity_lists');
         $eventActivityLists = $eventActivityListTable->find('all')
-                        ->contain(['ActivityLists' => ['WeightCategoryLists', 'AgeGroupLists', 'GenderLists','GameTypeLists'],
+                        ->contain(['ActivityLists' => ['WeightCategoryLists', 'AgeGroupLists', 'GenderLists', 'GameTypeLists'],
                             'EventLists'
                         ])->where(['event_activity_lists.id' => $id]);
 
@@ -157,22 +157,26 @@ class RegisterCandidatesController extends AppController {
         //        debug($eventActivityListsArray[0]->activity_list->age_group_list->maximum_age);
         //        debug($eventActivityListsArray[0]);
         // die;
-        
-        $registring_user_state_id=$_SESSION['Auth']['User']['state_list_id'];
-        if ($this->request->is('post')) {       
-           // debug($this->request->data);
+
+        $registring_user_state_id = $_SESSION['Auth']['User']['state_list_id'];
+        if ($this->request->is('post')) {
+            //debug($this->request->data);
+            
+            $EventTeamDetails=$this->request->data['EventTeamDetails'];
+            unset($this->request->data['EventTeamDetails']);            
             foreach ($this->request->data as $key => $data) {
                 foreach ($data as $entityData) {
                     //$dateOfBirth = "17-10-1985";
                     // $today = date("Y-m-d");
-                   // debug($data['dob']);
+                    //debug($data['dob']);
                     $age = date_diff(date_create($data['dob']), date_create($age_calculation_end_date))->format('%y');
-                   
-                    if ($age <= $mimimum_age || $age >= $maximum_age) {
-                        //debug($age);
-                      //  die;
-                        $this->Flash->error(__('Age of candidate '.$data['full_name'].' should me between minimum and maximum age of acivity.'));
-                        return $this->redirect(['controller' => 'RegisterCandidates','action' => 'student_register',$id]);
+debug((int) $age);
+debug($mimimum_age);
+debug($maximum_age);
+                    if ((int)$age >= $mimimum_age) {
+                        debug($age);die;
+                        $this->Flash->error(__('Age of candidate ' . $data['full_name'] . 'of Age '.$age.' should me between minimum and maximum age of acivity.'));
+                        return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'student_register', $id]);
                     }
                     // die;
                     //debug($entityData);
@@ -182,24 +186,33 @@ class RegisterCandidatesController extends AppController {
                     $this->request->data[$key]['action_by'] = $_SESSION['Auth']['User']['id'];
                     $this->request->data[$key]['action_ip'] = $_SERVER['REMOTE_ADDR'];
                     $this->request->data[$key]['active'] = true;
-                                            $registration_number=$this->cList->getRegNoSeq($registring_user_state_id);
+                    $registration_number = $this->cList->getRegNoSeq($registring_user_state_id);
                     $this->request->data[$key]['registration_number'] = $registration_number;
                 }
             }
-           // debug($this->request->data);
-           // die;
+            
+            $EventTeamDetails['event_activity_list_id']=$id;
+            $EventTeamDetails['state_list_id']=$registring_user_state_id;
+            $EventTeamDetails['action_by'] = $_SESSION['Auth']['User']['id'];
+            $EventTeamDetails['action_ip'] = $_SERVER['REMOTE_ADDR'];
+            $EventTeamDetails['active'] = true;
+            debug($EventTeamDetails);
+//            debug($this->request->data);
+//            die;
+            
+                    //$data['event_activity_list_id'] = ;
+                   // $data['state_list_id'] = ;
+                    
+            $eventTeamDetailsTable = TableRegistry::get('EventTeamDetails');
+            $eventTeamDetailsTableEntity = $eventTeamDetailsTable->newEntity();
+            $EventTeamDetailsEntity = $eventTeamDetailsTable->patchEntity($eventTeamDetailsTableEntity, $EventTeamDetails);
+
             $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
-            $result = $this->RegisterCandidates->saveMany($registerCandidateEventActivities);
-           // debug($result);
-           // debug($registerCandidateEventActivities);
-           // debug($this->request->data);
-           // die;
-            $registerCandidate = $this->RegisterCandidates->newEntity($this->request->data);
-            $registerCandidateEventActivity = $this->RegisterCandidates->patchEntity($registerCandidate, $this->request->getData());
-            debug($registerCandidateEventActivity);
-           // die;
-            if ($this->RegisterCandidates->save($registerCandidateEventActivity)) {
+           debug($EventTeamDetailsEntity);
+           debug($registerCandidateEventActivities);
+            die;
+           if($eventTeamDetailsTable->save($EventTeamDetailsEntity) && $this->RegisterCandidates->saveMany($registerCandidateEventActivities)){
                 $this->Flash->success(__('The register candidate event activity has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -208,16 +221,16 @@ class RegisterCandidatesController extends AppController {
         }
 
 
-       //debug($eventActivityListsArray[0]->activity_list->gender_list->description);die;
-       if($eventActivityListsArray[0]->activity_list->gender_list->description == 'Neutral'){
-           $genderLists = $this->RegisterCandidates->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])
-                   ->where(['active' => true,'id !=' =>'3'])
-                   ->order('description');
-       }else{
-           $genderLists = $this->RegisterCandidates->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])
-                   ->where(['active' => true,'id' =>$eventActivityListsArray[0]->activity_list->gender_list->id])
-                   ->order('description');
-       }
+        //debug($eventActivityListsArray[0]->activity_list->gender_list->description);die;
+        if ($eventActivityListsArray[0]->activity_list->gender_list->description == 'Neutral') {
+            $genderLists = $this->RegisterCandidates->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])
+                    ->where(['active' => true, 'id !=' => '3'])
+                    ->order('description');
+        } else {
+            $genderLists = $this->RegisterCandidates->GenderLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])
+                    ->where(['active' => true, 'id' => $eventActivityListsArray[0]->activity_list->gender_list->id])
+                    ->order('description');
+        }
         $this->set(compact('eventActivityLists', 'genderLists'));
     }
 
