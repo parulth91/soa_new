@@ -67,12 +67,27 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
         </tbody>
         <?php
-        //debug($eventActivityListValue); 
+        //debug($eventActivityListValue->activity_list->game_type_list->description); 
     }
     ?>
 </table>
+<legend><?= __('Add {0}', ['Candidate For ' . $eventActivityListValue->activity_list->description]) ?></legend>
+<div class="row">
+    <?php
+    if ($eventActivityListValue->activity_list->game_type_list->description != 'Individual') {
+        echo $this->Form->input('EventTeamDetails.description', [
+            'label' => 'Team Name',
+            'type' => 'text',
+            'id' => 'team_description',
+            'required' => 'true',
+            'autocomplete' => "off",
+        ]);
+        //echo $this->Form->control('name');
+    }
+    ?>
+</div>
 <fieldset>
-    <legend><?= __('Add {0}', ['Register Candidate For Event Activity']) ?></legend>
+
     <table class="table table-striped">
         <thead>
         <th>Sln.no</th>
@@ -101,7 +116,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         //echo $this->Form->control('name');
                         ?>
                         <?php
-                        echo $this->Form->input('full_name[]', [
+                        echo $this->Form->input('RegisterCandidate_' . $i . '[full_name]', [
                             'label' => false,
                             'type' => 'text',
                             'id' => 'full_name',
@@ -113,7 +128,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     </td>
                     <td>
                         <?php
-                        echo $this->Form->input('dob[]', ['label' => false,
+                        echo $this->Form->input('RegisterCandidate_' . $i . '[dob]', ['label' => false,
                             'id' => 'dob_' . $i,
                             //'class' => 'dob',
                             'type' => 'text',
@@ -130,7 +145,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         ?>
                         <td>
                             <?php
-                            echo $this->Form->input('weight[]', [
+                            echo $this->Form->input('RegisterCandidate_' . $i . '[weight]', [
                                 'label' => false,
                                 'type' => 'integer',
                                 'id' => 'weight',
@@ -140,24 +155,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     <?php } ?>   
                     <td>
 
+
+
                         <?php
-                        if ($genderValue == 'Neutral') {
-                            ?>
-
-                            <?php
-                            echo $this->Form->input('gender_list_id[]', [
-                                'type' => 'select',
-                                'label' => false,
-                                'empty' => 'Select',
-                                'options' => $genderLists]);
-                            ?>
-
-                            <?php
-                        } else {
-
-                            echo $genderValue;
-                        }
+                        echo $this->Form->input('RegisterCandidate_' . $i . '[gender_list_id]', [
+                            'type' => 'select',
+                            'label' => false,
+                            'empty' => 'Select',
+                            'options' => $genderLists]);
                         ?>
+
                     </td>
                 </tr>
 
@@ -174,13 +181,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     $(document).ready(function () {
 
         var d = new Date();
-        var year = d.getFullYear() - 18;
+        var year = d.getFullYear() - 10;
         d.setFullYear(year);
-      // 'id' => 'dob_' . $i,
+        // 'id' => 'dob_' . $i,
         var maximum_player_participating = document.getElementById('maximum_player_participating').value;
         for (var i = 1; i <= maximum_player_participating; i++) {
             //alert(i);
-            $("#dob_"+i).datepicker({
+            $("#dob_" + i).datepicker({
                 dateFormat: 'dd-mm-yy',
                 autoPick: false,
                 changeMonth: true,
@@ -191,7 +198,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 yearRange: "c-60:c+19"
             });
         }
-        
+
 
 
     });

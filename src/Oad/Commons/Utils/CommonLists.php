@@ -16,6 +16,19 @@ use PDO;
 
 class CommonLists {
 
+    //code for generating sequence number
+    public function getRegNoSeq($state_id) {
+        $connection = ConnectionManager::get('default');
+        $resourceTypeQuery1 = "select nextval('registration_number')";
+
+        $result = $connection->execute($resourceTypeQuery1)->fetch();
+
+        $new_state_id = $state_id < 10 ? '0' . $state_id : $state_id;
+        $ref_no = 'SOA-'.$new_state_id .'-' . $result[0];
+        //$advid
+        return $ref_no;
+    }
+
     public function getAllRanks() {
         $ranksTable = TableRegistry::get('MsRanks');
         $msRanks = $ranksTable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['is_active' => true])->order('description');
@@ -94,9 +107,7 @@ class CommonLists {
         echo $ListArr;
         exit;
     }
-    
-    
-    
+
     public function monthBtwTwoDates($from_date, $to_date) {
         $begin = new \DateTime($from_date);
         $end = new \DateTime($to_date);
@@ -784,40 +795,39 @@ where ms_rank_id=" . $ms_rank_id . " and ms_cadre_id=" . $ms_cadre_id;
 //             $this->allocate_check($regimental_number_given, $rank_id, $cadre_id, $to_given_unit_id);
 //             //die;
 //        }
-        
         //$to_given_unit_id=55;
         //$this->allocateCheck($regimental_number_given, $rank_id, $cadre_id,$regimental_number_array1,$to_given_unit_id);
     }
-    
-    public function allocate_check($regimental_number_given, $rank_id, $cadre_id, $to_given_unit_id) {     
-           
-            $Table = TableRegistry::get('EmployeeInformations');
-            $List_given_to = $Table
-                    ->find('All')
-                    ->select(['allocated_ms_unit_id'])
-                    ->where(['regimental_number' => $regimental_number_given, 'ms_rank_id' => $rank_id, 'ms_cadre_id' => $cadre_id]);
-                   
-            $List_given_to = $List_given_to->toArray();
-            $given_unit_id = $List_given_to[0]->allocated_ms_unit_id;
 
-            $List_taken_from = $Table
-                    ->find('All')
-                    ->select(['allocated_ms_unit_id', 'regimental_number','choice1_ms_unit_id'])
-                    ->where(['allocated_ms_unit_id' => $to_given_unit_id, 'ms_rank_id' => $rank_id, 'ms_cadre_id' => $cadre_id,'choice1_ms_unit_id is null'])
-                    ->limit(1);
-            $List_taken_from = $List_taken_from->toArray();
-            
-            if (!empty($List_taken_from[0]->allocated_ms_unit_id)) {
-                $connection = ConnectionManager::get('default');
-                $updateGiven = "UPDATE employee_informations
+    public function allocate_check($regimental_number_given, $rank_id, $cadre_id, $to_given_unit_id) {
+
+        $Table = TableRegistry::get('EmployeeInformations');
+        $List_given_to = $Table
+                ->find('All')
+                ->select(['allocated_ms_unit_id'])
+                ->where(['regimental_number' => $regimental_number_given, 'ms_rank_id' => $rank_id, 'ms_cadre_id' => $cadre_id]);
+
+        $List_given_to = $List_given_to->toArray();
+        $given_unit_id = $List_given_to[0]->allocated_ms_unit_id;
+
+        $List_taken_from = $Table
+                ->find('All')
+                ->select(['allocated_ms_unit_id', 'regimental_number', 'choice1_ms_unit_id'])
+                ->where(['allocated_ms_unit_id' => $to_given_unit_id, 'ms_rank_id' => $rank_id, 'ms_cadre_id' => $cadre_id, 'choice1_ms_unit_id is null'])
+                ->limit(1);
+        $List_taken_from = $List_taken_from->toArray();
+
+        if (!empty($List_taken_from[0]->allocated_ms_unit_id)) {
+            $connection = ConnectionManager::get('default');
+            $updateGiven = "UPDATE employee_informations
                                             SET allocated_ms_unit_id = '" . $List_taken_from[0]->allocated_ms_unit_id . "'
                                             where regimental_number = '" . $regimental_number_given . "'";
-                $connection->execute($updateGiven);
-                $updateTaken = "UPDATE employee_informations
+            $connection->execute($updateGiven);
+            $updateTaken = "UPDATE employee_informations
                                             SET allocated_ms_unit_id ='" . $List_given_to[0]->allocated_ms_unit_id . "'
                                             where regimental_number = '" . $List_taken_from[0]->regimental_number . "'";
-                $connection->execute($updateTaken);
-            }
+            $connection->execute($updateTaken);
+        }
     }
 
     public static function getPointsTable($options, $regimental_number, $number_of_times) {

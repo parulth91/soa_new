@@ -19,7 +19,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($nameResult as $List):
+        <?php
+        foreach ($nameResult as $List):
             //debug($List);
             ?>
             <tr>
@@ -37,8 +38,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
 
                 <td class="actions">
-
                     <?= $this->Html->link('Register', ['action' => 'studentRegister', $List->id], ['Register Now', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
+                    <?= $this->Html->link('Attendance', ['action' => 'attendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']) ?>
+                    <?= $this->Html->link('Tie Sheet', ['action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']) ?>
+                    <?= $this->Html->link('Result', ['action' => 'result', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>
