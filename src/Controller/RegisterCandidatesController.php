@@ -160,17 +160,17 @@ class RegisterCandidatesController extends AppController {
         
         $registring_user_state_id=$_SESSION['Auth']['User']['state_list_id'];
         if ($this->request->is('post')) {       
-            debug($this->request->data);
+           // debug($this->request->data);
             foreach ($this->request->data as $key => $data) {
                 foreach ($data as $entityData) {
                     //$dateOfBirth = "17-10-1985";
                     // $today = date("Y-m-d");
-                    debug($data['dob']);
+                   // debug($data['dob']);
                     $age = date_diff(date_create($data['dob']), date_create($age_calculation_end_date))->format('%y');
                    
                     if ($age <= $mimimum_age || $age >= $maximum_age) {
-                        debug($age);
-                        die;
+                        //debug($age);
+                      //  die;
                         $this->Flash->error(__('Age of candidate '.$data['full_name'].' should me between minimum and maximum age of acivity.'));
                         return $this->redirect(['controller' => 'RegisterCandidates','action' => 'student_register',$id]);
                     }
@@ -186,18 +186,19 @@ class RegisterCandidatesController extends AppController {
                     $this->request->data[$key]['registration_number'] = $registration_number;
                 }
             }
-            debug($this->request->data);
-            die;
+           // debug($this->request->data);
+           // die;
             $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
             $result = $this->RegisterCandidates->saveMany($registerCandidateEventActivities);
-            debug($result);
-            debug($registerCandidateEventActivities);
-            debug($this->request->data);
-            die;
+           // debug($result);
+           // debug($registerCandidateEventActivities);
+           // debug($this->request->data);
+           // die;
+            $registerCandidate = $this->RegisterCandidates->newEntity($this->request->data);
             $registerCandidateEventActivity = $this->RegisterCandidates->patchEntity($registerCandidate, $this->request->getData());
             debug($registerCandidateEventActivity);
-            die;
+           // die;
             if ($this->RegisterCandidates->save($registerCandidateEventActivity)) {
                 $this->Flash->success(__('The register candidate event activity has been saved.'));
 
@@ -324,7 +325,28 @@ class RegisterCandidatesController extends AppController {
     
     //method for attenance of cantididates after game start date ok
     public function attendance($id=null){
-        
+             // to display registered candidate details
+                $registeredCandidateLists=$this->RegisterCandidates->find('all')
+                        ->contain(['EventActivityLists' => ['EventLists','ActivityLists'=>['GenderLists','GameTypeLists']]
+                        ])->where(['EventActivityLists.id' => $id]);
+                
+                  $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
+                 $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
+                  if ($this->request->is(['patch', 'post', 'put'])) {
+                        $registerCandidateid = $this->RegisterCandidates->get($id);
+                        //debug($id);
+                   // $registerCandidateid=  $this->request->data('id');
+                 // debug($registerCandidateid);die;
+                      
+                        $this->request->data['attendance_status'] = 'true';
+                       $attendanceStatus= $this->RegisterCandidates->patchEntity($registerCandidateid, $this->request->getData());
+            if ($this->RegisterCandidates->save($attendanceStatus)) {
+                $this->Flash->success(__('Attendance Status has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('Attendance Status could not be saved. Please, try again.'));
+       }
     }
     public function tieSheet($id=null){
         
