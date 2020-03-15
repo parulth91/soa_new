@@ -58,6 +58,9 @@ class EventActivityListsTable extends Table
         $this->hasMany('RegisterCandidateEventActivities', [
             'foreignKey' => 'event_activity_list_id'
         ]);
+        $this->hasMany('RegisterCandidates', [
+            'foreignKey' => 'event_activity_list_id'
+        ]);
         $this->hasMany('TeamTieSheets', [
             'foreignKey' => 'event_activity_list_id'
         ]);

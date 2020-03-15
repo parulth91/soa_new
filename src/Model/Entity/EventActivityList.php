@@ -49,6 +49,7 @@ class EventActivityList extends Entity
         'activity_list' => true,
         'event_team_details' => true,
         'register_candidate_event_activities' => true,
+        'register_candidates' => true,
         'team_tie_sheets' => true
     ];
 }

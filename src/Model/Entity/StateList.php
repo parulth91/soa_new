@@ -43,6 +43,7 @@ class StateList extends Entity
         'country_list' => true,
         'district_lists' => true,
         'event_team_details' => true,
-        'register_candidate_event_activities' => true
+        'register_candidate_event_activities' => true,
+        'register_candidates' => true
     ];
 }

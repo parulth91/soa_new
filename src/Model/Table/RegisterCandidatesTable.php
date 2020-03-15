@@ -30,7 +30,8 @@ class RegisterCandidatesTable extends Table {
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config) {
+    public function initialize(array $config)
+    {
         parent::initialize($config);
 
         $this->setTable('register_candidate_event_activities');
@@ -45,6 +46,12 @@ class RegisterCandidatesTable extends Table {
         ]);
         $this->belongsTo('GenderLists', [
             'foreignKey' => 'gender_list_id'
+        ]);
+        $this->belongsTo('EventTeamDetails', [
+            'foreignKey' => 'event_team_detail_id'
+        ]);
+        $this->belongsTo('StateLists', [
+            'foreignKey' => 'state_list_id'
         ]);
     }
 
@@ -94,6 +101,8 @@ class RegisterCandidatesTable extends Table {
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
         $rules->add($rules->existsIn(['gender_list_id'], 'GenderLists'));
+        $rules->add($rules->existsIn(['event_team_detail_id'], 'EventTeamDetails'));
+        $rules->add($rules->existsIn(['state_list_id'], 'StateLists'));
 
         return $rules;
     }

@@ -57,6 +57,9 @@ class StateListsTable extends Table
         $this->hasMany('RegisterCandidateEventActivities', [
             'foreignKey' => 'state_list_id'
         ]);
+        $this->hasMany('RegisterCandidates', [
+            'foreignKey' => 'state_list_id'
+        ]);
         $this->hasMany('Users', [
             'foreignKey' => 'state_list_id'
         ]);

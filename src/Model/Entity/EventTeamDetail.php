@@ -41,6 +41,7 @@ class EventTeamDetail extends Entity
         'state_list_id' => true,
         'active' => true,
         'event_activity_list' => true,
-        'register_candidate_event_activities' => true
+        'register_candidate_event_activities' => true,
+        'register_candidates' => true
     ];
 }

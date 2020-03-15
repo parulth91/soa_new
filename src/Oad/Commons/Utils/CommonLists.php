@@ -24,16 +24,54 @@ class CommonLists {
         $result = $connection->execute($resourceTypeQuery1)->fetch();
 
         $new_state_id = $state_id < 10 ? '0' . $state_id : $state_id;
-        $ref_no = 'SOA-'.$new_state_id .'-' . $result[0];
+        $ref_no = 'SOA-' . $new_state_id . '-' . $result[0];
         //$advid
         return $ref_no;
     }
 
-    public function getAllRanks() {
-        $ranksTable = TableRegistry::get('MsRanks');
-        $msRanks = $ranksTable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['is_active' => true])->order('description');
-        return $msRanks;
+    public function getAllEventActivityList($id = null) {
+        //debug($id);
+        $Table = TableRegistry::get('EventActivityLists');
+        $lists = $Table->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_lists_id' => $id, 'active' => true])->order('description');
+        //debug($lists->toarray());die;
+        return $lists;
     }
+    
+        public function ajaxGetAllEventActivityList($id) {
+
+        $Table = TableRegistry::get('RegisterCandidates');
+        $List = $Table
+                //->find('all')
+                ->find('list', ['keyField' => 'state_list_id', 'valueField' => 'StateLists.description'])
+                ->contain(['stateLists'])
+                ->distinct(['state_list_id']) 
+                ->where(['event_activity_list_id' => $id, 'RegisterCandidates.active' => true]);
+        $ListArr = '';
+        $ListArr .= '<option value="">----Select----</option>';
+        if (!empty($List) && isset($List)) {
+            foreach ($List as $key => $value) {
+                $ListArr .= '<option value="' . $key . '">' . $value . '</option>';
+            }
+        } else {
+            $ListArr = 0;
+        }
+        echo $ListArr;
+        exit;
+    }
+    
+//    public function getAllEventActivityStateList($id = null) {
+//        //debug($id);
+//        $Table = TableRegistry::get('RegisterCandidates');
+//        $lists = $Table
+//                //->find('all')
+//                ->find('list', ['keyField' => 'state_list_id', 'valueField' => 'StateLists.description'])
+//                ->contain(['stateLists'])
+//                ->distinct(['state_list_id']) 
+//                ->where(['event_activity_list_id' => $id, 'RegisterCandidates.active' => true]);
+//        //debug($lists->toarray());
+//        //debug($lists);die;
+//        return $lists;
+//    }
 
     public function getAllCadres() {
         $MsCadresTable = TableRegistry::get('MsCadres');
