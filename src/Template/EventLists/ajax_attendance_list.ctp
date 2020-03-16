@@ -16,13 +16,13 @@
             <thead>
                 <tr>
 
-                    <th><?= $this->Paginator->sort('S.NO'); ?></th>
-                    <th><?= $this->Paginator->sort('GameType'); ?></th>
-                    <th><?= $this->Paginator->sort('Activity'); ?></th>
-                    <th><?= $this->Paginator->sort('Name'); ?></th>
-                    <th><?= $this->Paginator->sort('Age'); ?></th>
-                    <th><?= $this->Paginator->sort('Weight'); ?></th>
-                    <th><?= $this->Paginator->sort('Registration Number'); ?></th>
+                    <th>S.NO</th>
+                    <th>GameType</th>
+                    <th>Activity</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Weight</th>
+                    <th>Registration Number</th>
 
                     <th class="actions"><?= __('Actions'); ?></th>
                 </tr>
@@ -43,9 +43,9 @@
                         <td class="actions">
 
                             <?php
-                            echo $this->Form->input('attendance_status['.$registeredCandidateView->id.']', [
+                            echo $this->Form->input('attendance_checkbox['.$registeredCandidateView->id.']', [
                                 'label' => false,
-                                'value' => '1',
+                                'value' => 'true',
                                 'type' => 'checkbox',
                                 'id' => 'attendance_status',
                                 //'selected' => $registeredCandidateView->id,

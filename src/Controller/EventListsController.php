@@ -217,30 +217,37 @@ class EventListsController extends AppController {
 
     //method for attenance of cantididates after game start date ok
     public function attendance($id = null) {
-        debug($this->request->data);die;
+        //debug($this->request->data);die;
         // to display registered candidate details
-        $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                        ->contain(['EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists']]
-                        ])->where(['EventActivityLists.id' => $id]);
-
-        $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-        $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
+             $registerCandidatesTable = TableRegistry::get('RegisterCandidates');
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $registerCandidateid = $this->RegisterCandidates->get($id);
-            //debug($id);
+            foreach($this->request->data['attendance_checkbox'] as $key=>$data){
+
+                     if(!empty($key)){
+                      $registerCandidateid= $registerCandidatesTable->get($key);
+                    }
+                      //debug($registerCandidateid['can_id']);die;
+            }
+          
+            debug($registerCandidateid);
             // $registerCandidateid=  $this->request->data('id');
             // debug($registerCandidateid);die;
-
+            }
+            if($data=='true'){
             $this->request->data['attendance_status'] = 'true';
-            $attendanceStatus = $this->RegisterCandidates->patchEntity($registerCandidateid, $this->request->getData());
-            if ($this->RegisterCandidates->save($attendanceStatus)) {
+            die;
+            $attendanceStatus = $registerCandidatesTable->patchEntity($registerCandidateid,  $this->request->data);
+            if ($registerCandidatesTable->save($attendanceStatus)) {
                 $this->Flash->success(__('Attendance Status has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+            
+            
+            }
             $this->Flash->error(__('Attendance Status could not be saved. Please, try again.'));
         }
-    }
+    
 
     public function tieSheet($id = null) {
         
