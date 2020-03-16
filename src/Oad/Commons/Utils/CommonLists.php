@@ -16,6 +16,8 @@ use PDO;
 
 class CommonLists {
 
+
+
     //code for generating sequence number
     public function getRegNoSeq($state_id) {
         $connection = ConnectionManager::get('default');
@@ -36,15 +38,15 @@ class CommonLists {
         //debug($lists->toarray());die;
         return $lists;
     }
-    
-        public function ajaxGetAllEventActivityList($id) {
+
+    public function ajaxGetAllEventActivityList($id) {
 
         $Table = TableRegistry::get('RegisterCandidates');
         $List = $Table
                 //->find('all')
                 ->find('list', ['keyField' => 'state_list_id', 'valueField' => 'StateLists.description'])
                 ->contain(['stateLists'])
-                ->distinct(['state_list_id']) 
+                ->distinct(['state_list_id'])
                 ->where(['event_activity_list_id' => $id, 'RegisterCandidates.active' => true]);
         $ListArr = '';
         $ListArr .= '<option value="">----Select----</option>';
@@ -58,7 +60,7 @@ class CommonLists {
         echo $ListArr;
         exit;
     }
-    
+
 //    public function getAllEventActivityStateList($id = null) {
 //        //debug($id);
 //        $Table = TableRegistry::get('RegisterCandidates');

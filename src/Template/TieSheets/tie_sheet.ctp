@@ -42,7 +42,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
         <div class="col-md-1">
             <?php
-            echo $this->Form->button('Show Attendance List', array(
+            echo $this->Form->button('Create Tie Sheet', array(
                 'type' => 'button',
                 'id' => 'attendanceList',
                 'class' => 'attendanceList btn  btn-primary',
@@ -144,7 +144,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         $("#coverScreen").show();
         $.ajax({
             type: "GET",
-            url: "<?php echo $this->Url->build(array('controller' => 'EventLists', 'action' => 'ajax_attendance_list')); ?>",
+            url: "<?php echo $this->Url->build(array('controller' => 'EventLists', 'action' => 'ajax_tie_sheet')); ?>",
             data: {event_activity_lists_id: event_activity_lists_id, state_list_id: state_list_id},
             success: function (data) {
                 if (data != 0) {

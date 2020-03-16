@@ -36,9 +36,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <td><?= h($eventList->action_ip) ?></td>
                 <td><?= h($eventList->modified) ?></td>
                 <td><?= $this->Number->format($eventList->id) ?></td>
-                <td class="actions"> <?= $this->Html->link('Attendance', ['action' => 'eventActivtiesAttendance', $eventList->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']) ?>
-                    <?= $this->Html->link('Tie Sheet', ['action' => 'tieSheet', $eventList->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']) ?>
-                    <?= $this->Html->link('Result', ['action' => 'result', $eventList->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']) ?>
+                <td class="actions"> 
+                    <?= $this->Html->link('View Activities', ['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $eventList->id], ['View Event Activities', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
                     <?= $this->Html->link('', ['action' => 'view', $eventList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                     <?= $this->Html->link('', ['action' => 'edit', $eventList->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
                     <?= $this->Form->postLink('', ['action' => 'delete', $eventList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
