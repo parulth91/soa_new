@@ -31,7 +31,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($eventTeamDetail->created) ?></td>
             <td><?= h($eventTeamDetail->action_ip) ?></td>
             <td><?= h($eventTeamDetail->modified) ?></td>
-            <td><?= $this->Number->format($eventTeamDetail->state_list_id) ?></td>
+            <td>
+                <?= $eventTeamDetail->has('state_list') ? $this->Html->link($eventTeamDetail->state_list->description, ['controller' => 'StateLists', 'action' => 'view', $eventTeamDetail->state_list->id]) : '' ?>
+            </td>
                         <td><?= $eventTeamDetail->active ? __('Yes') : __('No'); ?></td>
                                     <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $eventTeamDetail->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>

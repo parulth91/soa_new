@@ -10,9 +10,9 @@ use Cake\Validation\Validator;
  * EventTeamDetails Model
  *
  * @property \App\Model\Table\EventActivityListsTable|\Cake\ORM\Association\BelongsTo $EventActivityLists
- * @property |\Cake\ORM\Association\BelongsTo $StateLists
+ * @property \App\Model\Table\StateListsTable|\Cake\ORM\Association\BelongsTo $StateLists
  * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\HasMany $RegisterCandidateEventActivities
- * @property |\Cake\ORM\Association\HasMany $TeamTieSheets
+ * @property \App\Model\Table\TeamTieSheetsTable|\Cake\ORM\Association\HasMany $TeamTieSheets
  *
  * @method \App\Model\Entity\EventTeamDetail get($primaryKey, $options = [])
  * @method \App\Model\Entity\EventTeamDetail newEntity($data = null, array $options = [])
@@ -50,9 +50,6 @@ class EventTeamDetailsTable extends Table
             'foreignKey' => 'state_list_id'
         ]);
         $this->hasMany('RegisterCandidateEventActivities', [
-            'foreignKey' => 'event_team_detail_id'
-        ]);
-        $this->hasMany('RegisterCandidates', [
             'foreignKey' => 'event_team_detail_id'
         ]);
         $this->hasMany('TeamTieSheets', [

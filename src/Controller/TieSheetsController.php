@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\I18n\Time;
 
+
+use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 /**
  * TeamTieSheets Controller
  *
@@ -124,83 +127,17 @@ class TieSheetsController extends AppController {
         return $this->cList->ajaxGetAllEventActivityList($event_activity_lists_id);
     }
 
-    public function tieSheet($event_id = null) {
-
-
-
-
-
+    public function tieSheet($id = null) {
+        $eventActivityListTable = TableRegistry::get('event_activity_lists');
+        $eventActivityLists = $eventActivityListTable->find('all')
+                        ->contain(['ActivityLists' => ['WeightCategoryLists', 'AgeGroupLists', 'GenderLists', 'GameTypeLists'],
+                            'EventLists','EventTeamDetails'
+                        ])->where(['event_activity_lists.id' => $id])->toArray();
+        debug($eventActivityLists);
+        debug($id);
+        die;
         if ($this->request->is('post')) {
-            $list_type_options = ['0' => 'ALL', '1' => 'General Cases', '2' => 'Terminal Posting', '3' => 'LMC', '4' => 'Couple Case', '5' => 'Medical Ground (Only for self illness of Force Member)', '6' => 'Compassionate Ground'];
-            $options = ['EmployeeInformations.ms_rank_id' => $this->request->data['ms_rank_id'],
-                'EmployeeInformations.ms_cadre_id' => $this->request->data['ms_cadre_id'],
-                'EmployeeInformations.is_active' => true, 'EmployeeInformations.headquaters_status' => '1'];
-            if ($this->request->data['list_type_id'] == '0') {
-                //$options['whether_couple_case'] = true;
-            }
-            if ($this->request->data['list_type_id'] == '1') {
-                $options['whether_terminal_case'] = FALSE;
-                $options['whether_unfit_for_haa_cold_climate'] = FALSE;
-                $options['whether_couple_case'] = FALSE;
-                $options['whether_medical_ground_case'] = FALSE;
-                $options['whether_compassionate_case'] = FALSE;
-            }
-            if ($this->request->data['list_type_id'] == '2') {
-                $options['whether_terminal_case'] = true;
-            }
-            if ($this->request->data['list_type_id'] == '3') {
-                $options['whether_unfit_for_haa_cold_climate'] = true;
-            }
-            if ($this->request->data['list_type_id'] == '4') {
-                $options['whether_couple_case'] = true;
-            }
-            if ($this->request->data['list_type_id'] == '5') {
-                $options['whether_medical_ground_case'] = true;
-            }
-            if ($this->request->data['list_type_id'] == '6') {
-                $options['whether_compassionate_case'] = true;
-            }
-
-
-            if ($this->request->data['btn'] == 'SHOW LIST') {
-                //debug($options);
-                $jebLists = $this->getJebDataForAllocataion($options);
-            }
-            if ($this->request->data['btn'] == 'Update Transfer Out') {
-                $jebLists = $this->getJebDataForAllocataion($options);
-                $this->cList->updateTransferOutVacancyAll($this->request->data['ms_rank_id'], $this->request->data['ms_cadre_id']);
-            }
-            if ($this->request->data['btn'] == 'Assign Points') {
-
-                //database for point assignment
-                $connection = ConnectionManager::get('default');
-                $tableGeneration = "select * from assign_points(" . $this->request->data['ms_rank_id'] . "," . $this->request->data['ms_cadre_id'] . "," . $this->request->data['list_type_id'] . ")";
-                // debug($tableGeneration);
-                $connection->execute($tableGeneration);
-                //return $connection;
-//                $jebLists = $this->getJebDataForAllocataion($options);
-//                foreach ($jebLists as $jebList) {
-//                    $this->cList->assignPointsToEmployee($jebList->regimental_number);
-//                }
-                //$jebLists = $this->getJebDataForAllocataion($options);
-            }
-
-
-
-
-            if ($this->request->data['btn'] == 'Allocate Unit') {
-                //debug($this->request->data['list_type_id']);
-                $connection = ConnectionManager::get('default');
-                $tableGeneration = "select * from allocate_unit(" . $this->request->data['ms_rank_id'] . "," . $this->request->data['ms_cadre_id'] . "," . $this->request->data['list_type_id'] . ")";
-                //debug($tableGeneration);
-                $connection->execute($tableGeneration);
-            }
-
-            $jebLists = $this->getJebDataForAllocataion($options);
-            $msRanks = $this->cList->getAllRanks();
-            $msCadres = $this->cList->getRankCadre($this->request->data['ms_rank_id']);
-
-            $this->set(compact('jebLists', 'msCadres', 'msRanks'));
+            
         } else {
 
             $eventActivitiyList = $this->cList->getAllEventActivityList($event_id);

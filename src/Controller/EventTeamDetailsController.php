@@ -21,7 +21,7 @@ class EventTeamDetailsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['EventActivityLists']
+            'contain' => ['EventActivityLists', 'StateLists']
         ];
         $eventTeamDetails = $this->paginate($this->EventTeamDetails);
 
@@ -38,7 +38,7 @@ class EventTeamDetailsController extends AppController
     public function view($id = null)
     {
         $eventTeamDetail = $this->EventTeamDetails->get($id, [
-            'contain' => ['EventActivityLists', 'RegisterCandidateEventActivities']
+            'contain' => ['EventActivityLists', 'StateLists', 'RegisterCandidateEventActivities', 'TeamTieSheets']
         ]);
 
         $this->set('eventTeamDetail', $eventTeamDetail);
@@ -65,7 +65,8 @@ class EventTeamDetailsController extends AppController
             $this->Flash->error(__('The event team detail could not be saved. Please, try again.'));
         }
         $eventActivityLists = $this->EventTeamDetails->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('eventTeamDetail', 'eventActivityLists'));
+        $stateLists = $this->EventTeamDetails->StateLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('eventTeamDetail', 'eventActivityLists', 'stateLists'));
     }
 
     /**
@@ -97,7 +98,8 @@ class EventTeamDetailsController extends AppController
             $this->Flash->error(__('The event team detail could not be saved. Please, try again.'));
         }
         $eventActivityLists = $this->EventTeamDetails->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('eventTeamDetail', 'eventActivityLists'));
+        $stateLists = $this->EventTeamDetails->StateLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('eventTeamDetail', 'eventActivityLists', 'stateLists'));
     }
 
     /**

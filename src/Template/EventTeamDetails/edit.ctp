@@ -23,11 +23,11 @@ echo $this->Form->create($eventTeamDetail);
                 echo $this->Form->input('event_activity_list_id', ['type'=>'select','empty'=>'Select','options' => $eventActivityLists]);
                 ?>
             </div>
-                <div class=col-md-2>
-            <?php
-            echo $this->Form->control('state_list_id');
-            ?>
-        </div>
+          <div class=col-md-2>
+                <?php
+                echo $this->Form->input('state_list_id', ['type'=>'select','empty'=>'Select','options' => $stateLists]);
+                ?>
+            </div>
                 <div class=col-md-2>
             <?php
             echo $this->Form->control('active');

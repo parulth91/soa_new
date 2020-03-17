@@ -21,16 +21,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($eventTeamDetail->action_ip) ?></td>
         </tr>
         <tr>
+            <td><?= __('State List') ?></td>
+            <td><?= $eventTeamDetail->has('state_list') ? $this->Html->link($eventTeamDetail->state_list->description, ['controller' => 'StateLists', 'action' => 'view', $eventTeamDetail->state_list->id]) : '' ?></td>
+        </tr>
+        <tr>
             <td><?= __('Id') ?></td>
             <td><?= $this->Number->format($eventTeamDetail->id) ?></td>
         </tr>
         <tr>
             <td><?= __('Action By') ?></td>
             <td><?= $this->Number->format($eventTeamDetail->action_by) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('State List Id') ?></td>
-            <td><?= $this->Number->format($eventTeamDetail->state_list_id) ?></td>
         </tr>
         <tr>
             <td><?= __('Created') ?></td>
@@ -73,6 +73,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('action_ip'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
+            <th><?= $this->Paginator->sort('state_list_id'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
@@ -97,6 +98,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     <td><?= h($registerCandidateEventActivities->created) ?></td>
                     <td><?= h($registerCandidateEventActivities->action_ip) ?></td>
                     <td><?= h($registerCandidateEventActivities->modified) ?></td>
+                    <td><?= h($registerCandidateEventActivities->state_list_id) ?></td>
                     <td class="actions">
                         <?= $this->Html->link('', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $registerCandidateEventActivities->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                         <?= $this->Html->link('', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'edit', $registerCandidateEventActivities->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
@@ -108,5 +110,56 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </table>
     <?php else: ?>
         <p class="panel-body">no related RegisterCandidateEventActivities</p>
+    <?php endif; ?>
+</div>
+<div class="panel panel-default">
+    <!-- Panel header -->
+    <div class="panel-heading">
+        <h3 class="panel-title"><?= __('Related TeamTieSheets') ?></h3>
+    </div>
+    <?php if (!empty($eventTeamDetail->team_tie_sheets)): ?>
+        <table class="table table-striped">
+               <thead>
+        <tr>
+            <th><?= $this->Paginator->sort('id'); ?></th>
+            <th><?= $this->Paginator->sort('event_team_detail_id'); ?></th>
+            <th><?= $this->Paginator->sort('opponent_event_team_detail_id'); ?></th>
+            <th><?= $this->Paginator->sort('match_number'); ?></th>
+            <th><?= $this->Paginator->sort('winner_team_detail_id'); ?></th>
+            <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
+            <th><?= $this->Paginator->sort('active'); ?></th>
+            <th><?= $this->Paginator->sort('action_by'); ?></th>
+            <th><?= $this->Paginator->sort('created'); ?></th>
+            <th><?= $this->Paginator->sort('action_ip'); ?></th>
+            <th><?= $this->Paginator->sort('modified'); ?></th>
+            <th class="actions"><?= __('Actions'); ?></th>
+        </tr>
+    </thead>
+           
+            <tbody>
+            <?php foreach ($eventTeamDetail->team_tie_sheets as $teamTieSheets): ?>
+                <tr>
+                    <td><?= h($teamTieSheets->id) ?></td>
+                    <td><?= h($teamTieSheets->event_team_detail_id) ?></td>
+                    <td><?= h($teamTieSheets->opponent_event_team_detail_id) ?></td>
+                    <td><?= h($teamTieSheets->match_number) ?></td>
+                    <td><?= h($teamTieSheets->winner_team_detail_id) ?></td>
+                    <td><?= h($teamTieSheets->event_activity_list_id) ?></td>
+                    <td><?= h($teamTieSheets->active) ?></td>
+                    <td><?= h($teamTieSheets->action_by) ?></td>
+                    <td><?= h($teamTieSheets->created) ?></td>
+                    <td><?= h($teamTieSheets->action_ip) ?></td>
+                    <td><?= h($teamTieSheets->modified) ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link('', ['controller' => 'TeamTieSheets', 'action' => 'view', $teamTieSheets->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
+                        <?= $this->Html->link('', ['controller' => 'TeamTieSheets', 'action' => 'edit', $teamTieSheets->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
+                        <?= $this->Form->postLink('', ['controller' => 'TeamTieSheets', 'action' => 'delete', $teamTieSheets->id], ['confirm' => __('Are you sure you want to delete # {0}?', $teamTieSheets->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p class="panel-body">no related TeamTieSheets</p>
     <?php endif; ?>
 </div>

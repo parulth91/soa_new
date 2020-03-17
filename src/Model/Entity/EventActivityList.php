@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\ActivityList $activity_list
  * @property \App\Model\Entity\EventTeamDetail[] $event_team_details
  * @property \App\Model\Entity\RegisterCandidateEventActivity[] $register_candidate_event_activities
+ * @property \App\Model\Entity\RegisterCandidate[] $register_candidates
  * @property \App\Model\Entity\TeamTieSheet[] $team_tie_sheets
  */
 class EventActivityList extends Entity

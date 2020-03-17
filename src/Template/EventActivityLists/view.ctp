@@ -166,6 +166,71 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <div class="panel panel-default">
     <!-- Panel header -->
     <div class="panel-heading">
+        <h3 class="panel-title"><?= __('Related RegisterCandidates') ?></h3>
+    </div>
+    <?php if (!empty($eventActivityList->register_candidates)): ?>
+        <table class="table table-striped">
+               <thead>
+        <tr>
+            <th><?= $this->Paginator->sort('id'); ?></th>
+            <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
+            <th><?= $this->Paginator->sort('full_name'); ?></th>
+            <th><?= $this->Paginator->sort('dob'); ?></th>
+            <th><?= $this->Paginator->sort('gender_list_id'); ?></th>
+            <th><?= $this->Paginator->sort('registration_number'); ?></th>
+            <th><?= $this->Paginator->sort('event_team_detail_id'); ?></th>
+            <th><?= $this->Paginator->sort('weight'); ?></th>
+            <th><?= $this->Paginator->sort('age'); ?></th>
+            <th><?= $this->Paginator->sort('event_qualifying_status'); ?></th>
+            <th><?= $this->Paginator->sort('attendance_status'); ?></th>
+            <th><?= $this->Paginator->sort('certificate_download_status'); ?></th>
+            <th><?= $this->Paginator->sort('active'); ?></th>
+            <th><?= $this->Paginator->sort('action_by'); ?></th>
+            <th><?= $this->Paginator->sort('created'); ?></th>
+            <th><?= $this->Paginator->sort('action_ip'); ?></th>
+            <th><?= $this->Paginator->sort('modified'); ?></th>
+            <th><?= $this->Paginator->sort('state_list_id'); ?></th>
+            <th class="actions"><?= __('Actions'); ?></th>
+        </tr>
+    </thead>
+           
+            <tbody>
+            <?php foreach ($eventActivityList->register_candidates as $registerCandidates): ?>
+                <tr>
+                    <td><?= h($registerCandidates->id) ?></td>
+                    <td><?= h($registerCandidates->event_activity_list_id) ?></td>
+                    <td><?= h($registerCandidates->full_name) ?></td>
+                    <td><?= h($registerCandidates->dob) ?></td>
+                    <td><?= h($registerCandidates->gender_list_id) ?></td>
+                    <td><?= h($registerCandidates->registration_number) ?></td>
+                    <td><?= h($registerCandidates->event_team_detail_id) ?></td>
+                    <td><?= h($registerCandidates->weight) ?></td>
+                    <td><?= h($registerCandidates->age) ?></td>
+                    <td><?= h($registerCandidates->event_qualifying_status) ?></td>
+                    <td><?= h($registerCandidates->attendance_status) ?></td>
+                    <td><?= h($registerCandidates->certificate_download_status) ?></td>
+                    <td><?= h($registerCandidates->active) ?></td>
+                    <td><?= h($registerCandidates->action_by) ?></td>
+                    <td><?= h($registerCandidates->created) ?></td>
+                    <td><?= h($registerCandidates->action_ip) ?></td>
+                    <td><?= h($registerCandidates->modified) ?></td>
+                    <td><?= h($registerCandidates->state_list_id) ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link('', ['controller' => 'RegisterCandidates', 'action' => 'view', $registerCandidates->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
+                        <?= $this->Html->link('', ['controller' => 'RegisterCandidates', 'action' => 'edit', $registerCandidates->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
+                        <?= $this->Form->postLink('', ['controller' => 'RegisterCandidates', 'action' => 'delete', $registerCandidates->id], ['confirm' => __('Are you sure you want to delete # {0}?', $registerCandidates->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p class="panel-body">no related RegisterCandidates</p>
+    <?php endif; ?>
+</div>
+<div class="panel panel-default">
+    <!-- Panel header -->
+    <div class="panel-heading">
         <h3 class="panel-title"><?= __('Related TeamTieSheets') ?></h3>
     </div>
     <?php if (!empty($eventActivityList->team_tie_sheets)): ?>

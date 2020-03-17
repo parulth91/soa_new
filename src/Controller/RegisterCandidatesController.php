@@ -242,6 +242,7 @@ class RegisterCandidatesController extends AppController {
     }
 
     public function eventActivitiesStudentRegister($id = null) {
+        //  debug($this->request->data);die;
         // to display some fields from eventactivities  table
         $eventActivityListTable = TableRegistry::get('event_activity_lists');
         $eventActivityLists = $eventActivityListTable->find('all')
@@ -266,6 +267,8 @@ class RegisterCandidatesController extends AppController {
             if (!empty($this->request->data['EventTeamDetails'])) {
                 $EventTeamDetails = $this->request->data['EventTeamDetails'];
                 unset($this->request->data['EventTeamDetails']);
+            } else {
+                $EventTeamDetails = null;
             }
             foreach ($this->request->data as $key => $data) {
                 foreach ($data as $entityData) {
@@ -291,7 +294,8 @@ class RegisterCandidatesController extends AppController {
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
 
             //event team detals entiity creation for insertion
-            if (!empty($this->request->data['EventTeamDetails'])) {
+            if (!empty($EventTeamDetails)) {
+
                 $EventTeamDetails['event_activity_list_id'] = $id;
                 $EventTeamDetails['state_list_id'] = $registering_user_state_id;
                 $EventTeamDetails['action_by'] = $_SESSION['Auth']['User']['id'];
@@ -301,10 +305,18 @@ class RegisterCandidatesController extends AppController {
                 $eventTeamDetailsTableEntity = $eventTeamDetailsTable->newEntity();
                 $EventTeamDetailsEntity = $eventTeamDetailsTable->patchEntity($eventTeamDetailsTableEntity, $EventTeamDetails);
 //                debug($EventTeamDetails);
-//                debug($EventTeamDetailsEntity);
-                if ($eventTeamDetailsTable->save($EventTeamDetailsEntity) && $this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
-                    $this->Flash->success(__('The register candidate event activity has been saved.'));
-                    return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+
+                if ( empty($EventTeamDetailsEntity['errors']) && empty($EventTeamDetailsEntity['errors']) ){
+                    //debug($EventTeamDetailsEntity);
+                    //debug($registerCandidateEventActivities);
+                    //die;
+                    if ($eventTeamDetailsTable->save($EventTeamDetailsEntity) && $this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
+                        $this->Flash->success(__('The register candidate event activity has been saved.'));
+                        return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                    }
+                } else {
+                     $this->Flash->error(__('The register candidate event activity could not be saved. Please, check data and try again.'));
+                     return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
                 }
             } else {
                 if ($this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {

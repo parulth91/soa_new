@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\EventListsTable|\Cake\ORM\Association\BelongsTo $EventLists
  * @property \App\Model\Table\ActivityListsTable|\Cake\ORM\Association\BelongsTo $ActivityLists
  * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\HasMany $EventTeamDetails
+ * @property |\Cake\ORM\Association\HasMany $IndividualTieSheets
  * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\HasMany $RegisterCandidateEventActivities
  * @property \App\Model\Table\TeamTieSheetsTable|\Cake\ORM\Association\HasMany $TeamTieSheets
  *
@@ -55,10 +56,10 @@ class EventActivityListsTable extends Table
         $this->hasMany('EventTeamDetails', [
             'foreignKey' => 'event_activity_list_id'
         ]);
-        $this->hasMany('RegisterCandidateEventActivities', [
+        $this->hasMany('IndividualTieSheets', [
             'foreignKey' => 'event_activity_list_id'
         ]);
-        $this->hasMany('RegisterCandidates', [
+        $this->hasMany('RegisterCandidateEventActivities', [
             'foreignKey' => 'event_activity_list_id'
         ]);
         $this->hasMany('TeamTieSheets', [

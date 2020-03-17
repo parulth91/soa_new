@@ -17,7 +17,9 @@ use Cake\ORM\Entity;
  * @property bool $active
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
+ * @property \App\Model\Entity\StateList $state_list
  * @property \App\Model\Entity\RegisterCandidateEventActivity[] $register_candidate_event_activities
+ * @property \App\Model\Entity\TeamTieSheet[] $team_tie_sheets
  */
 class EventTeamDetail extends Entity
 {
@@ -41,7 +43,8 @@ class EventTeamDetail extends Entity
         'state_list_id' => true,
         'active' => true,
         'event_activity_list' => true,
+        'state_list' => true,
         'register_candidate_event_activities' => true,
-        'register_candidates' => true
+        'team_tie_sheets' => true
     ];
 }
