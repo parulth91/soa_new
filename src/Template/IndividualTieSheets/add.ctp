@@ -43,6 +43,11 @@ echo $this->Form->create($individualTieSheet);
             echo $this->Form->control('active');
             ?>
         </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('result_status_list_id');
+            ?>
+        </div>
             
 </fieldset>
 <?=

@@ -16,6 +16,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('modified'); ?></th>
             <th><?= $this->Paginator->sort('state_list_id'); ?></th>
             <th><?= $this->Paginator->sort('active'); ?></th>
+            <th><?= $this->Paginator->sort('attendance_status'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
@@ -35,6 +36,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <?= $eventTeamDetail->has('state_list') ? $this->Html->link($eventTeamDetail->state_list->description, ['controller' => 'StateLists', 'action' => 'view', $eventTeamDetail->state_list->id]) : '' ?>
             </td>
                         <td><?= $eventTeamDetail->active ? __('Yes') : __('No'); ?></td>
+                                                <td><?= $eventTeamDetail->attendance_status ? __('Yes') : __('No'); ?></td>
                                     <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $eventTeamDetail->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                 <?= $this->Html->link('', ['action' => 'edit', $eventTeamDetail->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>

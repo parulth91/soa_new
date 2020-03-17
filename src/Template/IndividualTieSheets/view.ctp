@@ -41,6 +41,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= $this->Number->format($individualTieSheet->action_by) ?></td>
         </tr>
         <tr>
+            <td><?= __('Result Status List Id') ?></td>
+            <td><?= $this->Number->format($individualTieSheet->result_status_list_id) ?></td>
+        </tr>
+        <tr>
             <td><?= __('Created') ?></td>
             <td><?= h($individualTieSheet->created) ?></td>
         </tr>

@@ -44,6 +44,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= __('Active') ?></td>
             <td><?= $eventTeamDetail->active ? __('Yes') : __('No'); ?></td>
         </tr>
+        <tr>
+            <td><?= __('Attendance Status') ?></td>
+            <td><?= $eventTeamDetail->attendance_status ? __('Yes') : __('No'); ?></td>
+        </tr>
     </table>
 </div>
 
@@ -74,6 +78,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('action_ip'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
             <th><?= $this->Paginator->sort('state_list_id'); ?></th>
+            <th><?= $this->Paginator->sort('result_status_list_id'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
@@ -99,6 +104,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     <td><?= h($registerCandidateEventActivities->action_ip) ?></td>
                     <td><?= h($registerCandidateEventActivities->modified) ?></td>
                     <td><?= h($registerCandidateEventActivities->state_list_id) ?></td>
+                    <td><?= h($registerCandidateEventActivities->result_status_list_id) ?></td>
                     <td class="actions">
                         <?= $this->Html->link('', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $registerCandidateEventActivities->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                         <?= $this->Html->link('', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'edit', $registerCandidateEventActivities->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>

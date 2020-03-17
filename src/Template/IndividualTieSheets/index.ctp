@@ -18,6 +18,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('action_ip'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
+            <th><?= $this->Paginator->sort('result_status_list_id'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
@@ -39,6 +40,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($individualTieSheet->created) ?></td>
             <td><?= h($individualTieSheet->action_ip) ?></td>
             <td><?= h($individualTieSheet->modified) ?></td>
+            <td><?= $this->Number->format($individualTieSheet->result_status_list_id) ?></td>
             <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $individualTieSheet->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                 <?= $this->Html->link('', ['action' => 'edit', $individualTieSheet->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>

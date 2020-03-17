@@ -4,10 +4,9 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\I18n\Time;
-
-
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
+
 /**
  * TeamTieSheets Controller
  *
@@ -130,11 +129,21 @@ class TieSheetsController extends AppController {
     public function tieSheet($id = null) {
         $eventActivityListTable = TableRegistry::get('event_activity_lists');
         $eventActivityLists = $eventActivityListTable->find('all')
-                        ->contain(['ActivityLists' => ['WeightCategoryLists', 'AgeGroupLists', 'GenderLists', 'GameTypeLists'],
-                            'EventLists','EventTeamDetails'
+                        ->contain([
+                            'ActivityLists' => ['WeightCategoryLists', 'AgeGroupLists', 'GenderLists', 'GameTypeLists'],
+                            'EventTeamDetails' => [],
+                            'EventLists' => [],
+                            'EventTeamDetails' => [],
+                            'RegisterCandidateEventActivities' => []
                         ])->where(['event_activity_lists.id' => $id])->toArray();
-        debug($eventActivityLists);
-        debug($id);
+        if ($eventActivityLists[0]->activity_list->game_type_list->description == 'Team') {
+            $this->teamTieSheets($eventActivityLists[0]->event_team_details);
+        } else {
+            $this->individualTieSheets($eventActivityLists[0]->register_candidate_event_activities);
+        }
+//        debug($eventActivityLists[0]->register_candidate_event_activities);
+//        debug($eventActivityLists);
+//        debug($id);
         die;
         if ($this->request->is('post')) {
             
@@ -157,6 +166,26 @@ class TieSheetsController extends AppController {
 //        debug($registerCandidatesLists->toArray());
 //        die;
         $this->set(compact('registerCandidatesLists'));
+    }
+
+    public function teamTieSheets($team_data = null) {
+        foreach ($team_data as $key => $value) {
+            $playersIdArray[] = $value->id;
+        }
+        $total_teams = count($team_data);
+        $tatal_matches=$total_teams-1;
+        if ($total_teams % 2 == 0) {
+        debug($total_teams);    
+        } else {
+            
+        }
+
+        debug($playersIdArray);
+        die;
+    }
+
+    public function individualTieSheets() {
+        
     }
 
 }

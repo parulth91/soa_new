@@ -53,6 +53,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= $this->Number->format($registerCandidateEventActivity->action_by) ?></td>
         </tr>
         <tr>
+            <td><?= __('Result Status List Id') ?></td>
+            <td><?= $this->Number->format($registerCandidateEventActivity->result_status_list_id) ?></td>
+        </tr>
+        <tr>
             <td><?= __('Dob') ?></td>
             <td><?= h($registerCandidateEventActivity->dob) ?></td>
         </tr>

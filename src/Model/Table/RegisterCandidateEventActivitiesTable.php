@@ -13,6 +13,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\GenderListsTable|\Cake\ORM\Association\BelongsTo $GenderLists
  * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
  * @property \App\Model\Table\StateListsTable|\Cake\ORM\Association\BelongsTo $StateLists
+ * @property |\Cake\ORM\Association\BelongsTo $ResultStatusLists
+ * @property |\Cake\ORM\Association\HasMany $IndividualTieSheets
  *
  * @method \App\Model\Entity\RegisterCandidateEventActivity get($primaryKey, $options = [])
  * @method \App\Model\Entity\RegisterCandidateEventActivity newEntity($data = null, array $options = [])
@@ -55,6 +57,12 @@ class RegisterCandidateEventActivitiesTable extends Table
         ]);
         $this->belongsTo('StateLists', [
             'foreignKey' => 'state_list_id'
+        ]);
+        $this->belongsTo('ResultStatusLists', [
+            'foreignKey' => 'result_status_list_id'
+        ]);
+        $this->hasMany('IndividualTieSheets', [
+            'foreignKey' => 'register_candidate_event_activity_id'
         ]);
     }
 
@@ -135,6 +143,7 @@ class RegisterCandidateEventActivitiesTable extends Table
         $rules->add($rules->existsIn(['gender_list_id'], 'GenderLists'));
         $rules->add($rules->existsIn(['event_team_detail_id'], 'EventTeamDetails'));
         $rules->add($rules->existsIn(['state_list_id'], 'StateLists'));
+        $rules->add($rules->existsIn(['result_status_list_id'], 'ResultStatusLists'));
 
         return $rules;
     }

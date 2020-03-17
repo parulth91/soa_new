@@ -87,6 +87,10 @@ class EventTeamDetailsTable extends Table
             ->requirePresence('active', 'create')
             ->notEmpty('active');
 
+        $validator
+            ->boolean('attendance_status')
+            ->allowEmpty('attendance_status');
+
         return $validator;
     }
 

@@ -24,6 +24,7 @@ use Cake\ORM\Entity;
  * @property string $action_ip
  * @property \Cake\I18n\FrozenTime $modified
  * @property int $state_list_id
+ * @property int $result_status_list_id
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
  * @property \App\Model\Entity\GenderList $gender_list
@@ -60,6 +61,7 @@ class RegisterCandidateEventActivity extends Entity
         'action_ip' => true,
         'modified' => true,
         'state_list_id' => true,
+        'result_status_list_id' => true,
         'event_activity_list' => true,
         'gender_list' => true,
         'event_team_detail' => true,

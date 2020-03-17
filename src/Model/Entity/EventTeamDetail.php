@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  * @property int $state_list_id
  * @property bool $active
+ * @property bool $attendance_status
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
  * @property \App\Model\Entity\StateList $state_list
@@ -42,6 +43,7 @@ class EventTeamDetail extends Entity
         'modified' => true,
         'state_list_id' => true,
         'active' => true,
+        'attendance_status' => true,
         'event_activity_list' => true,
         'state_list' => true,
         'register_candidate_event_activities' => true,

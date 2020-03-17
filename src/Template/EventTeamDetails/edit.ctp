@@ -33,6 +33,11 @@ echo $this->Form->create($eventTeamDetail);
             echo $this->Form->control('active');
             ?>
         </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('attendance_status');
+            ?>
+        </div>
             
 </fieldset>
 <?=

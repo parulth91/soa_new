@@ -306,17 +306,35 @@ class RegisterCandidatesController extends AppController {
                 $EventTeamDetailsEntity = $eventTeamDetailsTable->patchEntity($eventTeamDetailsTableEntity, $EventTeamDetails);
 //                debug($EventTeamDetails);
 
-                if ( empty($EventTeamDetailsEntity['errors']) && empty($EventTeamDetailsEntity['errors']) ){
-                    //debug($EventTeamDetailsEntity);
-                    //debug($registerCandidateEventActivities);
-                    //die;
-                    if ($eventTeamDetailsTable->save($EventTeamDetailsEntity) && $this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
-                        $this->Flash->success(__('The register candidate event activity has been saved.'));
-                        return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                if (empty($EventTeamDetailsEntity['errors']) && empty($EventTeamDetailsEntity['errors'])) {
+//                    debug($EventTeamDetailsEntity);
+//                    debug($registerCandidateEventActivities);
+//                    die;
+                    $result = $eventTeamDetailsTable->save($EventTeamDetailsEntity);
+//                    debug($result);
+//                        debug($EventTeamDetailsEntity);
+//                        debug($registerCandidateEventActivities);
+//                        die;
+                    if ($result) {
+                        
+                        $eventTeamDetailId = $result->id;
+                        foreach ($this->request->data as $key => $data) {
+                            foreach ($data as $entityData) {
+                                $this->request->data[$key]['event_team_detail_id'] = $eventTeamDetailId;
+                            }
+                        }
+                        $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
+                        $EventTeamDetailsEntity = $eventTeamDetailsTable->patchEntity($eventTeamDetailsTableEntity, $EventTeamDetails);
+                        if (empty($EventTeamDetailsEntity['errors'])) {
+                            if ($this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
+                                $this->Flash->success(__('The register candidate event activity has been saved.'));
+                                return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                            }
+                        }
                     }
                 } else {
-                     $this->Flash->error(__('The register candidate event activity could not be saved. Please, check data and try again.'));
-                     return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                    $this->Flash->error(__('The register candidate event activity could not be saved. Please, check data and try again.'));
+                    return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
                 }
             } else {
                 if ($this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {

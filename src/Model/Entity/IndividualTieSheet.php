@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property string $action_ip
  * @property \Cake\I18n\FrozenTime $modified
+ * @property int $result_status_list_id
  *
  * @property \App\Model\Entity\RegisterCandidateEventActivity $register_candidate_event_activity
  * @property \App\Model\Entity\EventActivityList $event_activity_list
@@ -44,6 +45,7 @@ class IndividualTieSheet extends Entity
         'created' => true,
         'action_ip' => true,
         'modified' => true,
+        'result_status_list_id' => true,
         'register_candidate_event_activity' => true,
         'event_activity_list' => true
     ];
