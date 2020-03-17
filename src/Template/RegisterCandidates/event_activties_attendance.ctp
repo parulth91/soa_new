@@ -7,9 +7,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
   <div class = "pen-title">
   <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;?>
          <div class = "pen-title"> <h3 > 
-                <?php foreach ($registeredCandidatePaginate as $registeredCandidateView){
-                    //debug($registeredCandidateView);?>
-                   Attendance Sheet for <?php echo $registeredCandidateView->event_activity_list->event_list->description; }//die;                                     
+                <?php  if(!empty($registeredCandidatePaginate)){
+                           $EventDescription   =$registeredCandidatePaginate->toArray();              
+                         //debug($EventDescription[0]->event_activity_list->event_list);die;?>
+                       Attendance Sheet for <?php echo $EventDescription[0]->event_activity_list->event_list->description;} 
+                    else     {
+                    echo'NoRecord found';                                   
+                    }
                   ?> 
         </h3></div>
     </div>
@@ -31,7 +35,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     </thead>
     <tbody>
         <tr>
-              <?php foreach ($registeredCandidatePaginate as $registeredCandidateView):?>
+          <?php 
+              foreach ($registeredCandidatePaginate as $registeredCandidateView):?>
             <td><?= $this->Number->format($registeredCandidateView->id) ?></td>
             <td>
                 <?= $registeredCandidateView->event_activity_list->activity_list->game_type_list->description;?>
@@ -42,17 +47,19 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         <td><?=  $registeredCandidateView->weight;  ?></td>
             <td><?= h($registeredCandidateView->registration_number) ?></td>
         
-            <td class="actions">
-                
-              <?php echo $this->Form->input('attendance_status[]', [
-            'label' => false,
-             'value'=>'1',     
-            'type' => 'checkbox',
-            'id' => 'attendance_status',
-                       'selected' => $registeredCandidateView->id,
-            'autocomplete' => "off",
-        ]);?>
-            </td>
+           <?php     echo '<td class="actions">'.$this->Form->checkbox('attendance_status.'.$registeredCandidateView->id.'.checkid', 
+                       array('value'=>"$registeredCandidateView->id ")).'</td>';
+            
+  // echo $this->Form->input('attendance_status[]', [
+           // 'label' => false,
+            // 'value'=>'true',     
+           // 'type' => 'checkbox',
+          //  'id' => 'attendance_status',
+          //             'selected' => $registeredCandidateView->id,
+           // 'autocomplete' => "off",
+      //  ])
+     
+      ?>
         </tr>
             <?php endforeach; ?>
     </tbody>
