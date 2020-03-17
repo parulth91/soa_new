@@ -123,7 +123,7 @@ class EventListsController extends AppController {
                         debug($key);die;
                      if(!empty($key)){
                       
-                      $registerCandidateid= $registerCandidatesTable->get($key);
+                      //$registerCandidateid= updateALL->get($key);
                     }
                       //debug($registerCandidateid['can_id']);die;
             }

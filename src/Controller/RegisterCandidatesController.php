@@ -179,26 +179,36 @@ class RegisterCandidatesController extends AppController {
         // to display registered candidate details
         $registeredCandidateLists = $this->RegisterCandidates->find('all')
                         ->contain(['EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists']]
-                        ])->where(['EventActivityLists.id' => $id]);
+                        ])->where(['EventActivityLists.id' => $id,'attendance_status'=>FALSE])
+                        ->order(['RegisterCandidates.id']);
 
         $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
         $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
+       
+      //for update attendance status of registered candidates
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $registerCandidateid = $this->RegisterCandidates->get($id);
-            //debug($id);
-            // $registerCandidateid=  $this->request->data('id');
-            // debug($registerCandidateid);die;
-
-            $this->request->data['attendance_status'] = 'true';
-            $attendanceStatus = $this->RegisterCandidates->patchEntity($registerCandidateid, $this->request->getData());
-            if ($this->RegisterCandidates->save($attendanceStatus)) {
-                $this->Flash->success(__('Attendance Status has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Attendance Status could not be saved. Please, try again.'));
+                foreach ($this->request->data['attendance_status'] as $key => $item): 
+                  if($item['checkid']!='0'){
+                             $id=$item;
+                             if($id){
+                                     $updateQuery=  $this->RegisterCandidates->updateAll(
+                                        ['attendance_status ' => 'true' ],
+                                        ['id IN' => $id]);                                       
+                       } else {
+                                $this->Flash->error(__('Please select At least one.'));
+                              }
+                   }                
+                  endforeach;
+                    if($updateQuery){
+                                $this->Flash->success(__('Attendance Status has been saved .'));
+                    }
+                   else {
+                                $this->Flash->error(__('The Attendance Status could not be updated. Please, try again.'));
+                       }     
         }
-    }
+
+      }
+    
 
     public function viewEventActivities($id = null) {
 
@@ -271,7 +281,9 @@ class RegisterCandidatesController extends AppController {
                 $EventTeamDetails = null;
             }
             foreach ($this->request->data as $key => $data) {
+                debug($data);//die;
                 foreach ($data as $entityData) {
+                    debug($this->request->data[$key]);//die;
                     $age = date_diff(date_create($data['dob']), date_create($age_calculation_end_date))->format('%y');
                     if ((int) $age < $mimimum_age || $age > $maximum_age) {
                         $this->Flash->error(__('Age of candidate ' . $data['full_name'] . 'of Age ' . $age . ' should me between minimum and maximum age of acivity.'));
@@ -287,10 +299,12 @@ class RegisterCandidatesController extends AppController {
                     $registration_number = $this->cList->getRegNoSeq($registering_user_state_id);
                     $this->request->data[$key]['registration_number'] = $registration_number;
                 }
+               // $this->request->data[$key];die;
             }
 
             //register candidates check
             $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
+            //debug($registerCandidates);die;
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
 
             //event team detals entiity creation for insertion
