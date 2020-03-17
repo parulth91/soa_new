@@ -9,10 +9,10 @@ use Cake\Validation\Validator;
 /**
  * TeamTieSheets Model
  *
- * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
- * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
- * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
  * @property \App\Model\Table\EventActivityListsTable|\Cake\ORM\Association\BelongsTo $EventActivityLists
+ * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
+ * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
+ * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
  *
  * @method \App\Model\Entity\TeamTieSheet get($primaryKey, $options = [])
  * @method \App\Model\Entity\TeamTieSheet newEntity($data = null, array $options = [])
@@ -43,17 +43,17 @@ class TeamTieSheetsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('EventTeamDetails', [
-            'foreignKey' => 'event_team_detail_id'
+        $this->belongsTo('EventActivityLists', [
+            'foreignKey' => 'event_activity_list_id'
         ]);
         $this->belongsTo('EventTeamDetails', [
-            'foreignKey' => 'opponent_event_team_detail_id'
+            'foreignKey' => 'team1_event_team_detail_id'
+        ]);
+        $this->belongsTo('EventTeamDetails', [
+            'foreignKey' => 'team2_event_team_detail_id'
         ]);
         $this->belongsTo('EventTeamDetails', [
             'foreignKey' => 'winner_team_detail_id'
-        ]);
-        $this->belongsTo('EventActivityLists', [
-            'foreignKey' => 'event_activity_list_id'
         ]);
     }
 
@@ -70,8 +70,25 @@ class TeamTieSheetsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->integer('round_number')
+            ->allowEmpty('round_number');
+
+        $validator
+            ->scalar('round_description')
+            ->requirePresence('round_description', 'create')
+            ->notEmpty('round_description');
+
+        $validator
             ->integer('match_number')
             ->allowEmpty('match_number');
+
+        $validator
+            ->integer('team1_score')
+            ->allowEmpty('team1_score');
+
+        $validator
+            ->integer('team2_score')
+            ->allowEmpty('team2_score');
 
         $validator
             ->boolean('active')
@@ -99,10 +116,10 @@ class TeamTieSheetsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['event_team_detail_id'], 'EventTeamDetails'));
-        $rules->add($rules->existsIn(['opponent_event_team_detail_id'], 'EventTeamDetails'));
-        $rules->add($rules->existsIn(['winner_team_detail_id'], 'EventTeamDetails'));
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
+        $rules->add($rules->existsIn(['team1_event_team_detail_id'], 'EventTeamDetails'));
+        $rules->add($rules->existsIn(['team2_event_team_detail_id'], 'EventTeamDetails'));
+        $rules->add($rules->existsIn(['winner_team_detail_id'], 'EventTeamDetails'));
 
         return $rules;
     }

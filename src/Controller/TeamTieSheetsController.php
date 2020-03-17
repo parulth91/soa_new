@@ -21,7 +21,7 @@ class TeamTieSheetsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['EventTeamDetails', 'EventActivityLists']
+            'contain' => ['EventActivityLists', 'EventTeamDetails']
         ];
         $teamTieSheets = $this->paginate($this->TeamTieSheets);
 
@@ -38,7 +38,7 @@ class TeamTieSheetsController extends AppController
     public function view($id = null)
     {
         $teamTieSheet = $this->TeamTieSheets->get($id, [
-            'contain' => ['EventTeamDetails', 'EventActivityLists']
+            'contain' => ['EventActivityLists', 'EventTeamDetails']
         ]);
 
         $this->set('teamTieSheet', $teamTieSheet);
@@ -64,9 +64,9 @@ class TeamTieSheetsController extends AppController
             }
             $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
         }
-        $eventTeamDetails = $this->TeamTieSheets->EventTeamDetails->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
         $eventActivityLists = $this->TeamTieSheets->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('teamTieSheet', 'eventTeamDetails', 'eventActivityLists'));
+        $eventTeamDetails = $this->TeamTieSheets->EventTeamDetails->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('teamTieSheet', 'eventActivityLists', 'eventTeamDetails'));
     }
 
     /**
@@ -97,9 +97,9 @@ class TeamTieSheetsController extends AppController
             }
             $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
         }
-        $eventTeamDetails = $this->TeamTieSheets->EventTeamDetails->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
         $eventActivityLists = $this->TeamTieSheets->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('teamTieSheet', 'eventTeamDetails', 'eventActivityLists'));
+        $eventTeamDetails = $this->TeamTieSheets->EventTeamDetails->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('teamTieSheet', 'eventActivityLists', 'eventTeamDetails'));
     }
 
     /**

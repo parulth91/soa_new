@@ -9,12 +9,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     </div>
     <table class="table table-striped" cellpadding="0" cellspacing="0">
         <tr>
-            <td><?= __('Event Team Detail') ?></td>
-            <td><?= $teamTieSheet->has('event_team_detail') ? $this->Html->link($teamTieSheet->event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->event_team_detail->id]) : '' ?></td>
-        </tr>
-        <tr>
             <td><?= __('Event Activity List') ?></td>
             <td><?= $teamTieSheet->has('event_activity_list') ? $this->Html->link($teamTieSheet->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $teamTieSheet->event_activity_list->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Round Description') ?></td>
+            <td><?= h($teamTieSheet->round_description) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Event Team Detail') ?></td>
+            <td><?= $teamTieSheet->has('event_team_detail') ? $this->Html->link($teamTieSheet->event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->event_team_detail->id]) : '' ?></td>
         </tr>
         <tr>
             <td><?= __('Action Ip') ?></td>
@@ -25,16 +29,28 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= $this->Number->format($teamTieSheet->id) ?></td>
         </tr>
         <tr>
-            <td><?= __('Event Team Detail Id') ?></td>
-            <td><?= $this->Number->format($teamTieSheet->event_team_detail_id) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Opponent Event Team Detail Id') ?></td>
-            <td><?= $this->Number->format($teamTieSheet->opponent_event_team_detail_id) ?></td>
+            <td><?= __('Round Number') ?></td>
+            <td><?= $this->Number->format($teamTieSheet->round_number) ?></td>
         </tr>
         <tr>
             <td><?= __('Match Number') ?></td>
             <td><?= $this->Number->format($teamTieSheet->match_number) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Team1 Event Team Detail Id') ?></td>
+            <td><?= $this->Number->format($teamTieSheet->team1_event_team_detail_id) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Team2 Event Team Detail Id') ?></td>
+            <td><?= $this->Number->format($teamTieSheet->team2_event_team_detail_id) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Team1 Score') ?></td>
+            <td><?= $this->Number->format($teamTieSheet->team1_score) ?></td>
+        </tr>
+        <tr>
+            <td><?= __('Team2 Score') ?></td>
+            <td><?= $this->Number->format($teamTieSheet->team2_score) ?></td>
         </tr>
         <tr>
             <td><?= __('Action By') ?></td>

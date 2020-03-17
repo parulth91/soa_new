@@ -7,12 +7,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
   <div class = "pen-title">
   <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;?>
          <div class = "pen-title"> <h3 > 
-                <?php  if(!empty($registeredCandidatePaginate)){
+                <?php 
                            $EventDescription   =$registeredCandidatePaginate->toArray();              
                          //debug($EventDescription[0]->event_activity_list->event_list);die;?>
-                       Attendance Sheet for <?php echo $EventDescription[0]->event_activity_list->event_list->description;} 
+                       Attendance Sheet for <?php  if(isset($EventDescription[0]->event_activity_list->event_list->description)){
+                                  echo $EventDescription[0]->event_activity_list->event_list->description;} 
                     else     {
-                    echo'NoRecord found';                                   
+                                                       
                     }
                   ?> 
         </h3></div>
