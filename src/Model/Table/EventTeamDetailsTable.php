@@ -55,6 +55,7 @@ class EventTeamDetailsTable extends Table
         $this->hasMany('TeamTieSheets', [
             'foreignKey' => 'event_team_detail_id'
         ]);
+          
     }
 
     /**

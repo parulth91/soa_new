@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Utility;
+namespace App\Oad\Commons\Utils;
+
 /*
  *  Copyright (c) Nicholas Mossor Rathmann <nicholas.rathmann@gmail.com> 2008. All Rights Reserved.
  *
@@ -504,6 +505,33 @@ class KnockoutGD extends Knockout {
         }
 
         return $len;
+    }
+
+    public function getData($tourName = '') {
+        /* Returns a GD-lib image resource */
+
+        // Initial testing.
+        if (empty($this->roundsInfo))
+            return null;
+
+
+        //debug($this->roundsInfo);
+        foreach ($this->roundsInfo as $r => $info) {
+
+            $n = $info[1]; // Number of expected players in round $r.
+            // If a match is no yet created, then a placeholder is made so that the bracket structure is still printable.
+            for ($m = 0; $m <= $n / 2 - 1; $m++) {
+                if (!$this->isMatchCreated($m, $r)) {
+                    $this->bracket[$r][$m]['c1'] = $this->bracket[$r][$m]['c2'] = null;
+                    $this->bracket[$r][$m]['s1'] = $this->bracket[$r][$m]['s2'] = -1;
+                }
+            }
+        }
+        // Add final branch/line for the tournament winner
+
+        $data['rounds'] = $this->roundsInfo;
+        $data['round_matches'] = $this->bracket;
+        return $data;
     }
 
 }

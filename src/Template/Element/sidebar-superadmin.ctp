@@ -85,7 +85,7 @@
             </a>
             <ul class="collapse list-unstyled" id="TieSheets">
                 <li><?= $this->Html->link(__('Team Tie Sheets'), ['controller' => 'TeamTieSheets', 'action' => 'index']) ?> </li>
-                <li><?= $this->Html->link(__('Individual Tie Sheet'), ['controller' => 'IndividualTieSheets', 'action' => 'index']) ?> </li>
+                <li><?= $this->Html->link(__('Player Tie Sheet'), ['controller' => 'PlayerTieSheets', 'action' => 'index']) ?> </li>
 
             </ul>
         </li>

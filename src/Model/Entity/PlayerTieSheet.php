@@ -4,18 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * TeamTieSheet Entity
+ * PlayerTieSheet Entity
  *
  * @property int $id
  * @property int $event_activity_list_id
  * @property int $round_number
  * @property string $round_description
- * @property int $team1_score
- * @property int $team2_score
- * @property int $winner_event_team_detail_id
+ * @property int $player1_score
+ * @property int $player2_score
+ * @property int $winner_register_candidate_event_activity_id
  * @property int $match_number
- * @property int $team1_event_team_detail_id
- * @property int $team2_event_team_detail_id
+ * @property int $player1_register_candidate_event_activity_id
+ * @property int $player2_register_candidate_event_activity_id
  * @property bool $active
  * @property int $action_by
  * @property \Cake\I18n\FrozenTime $created
@@ -23,11 +23,11 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
- * @property \App\Model\Entity\EventTeamDetail $winner_event_team_detail
- * @property \App\Model\Entity\EventTeamDetail $team1_event_team_detail
- * @property \App\Model\Entity\EventTeamDetail $team2_event_team_detail
+ * @property \App\Model\Entity\WinnerRegisterCandidateEventActivity $winner_register_candidate_event_activity
+ * @property \App\Model\Entity\Player1RegisterCandidateEventActivity $player1_register_candidate_event_activity
+ * @property \App\Model\Entity\Player2RegisterCandidateEventActivity $player2_register_candidate_event_activity
  */
-class TeamTieSheet extends Entity
+class PlayerTieSheet extends Entity
 {
 
     /**
@@ -43,20 +43,20 @@ class TeamTieSheet extends Entity
         'event_activity_list_id' => true,
         'round_number' => true,
         'round_description' => true,
-        'team1_score' => true,
-        'team2_score' => true,
-        'winner_event_team_detail_id' => true,
+        'player1_score' => true,
+        'player2_score' => true,
+        'winner_register_candidate_event_activity_id' => true,
         'match_number' => true,
-        'team1_event_team_detail_id' => true,
-        'team2_event_team_detail_id' => true,
+        'player1_register_candidate_event_activity_id' => true,
+        'player2_register_candidate_event_activity_id' => true,
         'active' => true,
         'action_by' => true,
         'created' => true,
         'action_ip' => true,
         'modified' => true,
         'event_activity_list' => true,
-        'winner_event_team_detail' => true,
-        'team1_event_team_detail' => true,
-        'team2_event_team_detail' => true
+        'winner_register_candidate_event_activity' => true,
+        'player1_register_candidate_event_activity' => true,
+        'player2_register_candidate_event_activity' => true
     ];
 }

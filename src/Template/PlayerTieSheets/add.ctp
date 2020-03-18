@@ -1,17 +1,17 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\TeamTieSheet $teamTieSheet
+ * @var \App\Model\Entity\PlayerTieSheet $playerTieSheet
  */
 ?>
 <?php
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
 <?php
-echo $this->Form->create($teamTieSheet);
+echo $this->Form->create($playerTieSheet);
 ?>
 <fieldset>
-    <legend><?= __('Edit {0}', ['Team Tie Sheet']) ?></legend>
+    <legend><?= __('Add {0}', ['Player Tie Sheet']) ?></legend>
 
       <div class=col-md-2>
                 <?php
@@ -30,34 +30,34 @@ echo $this->Form->create($teamTieSheet);
         </div>
                 <div class=col-md-2>
             <?php
-            echo $this->Form->control('team1_score');
+            echo $this->Form->control('player1_score');
             ?>
         </div>
                 <div class=col-md-2>
             <?php
-            echo $this->Form->control('team2_score');
+            echo $this->Form->control('player2_score');
             ?>
         </div>
-          <div class=col-md-2>
-                <?php
-                echo $this->Form->input('winner_event_team_detail_id', ['type'=>'select','empty'=>'Select','options' => $winnerEventTeamDetails]);
-                ?>
-            </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('winner_register_candidate_event_activity_id');
+            ?>
+        </div>
                 <div class=col-md-2>
             <?php
             echo $this->Form->control('match_number');
             ?>
         </div>
-          <div class=col-md-2>
-                <?php
-                echo $this->Form->input('team1_event_team_detail_id', ['type'=>'select','empty'=>'Select','options' => $team1EventTeamDetails]);
-                ?>
-            </div>
-          <div class=col-md-2>
-                <?php
-                echo $this->Form->input('team2_event_team_detail_id', ['type'=>'select','empty'=>'Select','options' => $team2EventTeamDetails]);
-                ?>
-            </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('player1_register_candidate_event_activity_id');
+            ?>
+        </div>
+                <div class=col-md-2>
+            <?php
+            echo $this->Form->control('player2_register_candidate_event_activity_id');
+            ?>
+        </div>
                 <div class=col-md-2>
             <?php
             echo $this->Form->control('active');
@@ -66,6 +66,6 @@ echo $this->Form->create($teamTieSheet);
             
 </fieldset>
 <?=
-    $this->Form->button(__("Save"));
+    $this->Form->button(__("Add"));
 ?>
 <?= $this->Form->end() ?>
