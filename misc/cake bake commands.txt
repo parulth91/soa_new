@@ -18,7 +18,7 @@ cake bake all event_team_details -t BootstrapUI
 cake bake all result_status_lists -t BootstrapUI
 cake bake all register_candidate_event_activities -t BootstrapUI
 
-cake bake all individual_tie_sheets -t BootstrapUI
+cake bake all player_tie_sheets -t BootstrapUI
 cake bake all team_tie_sheets -t BootstrapUI
 
 

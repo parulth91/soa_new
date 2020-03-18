@@ -59,7 +59,6 @@ class AppController extends Controller {
         $this->loadComponent('SendEmail');
         $this->loadComponent('ExportXls');
         $this->cList = new CommonLists();
-        $this->rList = new RulesList();
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');

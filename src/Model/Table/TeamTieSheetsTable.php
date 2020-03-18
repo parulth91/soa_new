@@ -46,14 +46,26 @@ class TeamTieSheetsTable extends Table
         $this->belongsTo('EventActivityLists', [
             'foreignKey' => 'event_activity_list_id'
         ]);
-        $this->belongsTo('EventTeamDetails', [
+//        $this->belongsTo('EventTeamDetails', [
+//            'foreignKey' => 'winner_event_team_detail_id'
+//        ]);
+//        $this->belongsTo('EventTeamDetails', [
+//            'foreignKey' => 'team1_event_team_detail_id'
+//        ]);
+//        $this->belongsTo('EventTeamDetails', [
+//            'foreignKey' => 'team2_event_team_detail_id'
+//        ]);
+        $this->belongsTo('WinnerEventTeamDetails', [
+            'className' => 'EventTeamDetails',
+            'foreignKey' => 'winner_event_team_detail_id'
+        ]);
+        $this->belongsTo('Team1EventTeamDetails', [
+            'className' => 'EventTeamDetails',
             'foreignKey' => 'team1_event_team_detail_id'
         ]);
-        $this->belongsTo('EventTeamDetails', [
+        $this->belongsTo('Team2EventTeamDetails', [
+            'className' => 'EventTeamDetails',
             'foreignKey' => 'team2_event_team_detail_id'
-        ]);
-        $this->belongsTo('EventTeamDetails', [
-            'foreignKey' => 'winner_team_detail_id'
         ]);
     }
 
@@ -79,16 +91,16 @@ class TeamTieSheetsTable extends Table
             ->notEmpty('round_description');
 
         $validator
-            ->integer('match_number')
-            ->allowEmpty('match_number');
-
-        $validator
             ->integer('team1_score')
             ->allowEmpty('team1_score');
 
         $validator
             ->integer('team2_score')
             ->allowEmpty('team2_score');
+
+        $validator
+            ->integer('match_number')
+            ->allowEmpty('match_number');
 
         $validator
             ->boolean('active')
@@ -117,9 +129,9 @@ class TeamTieSheetsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
-        $rules->add($rules->existsIn(['team1_event_team_detail_id'], 'EventTeamDetails'));
-        $rules->add($rules->existsIn(['team2_event_team_detail_id'], 'EventTeamDetails'));
-        $rules->add($rules->existsIn(['winner_team_detail_id'], 'EventTeamDetails'));
+        $rules->add($rules->existsIn(['winner_event_team_detail_id'], 'WinnerEventTeamDetails'));
+        $rules->add($rules->existsIn(['team1_event_team_detail_id'], 'Team1EventTeamDetails'));
+        $rules->add($rules->existsIn(['team2_event_team_detail_id'], 'Team2EventTeamDetails'));
 
         return $rules;
     }

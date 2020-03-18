@@ -40,7 +40,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     <?= $this->Html->link('View Activities', ['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $eventList->id], ['View Event Activities', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
                     <?= $this->Html->link('', ['action' => 'view', $eventList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                     <?= $this->Html->link('', ['action' => 'edit', $eventList->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
-                    <?= $this->Form->postLink('', ['action' => 'delete', $eventList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
+                    <?php // $this->Form->postLink('', ['action' => 'delete', $eventList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>
