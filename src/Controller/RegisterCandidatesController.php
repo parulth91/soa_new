@@ -174,37 +174,58 @@ class RegisterCandidatesController extends AppController {
         return $this->cList->ajaxGetAllEventActivityList($event_activity_lists_id);
     }
 
-    public function eventActivtiesAttendance($id = null) {
-
+      public function eventActivtiesAttendance($id = null) {
+             //to display team list
+                 $connection = ConnectionManager::get('default');
+                $eventTeamlisttable = TableRegistry::get('event_team_details');
+                $teamDetails = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
+                $this->set('teamDetails', $teamDetails);
+         
+             
+      if ($this->request->is(['patch', 'post', 'put'])) {
+        // debug($this->request->data);die;
+       //if($this->request->data['view_attendance_button']=''){
         // to display registered candidate details
+           $eventTeamId=$this->request->data['event_team_id'];
+           //debug($eventTeamId);die;
         $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                ->contain(['EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists']]
-                ])->where(['EventActivityLists.id' => $id, 'attendance_status' => FALSE])
-                ->order(['RegisterCandidates.id']);
-
+                        ->contain(['EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'],'EventTeamDetails']
+                        ])->where(['EventActivityLists.id' => $id,'attendance_status'=>FALSE,
+                                  'event_team_detail_id' =>$eventTeamId])
+                        ->order(['RegisterCandidates.id']);
+               //debug($registeredCandidateLists);die;
         $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
         $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
+     // }
+    //  else{
 
-        //for update attendance status of registered candidates
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            foreach ($this->request->data['attendance_status'] as $key => $item):
-                if ($item['checkid'] != '0') {
-                    $id = $item;
-                    if ($id) {
-                        $updateQuery = $this->RegisterCandidates->updateAll(
-                                ['attendance_status ' => 'true'], ['id IN' => $id]);
-                    } else {
-                        $this->Flash->error(__('Please select At least one.'));
+            //for update attendance status of registered candidates
+
+                foreach ($this->request->data['attendance_status'] as $key => $item): 
+                  if($item['checkid']!='0'){
+                             $id=$item;
+                             if($id){
+                                     $updateQuery=  $this->RegisterCandidates->updateAll(
+                                        ['attendance_status ' => 'true' ],
+                                        ['id IN' => $id]);                                       
+                       } else {
+                                $this->Flash->error(__('Please select At least one.'));
+                              }
+                   }                
+                  endforeach;
+                    if($updateQuery){
+                                $this->Flash->success(__('Attendance Status has been saved .'));
+                                return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivtiesAttendance', $registeredCandidateLists->id]);
                     }
-                }
-            endforeach;
-            if ($updateQuery) {
-                $this->Flash->success(__('Attendance Status has been saved .'));
-            } else {
-                $this->Flash->error(__('The Attendance Status could not be updated. Please, try again.'));
-            }
-        }
-    }
+                   else {
+                                $this->Flash->error(__('The Attendance Status could not be updated. Please, try again.'));
+                       }     
+     // }
+      // }
+      }
+      }
+      
+    
 
     public function viewEventActivities($id = null) {
 
