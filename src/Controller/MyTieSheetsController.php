@@ -124,11 +124,11 @@ class MyTieSheetsController extends AppController {
                             'EventTeamDetails' => [],
                             'RegisterCandidateEventActivities' => []
                         ])->where(['event_activity_lists.id' => $id])->toArray();
-// debug($eventActivityLists[0]);
+          //debug($eventActivityLists[0]);die;
         if ($eventActivityLists[0]->activity_list->game_type_list->description == 'Team') {
             $this->teamMyTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_team_details, $eventActivityLists[0]->description);
         } else {
-            $this->individualMyTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_team_details, $eventActivityLists[0]->description);
+            $this->individualMyTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->register_candidate_event_activities, $eventActivityLists[0]->description);
             //$this->individualMyTieSheets($eventActivityLists[0]->register_candidate_event_activities);
         }
         die;
@@ -136,29 +136,115 @@ class MyTieSheetsController extends AppController {
 
     /**
      * * */
-    public function individualMyTieSheets($event_list_id = null, $event_activity_list_id = null, $team_data = null, $eventDetails = null) {
+    public function individualMyTieSheets($event_list_id = null, $event_activity_list_id = null, $player_data = null, $eventDetails = null) {
 
-        $teamTieSheetTable = TableRegistry::get('team_tie_sheets');
-        $teamTieSheetLists = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
-        foreach ($team_data as $key_team => $value_team) {
-            $playersId[] = $value_team->id;
+        $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
+        $playerTieSheetLists = $playerTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
+        foreach ($player_data as $key_player => $value_player) {
+            $playersId[] = $value_player->id;
         }
+        //debug($playersId);die;
 //round 1 check and new data entered in database
-        if (empty($teamTieSheetLists)) {       
-            if ($this->createTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
+        if (empty($playerTieSheetLists)) {       
+            if ($this->createPlayerTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
                 
             } else {
-                $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
+                $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
             }
-        } elseif (!empty($teamTieSheetLists)) {
-            if ($this->updateTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
+        } elseif (!empty($playerTieSheetLists)) {
+            if ($this->updatePlayerTieSheet($playersId, $eventDetails, true, $playerTieSheetLists, $event_activity_list_id) == true) {
                 
             } else {
-                $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
+                $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
             }
         }
         //die;
-        $this->getTieSheet($playersId, $eventDetails, true, $teamTieSheetLists);
+        $this->getTieSheet($playersId, $eventDetails, true, $playerTieSheetLists);
+    }
+        public function createPlayerTieSheet($data = null, $eventDetails = null, $score = null, $event_activity_list_id) {
+        $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
+// Lets create a knock-out tournament between some of our dear physicists.
+        $competitors = $data;
+// Create initial tournament bracket.
+        $KO = new KnockoutGD($competitors);
+        $tieSheetRoundData = $KO->getData($eventDetails);
+        $i = 0;
+        foreach ($tieSheetRoundData['round_matches'] as $key_round => $value_round) {
+
+            foreach ($value_round as $key_match => $value_match) {
+                $playerTieSheetData[$i]['event_activity_list_id'] = $event_activity_list_id;
+                $playerTieSheetData[$i]['round_number'] = $key_round + 1;
+                $playerTieSheetData[$i]['round_description'] = $tieSheetRoundData['rounds'][$key_round]['0'];
+                $playerTieSheetData[$i]['match_number'] = $key_match;
+                $playerTieSheetData[$i]['player1_register_candidate_event_activity_id'] = $value_match['c1'];
+                $playerTieSheetData[$i]['player2_register_candidate_event_activity_id'] = $value_match['c2'];
+                $playerTieSheetData[$i]['player1_score'] = $value_match['s1'];
+                $playerTieSheetData[$i]['player2_score'] = $value_match['s2'];
+                $playerTieSheetData[$i]['action_by'] = $_SESSION['Auth']['User']['id'];
+                $playerTieSheetData[$i]['action_ip'] = $_SERVER['REMOTE_ADDR'];
+                $playerTieSheetData[$i]['active'] = true;
+                $i++;
+            }
+        }
+        debug($playerTieSheetData);die;
+//code for saving data in table
+        $playerTieSheet = $playerTieSheetTable->newEntities($playerTieSheetData);
+        $playerTieSheetFinal = $playerTieSheetTable->patchEntities($playerTieSheet, $playerTieSheetData);
+        if (empty($playerTieSheetFinal['error'])) {
+            if ($playerTieSheetTable->saveMany($playerTieSheetFinal)) {
+                $playerTieSheetLists = $playerTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
+                return true;
+            } else {
+                $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
+                return false;
+            }
+        } else {
+            $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
+            return false;
+        }
+    } 
+    
+    public function updatePlayerTieSheet($data = null, $eventDetails = null, $score = null, $playerTieSheetLists = null, $event_activity_list_id) {
+        $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
+// Lets create a knock-out tournament between some of our dear physicists.
+        $competitors = $data;
+// Create initial tournament bracket.
+     
+        $KO = new KnockoutGD($competitors);
+        foreach ($playerTieSheetLists as $key => $value) {
+            //debug($playerTieSheetLists);
+            $KO->setResByCompets($value['player1_event_player_detail_id'], $value['player2_event_player_detail_id'], $value['player1_score'], $value['player2_score']);
+        }
+        $tieSheetRoundData = $KO->getData($eventDetails);
+       // debug($tieSheetRoundData);die;
+        $i = 0;
+        foreach ($tieSheetRoundData['round_matches'] as $key_round => $value_round) {
+            foreach ($value_round as $key_match => $value_match) {
+                $playerTieSheetData[$i]['id'] = $playerTieSheetLists[$i]->id;
+                $playerTieSheetData[$i]['player1_event_player_detail_id'] = $value_match['c1'];
+                $playerTieSheetData[$i]['player2_event_player_detail_id'] = $value_match['c2'];
+                $playerTieSheetData[$i]['action_by'] = $_SESSION['Auth']['User']['id'];
+                $playerTieSheetData[$i]['action_ip'] = $_SERVER['REMOTE_ADDR'];
+                $i++;
+            }
+        }
+//code for saving data in table
+        $playerTieSheet = $playerTieSheetTable->newEntities($playerTieSheetData);
+        $playerTieSheetFinal = $playerTieSheetTable->patchEntities($playerTieSheet, $playerTieSheetData);
+        //debug($playerTieSheetFinal);
+        if (empty($playerTieSheetFinal['error'])) {
+            //die;
+            if ($playerTieSheetTable->saveMany($playerTieSheetFinal)) {
+                $playerTieSheetLists = $playerTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
+                return true;
+            } else {
+                $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
+                return false;
+            }
+        } else {
+            $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
+            return false;
+        }
     }
     
     
@@ -175,13 +261,13 @@ class MyTieSheetsController extends AppController {
         }
 //round 1 check and new data entered in database
         if (empty($teamTieSheetLists)) {       
-            if ($this->createTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
+            if ($this->createTeamTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
                 
             } else {
                 $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
             }
         } elseif (!empty($teamTieSheetLists)) {
-            if ($this->updateTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
+            if ($this->updateTeamTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
                 
             } else {
                 $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
@@ -191,9 +277,49 @@ class MyTieSheetsController extends AppController {
         $this->getTieSheet($playersId, $eventDetails, true, $teamTieSheetLists);
     }
 
+    public function createTeamTieSheet($data = null, $eventDetails = null, $score = null, $event_activity_list_id) {
+        $teamTieSheetTable = TableRegistry::get('team_tie_sheets');
+// Lets create a knock-out tournament between some of our dear physicists.
+        $competitors = $data;
+// Create initial tournament bracket.
+        $KO = new KnockoutGD($competitors);
+        $tieSheetRoundData = $KO->getData($eventDetails);
+        $i = 0;
+        foreach ($tieSheetRoundData['round_matches'] as $key_round => $value_round) {
+
+            foreach ($value_round as $key_match => $value_match) {
+                $teamTieSheetData[$i]['event_activity_list_id'] = $event_activity_list_id;
+                $teamTieSheetData[$i]['round_number'] = $key_round + 1;
+                $teamTieSheetData[$i]['round_description'] = $tieSheetRoundData['rounds'][$key_round]['0'];
+                $teamTieSheetData[$i]['match_number'] = $key_match;
+                $teamTieSheetData[$i]['team1_event_team_detail_id'] = $value_match['c1'];
+                $teamTieSheetData[$i]['team2_event_team_detail_id'] = $value_match['c2'];
+                $teamTieSheetData[$i]['team1_score'] = $value_match['s1'];
+                $teamTieSheetData[$i]['team2_score'] = $value_match['s2'];
+                $teamTieSheetData[$i]['action_by'] = $_SESSION['Auth']['User']['id'];
+                $teamTieSheetData[$i]['action_ip'] = $_SERVER['REMOTE_ADDR'];
+                $teamTieSheetData[$i]['active'] = true;
+                $i++;
+            }
+        }
+//code for saving data in table
+        $teamTieSheet = $teamTieSheetTable->newEntities($teamTieSheetData);
+        $teamTieSheetFinal = $teamTieSheetTable->patchEntities($teamTieSheet, $teamTieSheetData);
+        if (empty($teamTieSheetFinal['error'])) {
+            if ($teamTieSheetTable->saveMany($teamTieSheetFinal)) {
+                $teamTieSheetLists = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
+                return true;
+            } else {
+                $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
+                return false;
+            }
+        } else {
+            $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
+            return false;
+        }
+    } 
     
-    
-    public function updateTieSheet($data = null, $eventDetails = null, $score = null, $teamTieSheetLists = null, $event_activity_list_id) {
+    public function updateTeamTieSheet($data = null, $eventDetails = null, $score = null, $teamTieSheetLists = null, $event_activity_list_id) {
         $teamTieSheetTable = TableRegistry::get('team_tie_sheets');
 // Lets create a knock-out tournament between some of our dear physicists.
         $competitors = $data;
@@ -237,47 +363,7 @@ class MyTieSheetsController extends AppController {
     }
     
 
-    public function createTieSheet($data = null, $eventDetails = null, $score = null, $event_activity_list_id) {
-        $teamTieSheetTable = TableRegistry::get('team_tie_sheets');
-// Lets create a knock-out tournament between some of our dear physicists.
-        $competitors = $data;
-// Create initial tournament bracket.
-        $KO = new KnockoutGD($competitors);
-        $tieSheetRoundData = $KO->getData($eventDetails);
-        $i = 0;
-        foreach ($tieSheetRoundData['round_matches'] as $key_round => $value_round) {
-
-            foreach ($value_round as $key_match => $value_match) {
-                $teamTieSheetData[$i]['event_activity_list_id'] = $event_activity_list_id;
-                $teamTieSheetData[$i]['round_number'] = $key_round + 1;
-                $teamTieSheetData[$i]['round_description'] = $tieSheetRoundData['rounds'][$key_round]['0'];
-                $teamTieSheetData[$i]['match_number'] = $key_match;
-                $teamTieSheetData[$i]['team1_event_team_detail_id'] = $value_match['c1'];
-                $teamTieSheetData[$i]['team2_event_team_detail_id'] = $value_match['c2'];
-                $teamTieSheetData[$i]['team1_score'] = $value_match['s1'];
-                $teamTieSheetData[$i]['team2_score'] = $value_match['s2'];
-                $teamTieSheetData[$i]['action_by'] = $_SESSION['Auth']['User']['id'];
-                $teamTieSheetData[$i]['action_ip'] = $_SERVER['REMOTE_ADDR'];
-                $teamTieSheetData[$i]['active'] = true;
-                $i++;
-            }
-        }
-//code for saving data in table
-        $teamTieSheet = $teamTieSheetTable->newEntities($teamTieSheetData);
-        $teamTieSheetFinal = $teamTieSheetTable->patchEntities($teamTieSheet, $teamTieSheetData);
-        if (empty($teamTieSheetFinal['error'])) {
-            if ($teamTieSheetTable->saveMany($teamTieSheetFinal)) {
-                $teamTieSheetLists = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
-                return true;
-            } else {
-                $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
-                return false;
-            }
-        } else {
-            $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
-            return false;
-        }
-    }
+   
 
     public function getTieSheet($data = null, $eventDetails = null, $showImageFlag = null, $teamTieSheetLists = null) {
 
