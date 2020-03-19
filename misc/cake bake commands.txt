@@ -28,3 +28,7 @@ cake bake all reporting_lists -t BootstrapUI
 
 cd D:\work\php\soa_new\bin
 
+
+
+E:\DevelopmentSoftwares\git\soa_new\bin
+

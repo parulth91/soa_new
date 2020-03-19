@@ -25,8 +25,7 @@
                 Register
             </a>
             <ul class="collapse list-unstyled" id="register">
-                <li><?= $this->Html->link(__('List of events'), ['controller' => 'RegisterCandidates', 'action' => 'view_all']) ?> </li></li>
-        <li><?= $this->Html->link(__('RegisterCandidateEventActivities'), ['controller' => 'RegisterCandidateEventActivities', 'action' => 'index']) ?>
+                 <li><?= $this->Html->link(__('List Event'), ['controller' => 'EventLists', 'action' => 'index']) ?> </li>
 
     </ul>
 </li>

@@ -20,20 +20,6 @@
             </ul>
         </li>
 
-
-
-        <li>
-            <a href="#register" data-toggle="collapse" aria-expanded="false">
-                <i class="glyphicon glyphicon-screenshot"></i>
-                Register
-            </a>
-            <ul class="collapse list-unstyled" id="register">
-                <li><?= $this->Html->link(__('List of events'), ['controller' => 'RegisterCandidates', 'action' => 'view_all']) ?> </li></li>
-                <li><?= $this->Html->link(__('RegisterCandidateEventActivities'), ['controller' => 'RegisterCandidateEventActivities', 'action' => 'index']) ?>
-                
-            </ul>
-        </li>
-
         <li>
             <a href="#EventLists" data-toggle="collapse" aria-expanded="false">
                 <i class="glyphicon glyphicon-map-marker"></i>

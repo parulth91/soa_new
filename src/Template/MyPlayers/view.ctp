@@ -18,15 +18,15 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
         <tr>
             <td><?= __('Winner Player') ?></td>
-            <td><?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->description, ['controller' => 'RegisterCandidates', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?></td>
+            <td><?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->description, ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?></td>
         </tr>
         <tr>
             <td><?= __('Player1') ?></td>
-            <td><?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->description, ['controller' => 'RegisterCandidates', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?></td>
+            <td><?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->description, ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?></td>
         </tr>
         <tr>
             <td><?= __('Player2') ?></td>
-            <td><?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->description, ['controller' => 'RegisterCandidates', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?></td>
+            <td><?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->description, ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?></td>
         </tr>
         <tr>
             <td><?= __('Action Ip') ?></td>

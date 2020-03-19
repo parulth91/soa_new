@@ -78,17 +78,20 @@ return [
             'plugin' => '*',
 //            'controller' => '*',
 //            'action' => '*',
-            'controller' => ['MyUsers', 'Pages', 'RegisterCandidates', 'RegisterCandidateEventActivities', 'Reports'],
+            'controller' => ['MyUsers', 'Pages', 'RegisterCandidates', 'Reports','EventLists'],
             'action' => ['index',
-                'add',
-                'edit',
                 'usersDetail',
                 'profile',
                 'logout', 'login',
                 'changePassword',
                 'view',
                 'viewAll',
-                'vacancyEntryXls'],
+                'general',
+                'viewRegisteredCandidates',
+                'eventActivitiesStudentRegister',
+                'viewEventActivities'
+                
+                ],
         ],
 
         //specific actions allowed for the all roles in Users plugin

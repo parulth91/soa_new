@@ -30,6 +30,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\GenderList $gender_list
  * @property \App\Model\Entity\EventTeamDetail $event_team_detail
  * @property \App\Model\Entity\StateList $state_list
+ * @property \App\Model\Entity\ResultStatusList $result_status_list
+ * @property \App\Model\Entity\IndividualTieSheet[] $individual_tie_sheets
  */
 class RegisterCandidateEventActivity extends Entity
 {
@@ -65,6 +67,8 @@ class RegisterCandidateEventActivity extends Entity
         'event_activity_list' => true,
         'gender_list' => true,
         'event_team_detail' => true,
-        'state_list' => true
+        'state_list' => true,
+        'result_status_list' => true,
+        'individual_tie_sheets' => true
     ];
 }

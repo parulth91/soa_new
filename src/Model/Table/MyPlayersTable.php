@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -10,9 +11,9 @@ use Cake\Validation\Validator;
  * PlayerTieSheets Model
  *
  * @property \App\Model\Table\EventActivityListsTable|\Cake\ORM\Association\BelongsTo $EventActivityLists
- * @property \App\Model\Table\WinnerPlayersTable|\Cake\ORM\Association\BelongsTo $WinnerPlayers
- * @property \App\Model\Table\Player1sTable|\Cake\ORM\Association\BelongsTo $Player1s
- * @property \App\Model\Table\Player2sTable|\Cake\ORM\Association\BelongsTo $Player2s
+ * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\BelongsTo $WinnerPlayers
+ * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\BelongsTo $Player1s
+ * @property \App\Model\Table\RegisterCandidateEventActivitiesTable|\Cake\ORM\Association\BelongsTo $Player2s
  *
  * @method \App\Model\Entity\PlayerTieSheet get($primaryKey, $options = [])
  * @method \App\Model\Entity\PlayerTieSheet newEntity($data = null, array $options = [])
@@ -24,8 +25,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class PlayerTieSheetsTable extends Table
-{
+class MyPlayersTable extends Table {
 
     /**
      * Initialize method
@@ -55,15 +55,15 @@ class PlayerTieSheetsTable extends Table
 //            'foreignKey' => 'player2_id'
 //        ]);
         $this->belongsTo('WinnerPlayers', [
-            'className' => 'RegisterCandidateEventActivities',
-            'foreignKey' => 'winner_event_team_detail_id'
-        ]);
-        $this->belongsTo('Player1s', [
-            'className' => 'RegisterCandidateEventActivities',
+            'className' => 'RegisterCandidates',
             'foreignKey' => 'winner_player_id'
         ]);
+        $this->belongsTo('Player1s', [
+            'className' => 'RegisterCandidates',
+            'foreignKey' => 'player1_id'
+        ]);
         $this->belongsTo('Player2s', [
-            'className' => 'RegisterCandidateEventActivities',
+            'className' => 'RegisterCandidates',
             'foreignKey' => 'player2_id'
         ]);
     }

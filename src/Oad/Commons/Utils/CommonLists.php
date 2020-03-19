@@ -16,7 +16,7 @@ use PDO;
 
 class CommonLists {
 
-
+  
 
     //code for generating sequence number
     public function getRegNoSeq($state_id) {

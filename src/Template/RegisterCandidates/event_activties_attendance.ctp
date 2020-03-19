@@ -17,7 +17,7 @@ if(!empty($teamDetails)){
     echo $this->Form->input('event_team_id', [
         'type' => 'select',
         'label' => 'Select Team',
-        'empty' => '--',
+        'empty' => true,
         'options' => $teamDetails,
          'required' => 'true']);
     ?>

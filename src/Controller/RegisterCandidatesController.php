@@ -71,6 +71,20 @@ class RegisterCandidatesController extends AppController {
         $this->set(compact('registerCandidateEventActivities'));
     }
 
+        public function viewRegisteredCandidates($id = null) {
+        $Result = $this->RegisterCandidates->find()->contain([
+                            'EventActivityLists'
+                        ])
+                        ->where(['RegisterCandidates.event_activity_list_id' => $id]);
+//        $this->paginate = [
+//            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
+//        ];
+        $registerCandidateEventActivities = $this->paginate($Result);
+        //debug($playerTieSheets);die;
+        $this->set(compact('registerCandidateEventActivities'));
+    }
+    
+    
     /**
      * View method
      *
@@ -79,7 +93,7 @@ class RegisterCandidatesController extends AppController {
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null) {
-        $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->get($id, [
+        $registerCandidateEventActivity = $this->RegisterCandidates->get($id, [
             'contain' => ['EventActivityLists']
         ]);
 
@@ -92,20 +106,20 @@ class RegisterCandidatesController extends AppController {
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add() {
-        $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->newEntity();
+        $registerCandidateEventActivity = $this->RegisterCandidates->newEntity();
         if ($this->request->is('post')) {
             $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
             $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
 
-            $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->patchEntity($registerCandidateEventActivity, $this->request->getData());
-            if ($this->RegisterCandidateEventActivities->save($registerCandidateEventActivity)) {
+            $registerCandidateEventActivity = $this->RegisterCandidates->patchEntity($registerCandidateEventActivity, $this->request->getData());
+            if ($this->RegisterCandidates->save($registerCandidateEventActivity)) {
                 $this->Flash->success(__('The register candidate event activity has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The register candidate event activity could not be saved. Please, try again.'));
         }
-        $eventActivityLists = $this->RegisterCandidateEventActivities->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
+        $eventActivityLists = $this->RegisterCandidates->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
         $this->set(compact('registerCandidateEventActivity', 'eventActivityLists'));
     }
 
@@ -117,7 +131,7 @@ class RegisterCandidatesController extends AppController {
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null) {
-        $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->get($id, [
+        $registerCandidateEventActivity = $this->RegisterCandidates->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -128,15 +142,15 @@ class RegisterCandidatesController extends AppController {
             $this->request->data['modified'] = $currentTimeStamp;
 
 
-            $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->patchEntity($registerCandidateEventActivity, $this->request->getData());
-            if ($this->RegisterCandidateEventActivities->save($registerCandidateEventActivity)) {
+            $registerCandidateEventActivity = $this->RegisterCandidates->patchEntity($registerCandidateEventActivity, $this->request->getData());
+            if ($this->RegisterCandidates->save($registerCandidateEventActivity)) {
                 $this->Flash->success(__('The register candidate event activity has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The register candidate event activity could not be saved. Please, try again.'));
         }
-        $eventActivityLists = $this->RegisterCandidateEventActivities->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
+        $eventActivityLists = $this->RegisterCandidates->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
         $this->set(compact('registerCandidateEventActivity', 'eventActivityLists'));
     }
 
@@ -149,8 +163,8 @@ class RegisterCandidatesController extends AppController {
      */
     public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
-        $registerCandidateEventActivity = $this->RegisterCandidateEventActivities->get($id);
-        if ($this->RegisterCandidateEventActivities->delete($registerCandidateEventActivity)) {
+        $registerCandidateEventActivity = $this->RegisterCandidates->get($id);
+        if ($this->RegisterCandidates->delete($registerCandidateEventActivity)) {
             $this->Flash->success(__('The register candidate event activity has been deleted.'));
         } else {
             $this->Flash->error(__('The register candidate event activity could not be deleted. Please, try again.'));

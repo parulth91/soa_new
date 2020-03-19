@@ -22,7 +22,8 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class RegisterCandidatesTable extends Table {
+class RegisterCandidatesTable extends Table 
+{
 
     /**
      * Initialize method
@@ -53,6 +54,18 @@ class RegisterCandidatesTable extends Table {
         $this->belongsTo('StateLists', [
             'foreignKey' => 'state_list_id'
         ]);
+        $this->belongsTo('ResultStatusLists', [
+            'foreignKey' => 'result_status_list_id'
+        ]);
+         $this->hasMany('MyPlayers', [
+            'foreignKey' => 'player1_id'
+        ]);
+         $this->hasMany('MyPlayers', [
+            'foreignKey' => 'player2_id'
+        ]);
+         $this->hasMany('MyPlayers', [
+            'foreignKey' => 'winner_player_id'
+        ]);
     }
 
     /**
@@ -61,32 +74,60 @@ class RegisterCandidatesTable extends Table {
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator) {
+    public function validationDefault(Validator $validator)
+    {
         $validator
-                ->integer('id')
-                ->allowEmpty('id', 'create');
+            ->integer('id')
+            ->allowEmpty('id', 'create');
 
         $validator
-                ->integer('weight')
-                ->allowEmpty('weight');
+            ->scalar('full_name')
+            ->allowEmpty('full_name');
 
         $validator
-                ->integer('age')
-                ->allowEmpty('age');
+            ->date('dob')
+            ->allowEmpty('dob');
 
         $validator
-                ->boolean('active')
-                ->requirePresence('active', 'create')
-                ->notEmpty('active');
+            ->scalar('registration_number')
+            ->allowEmpty('registration_number');
 
         $validator
-                ->requirePresence('action_by', 'create')
-                ->notEmpty('action_by');
+            ->integer('weight')
+            ->allowEmpty('weight');
 
         $validator
-                ->scalar('action_ip')
-                ->requirePresence('action_ip', 'create')
-                ->notEmpty('action_ip');
+            ->integer('age')
+            ->allowEmpty('age');
+
+        $validator
+            ->boolean('event_qualifying_status')
+            ->requirePresence('event_qualifying_status', 'create')
+            ->notEmpty('event_qualifying_status');
+
+        $validator
+            ->boolean('attendance_status')
+            ->requirePresence('attendance_status', 'create')
+            ->notEmpty('attendance_status');
+
+        $validator
+            ->boolean('certificate_download_status')
+            ->requirePresence('certificate_download_status', 'create')
+            ->notEmpty('certificate_download_status');
+
+        $validator
+            ->boolean('active')
+            ->requirePresence('active', 'create')
+            ->notEmpty('active');
+
+        $validator
+            ->requirePresence('action_by', 'create')
+            ->notEmpty('action_by');
+
+        $validator
+            ->scalar('action_ip')
+            ->requirePresence('action_ip', 'create')
+            ->notEmpty('action_ip');
 
         return $validator;
     }
@@ -98,13 +139,14 @@ class RegisterCandidatesTable extends Table {
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules) {
+    public function buildRules(RulesChecker $rules)
+    {
         $rules->add($rules->existsIn(['event_activity_list_id'], 'EventActivityLists'));
         $rules->add($rules->existsIn(['gender_list_id'], 'GenderLists'));
         $rules->add($rules->existsIn(['event_team_detail_id'], 'EventTeamDetails'));
         $rules->add($rules->existsIn(['state_list_id'], 'StateLists'));
+        $rules->add($rules->existsIn(['result_status_list_id'], 'ResultStatusLists'));
 
         return $rules;
     }
-
 }

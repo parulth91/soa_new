@@ -23,12 +23,14 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\EventActivityList $event_activity_list
- * @property \App\Model\Entity\WinnerPlayer $winner_player
- * @property \App\Model\Entity\Player1 $player1
- * @property \App\Model\Entity\Player2 $player2
+ * @property \App\Model\Entity\RegisterCandidateEventActivity $winner_player
+ * @property \App\Model\Entity\RegisterCandidateEventActivity $player1
+ * @property \App\Model\Entity\RegisterCandidateEventActivity $player2
  */
-class PlayerTieSheet extends Entity
+class MyPlayer extends Entity
 {
+
+  
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

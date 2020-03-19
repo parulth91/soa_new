@@ -13,8 +13,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\GenderListsTable|\Cake\ORM\Association\BelongsTo $GenderLists
  * @property \App\Model\Table\EventTeamDetailsTable|\Cake\ORM\Association\BelongsTo $EventTeamDetails
  * @property \App\Model\Table\StateListsTable|\Cake\ORM\Association\BelongsTo $StateLists
- * @property |\Cake\ORM\Association\BelongsTo $ResultStatusLists
- * @property |\Cake\ORM\Association\HasMany $IndividualTieSheets
+ * @property \App\Model\Table\ResultStatusListsTable|\Cake\ORM\Association\BelongsTo $ResultStatusLists
  *
  * @method \App\Model\Entity\RegisterCandidateEventActivity get($primaryKey, $options = [])
  * @method \App\Model\Entity\RegisterCandidateEventActivity newEntity($data = null, array $options = [])
@@ -60,9 +59,6 @@ class RegisterCandidateEventActivitiesTable extends Table
         ]);
         $this->belongsTo('ResultStatusLists', [
             'foreignKey' => 'result_status_list_id'
-        ]);
-        $this->hasMany('IndividualTieSheets', [
-            'foreignKey' => 'register_candidate_event_activity_id'
         ]);
     }
 

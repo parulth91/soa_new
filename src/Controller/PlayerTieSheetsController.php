@@ -21,7 +21,7 @@ class PlayerTieSheetsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['EventActivityLists', 'WinnerRegisterCandidateEventActivities', 'Player1RegisterCandidateEventActivities', 'Player2RegisterCandidateEventActivities']
+            'contain' => ['EventActivityLists', 'WinnerPlayers', 'Player1s', 'Player2s']
         ];
         $playerTieSheets = $this->paginate($this->PlayerTieSheets);
 
@@ -38,7 +38,7 @@ class PlayerTieSheetsController extends AppController
     public function view($id = null)
     {
         $playerTieSheet = $this->PlayerTieSheets->get($id, [
-            'contain' => ['EventActivityLists', 'WinnerRegisterCandidateEventActivities', 'Player1RegisterCandidateEventActivities', 'Player2RegisterCandidateEventActivities']
+            'contain' => ['EventActivityLists', 'WinnerPlayers', 'Player1s', 'Player2s']
         ]);
 
         $this->set('playerTieSheet', $playerTieSheet);
@@ -65,10 +65,10 @@ class PlayerTieSheetsController extends AppController
             $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
         }
         $eventActivityLists = $this->PlayerTieSheets->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $winnerRegisterCandidateEventActivities = $this->PlayerTieSheets->WinnerRegisterCandidateEventActivities->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $player1RegisterCandidateEventActivities = $this->PlayerTieSheets->Player1RegisterCandidateEventActivities->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $player2RegisterCandidateEventActivities = $this->PlayerTieSheets->Player2RegisterCandidateEventActivities->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('playerTieSheet', 'eventActivityLists', 'winnerRegisterCandidateEventActivities', 'player1RegisterCandidateEventActivities', 'player2RegisterCandidateEventActivities'));
+        $winnerPlayers = $this->PlayerTieSheets->WinnerPlayers->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $player1s = $this->PlayerTieSheets->Player1s->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $player2s = $this->PlayerTieSheets->Player2s->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('playerTieSheet', 'eventActivityLists', 'winnerPlayers', 'player1s', 'player2s'));
     }
 
     /**
@@ -100,10 +100,10 @@ class PlayerTieSheetsController extends AppController
             $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
         }
         $eventActivityLists = $this->PlayerTieSheets->EventActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $winnerRegisterCandidateEventActivities = $this->PlayerTieSheets->WinnerRegisterCandidateEventActivities->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $player1RegisterCandidateEventActivities = $this->PlayerTieSheets->Player1RegisterCandidateEventActivities->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $player2RegisterCandidateEventActivities = $this->PlayerTieSheets->Player2RegisterCandidateEventActivities->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $this->set(compact('playerTieSheet', 'eventActivityLists', 'winnerRegisterCandidateEventActivities', 'player1RegisterCandidateEventActivities', 'player2RegisterCandidateEventActivities'));
+        $winnerPlayers = $this->PlayerTieSheets->WinnerPlayers->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $player1s = $this->PlayerTieSheets->Player1s->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $player2s = $this->PlayerTieSheets->Player2s->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $this->set(compact('playerTieSheet', 'eventActivityLists', 'winnerPlayers', 'player1s', 'player2s'));
     }
 
     /**

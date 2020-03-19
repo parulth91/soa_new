@@ -13,10 +13,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('round_description'); ?></th>
             <th><?= $this->Paginator->sort('player1_score'); ?></th>
             <th><?= $this->Paginator->sort('player2_score'); ?></th>
-            <th><?= $this->Paginator->sort('winner_register_candidate_event_activity_id'); ?></th>
+            <th><?= $this->Paginator->sort('winner_player_id'); ?></th>
             <th><?= $this->Paginator->sort('match_number'); ?></th>
-            <th><?= $this->Paginator->sort('player1_register_candidate_event_activity_id'); ?></th>
-            <th><?= $this->Paginator->sort('player2_register_candidate_event_activity_id'); ?></th>
+            <th><?= $this->Paginator->sort('player1_id'); ?></th>
+            <th><?= $this->Paginator->sort('player2_id'); ?></th>
             <th><?= $this->Paginator->sort('active'); ?></th>
             <th><?= $this->Paginator->sort('action_by'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
@@ -33,10 +33,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($playerTieSheet->round_description) ?></td>
             <td><?= $this->Number->format($playerTieSheet->player1_score) ?></td>
             <td><?= $this->Number->format($playerTieSheet->player2_score) ?></td>
-            <td><?= $this->Number->format($playerTieSheet->winner_register_candidate_event_activity_id) ?></td>
+            <td>
+                <?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->description, ['controller' => 'RegisterCandidates', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?>
+            </td>
             <td><?= $this->Number->format($playerTieSheet->match_number) ?></td>
-            <td><?= $this->Number->format($playerTieSheet->player1_register_candidate_event_activity_id) ?></td>
-            <td><?= $this->Number->format($playerTieSheet->player2_register_candidate_event_activity_id) ?></td>
+            <td>
+                <?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->description, ['controller' => 'RegisterCandidates', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?>
+            </td>
+            <td>
+                <?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->description, ['controller' => 'RegisterCandidates', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?>
+            </td>
                         <td><?= $playerTieSheet->active ? __('Yes') : __('No'); ?></td>
                                     <td><?= $this->Number->format($playerTieSheet->action_by) ?></td>
             <td class="actions">

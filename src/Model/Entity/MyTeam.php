@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -25,8 +26,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\EventActivityList $event_activity_list
  * @property \App\Model\Entity\EventTeamDetail $event_team_detail
  */
-class MyTieSheet extends Entity
-{
+class MyTeam extends Entity {
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -41,18 +41,21 @@ class MyTieSheet extends Entity
         'event_activity_list_id' => true,
         'round_number' => true,
         'round_description' => true,
+        'team1_score' => true,
+        'team2_score' => true,
+        'winner_event_team_detail_id' => true,
         'match_number' => true,
         'team1_event_team_detail_id' => true,
         'team2_event_team_detail_id' => true,
-        'team1_score' => true,
-        'team2_score' => true,
-        'winner_team_detail_id' => true,
         'active' => true,
         'action_by' => true,
         'created' => true,
         'action_ip' => true,
         'modified' => true,
         'event_activity_list' => true,
-        'event_team_detail' => true
+        'winner_event_team_detail' => true,
+        'team1_event_team_detail' => true,
+        'team2_event_team_detail' => true
     ];
+
 }

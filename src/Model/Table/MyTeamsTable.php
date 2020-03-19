@@ -24,7 +24,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class MyTieSheetsTable extends Table
+class MyTeamsTable extends Table
 {
 
     /**

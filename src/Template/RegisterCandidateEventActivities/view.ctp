@@ -37,6 +37,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= $registerCandidateEventActivity->has('state_list') ? $this->Html->link($registerCandidateEventActivity->state_list->description, ['controller' => 'StateLists', 'action' => 'view', $registerCandidateEventActivity->state_list->id]) : '' ?></td>
         </tr>
         <tr>
+            <td><?= __('Result Status List') ?></td>
+            <td><?= $registerCandidateEventActivity->has('result_status_list') ? $this->Html->link($registerCandidateEventActivity->result_status_list->description, ['controller' => 'ResultStatusLists', 'action' => 'view', $registerCandidateEventActivity->result_status_list->id]) : '' ?></td>
+        </tr>
+        <tr>
             <td><?= __('Id') ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
         </tr>
@@ -51,10 +55,6 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <tr>
             <td><?= __('Action By') ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->action_by) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Result Status List Id') ?></td>
-            <td><?= $this->Number->format($registerCandidateEventActivity->result_status_list_id) ?></td>
         </tr>
         <tr>
             <td><?= __('Dob') ?></td>
