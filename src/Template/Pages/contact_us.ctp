@@ -6,7 +6,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <section class="content">
   <article class="home_page_top">
     <header>
-      <h1>For any query or assistance, all formations may call at Estt Branch, Dte Genl on Landline Telephone Number 011-24360760</h1>
+      <h1>For any query or assistance, contact us on Telephone Number 7503613858</h1>
       <br>
     </header>
     

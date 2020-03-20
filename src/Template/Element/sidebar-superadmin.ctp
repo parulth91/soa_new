@@ -193,21 +193,13 @@
                 <li><?= $this->Html->link(__('Reporting Lists Add'), ['controller' => 'ReportingLists', 'action' => 'add']) ?> </li>  
             </ul>
         </li>
-        <li>
-      <!--                        <i class="glyphicon glyphicon-paperclip"></i>-->
-            <?= $this->Html->link(__('Instructions for JEB 2020'), ['controller' => 'Pages', 'action' => 'instruction']) ?> 
-
-        </li>
+ 
         <li>
 
 <!--                        <i class="glyphicon glyphicon-send"></i>-->
             <?= $this->Html->link(__('Contact Us'), ['controller' => 'Pages', 'action' => 'contactUs']) ?> 
         </li>
-        <li>
-
-<!--                        <i class="glyphicon glyphicon-send"></i>-->
-            <?= $this->Html->link(__('Unit Location Matrix'), ['controller' => 'Pages', 'action' => 'location_matrix']) ?> 
-        </li>
+ 
         <li>
 
 <!--                        <i class="glyphicon glyphicon-send"></i>-->
