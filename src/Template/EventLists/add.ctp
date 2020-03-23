@@ -34,9 +34,19 @@ echo $this->Form->create($eventList);
             ?>
         </div>
                 <div class=col-md-2>
-            <?php
-            echo $this->Form->control('event_start_date');
-            ?>
+        
+                       <?php
+                        echo $this->Form->input('event_start_date', ['label' => false,
+                            'id' => 'event_start_date',
+                          'class'=>'datepicker',
+                            'type' => 'text',
+                            'maxlength' => 10,
+                            //'oninput' => "setCustomValidity('')",
+                            'placeholder' => "dd-mm-yyyy", "onkeyup" => "return validateDate(this);",
+                            'required' => 'true',
+                            'autocomplete' => "off",
+                        ]);
+                        ?>
         </div>
                 <div class=col-md-2>
             <?php
@@ -54,3 +64,22 @@ echo $this->Form->create($eventList);
     $this->Form->button(__("Add"));
 ?>
 <?= $this->Form->end() ?>
+
+<script type="text/javascript">
+    //             for datepicker
+    $(document).ready(function () {
+        alert('ds');
+  $("#event_start_date").datepicker({
+                dateFormat: 'dd-mm-yy',
+               
+            });
+              $("#event_start_date").timePicker({
+      startTime: "09:00",
+      endTime: "17:00",
+      show24Hours: true,
+      separator: ':',
+      step: 20
+    });
+        });
+</script>
+        
