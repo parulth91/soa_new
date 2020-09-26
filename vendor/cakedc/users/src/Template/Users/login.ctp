@@ -6,7 +6,7 @@ $this->extend('/Layout/TwitterBootstrap/signin');
 <!-- Mixins-->
 <!-- Pen Title-->
 <div class="pen-title">
-  <h1>ABS Login</h1>
+  <h1>SOA Login</h1>
 </div>
 <div class="rerun"> <?php
         $registrationActive = Configure::read('Users.Registration.active');

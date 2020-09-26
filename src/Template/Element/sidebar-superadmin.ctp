@@ -54,7 +54,7 @@
 
             </ul>
         </li>
-        <li>
+    <!--     <li>
             <a href="#EventTeamDetails" data-toggle="collapse" aria-expanded="false">
                 <i class="glyphicon glyphicon-map-marker"></i>
                 Event Team Details
@@ -64,7 +64,7 @@
 
             </ul>
         </li>
-      <!--  <li>
+       <li>
             <a href="#TieSheets" data-toggle="collapse" aria-expanded="false">
                 <i class="glyphicon glyphicon-map-marker"></i>
                 Tie Sheets

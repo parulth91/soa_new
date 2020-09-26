@@ -284,6 +284,12 @@ class RegisterCandidatesController extends AppController
                     $this->request->data[$key]['action_by'] = $_SESSION['Auth']['User']['id'];
                     $this->request->data[$key]['action_ip'] = $_SERVER['REMOTE_ADDR'];
                     $this->request->data[$key]['active'] = true;
+
+                    $this->request->data[$key]['event_qualifying_status'] = false;
+                    $this->request->data[$key]['attendance_status'] = false;
+                    $this->request->data[$key]['certificate_download_status'] = false;
+                    
+
                     $registration_number = $this->cList->getRegNoSeq($registering_user_state_id);
                     $this->request->data[$key]['registration_number'] = $registration_number;
                 }
@@ -338,6 +344,7 @@ class RegisterCandidatesController extends AppController
                     return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
                 }
             } else {
+               // debug($registerCandidateEventActivities);die;
                 if ($this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
                     $this->Flash->success(__('The register candidate event activity has been saved.'));
                     return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
