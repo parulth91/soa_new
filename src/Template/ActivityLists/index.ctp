@@ -35,9 +35,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             </td>
                         <td><?= $activityList->active ? __('Yes') : __('No'); ?></td>
                                     <td><?= $this->Number->format($activityList->action_by) ?></td>
-            <td><?= h($activityList->created) ?></td>
+            <td><?php echo date_format($activityList->created,"d/m/Y h:i:A"); ?></td>
             <td><?= h($activityList->action_ip) ?></td>
-            <td><?= h($activityList->modified) ?></td>
+            <td><?php echo date_format($activityList->modified,"d/m/Y h:i:A");?></td>
             <td>
                 <?= $activityList->has('gender_list') ? $this->Html->link($activityList->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $activityList->gender_list->id]) : '' ?>
             </td>

@@ -26,10 +26,11 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <tr>
                 <td><?= $this->Number->format($eventList->event_year) ?></td>
                 <td><?= h($eventList->description) ?></td>
-                <td><?= h($eventList->registration_start_date) ?></td>
-                <td><?= h($eventList->registration_end_date) ?></td>
-                <td><?= h($eventList->event_start_date) ?></td>
-                <td><?= h($eventList->event_end_date) ?></td>
+                <td> <?php echo date_format($eventList->registration_start_date,"d/m/Y h:i:A");?>
+                </td>
+                <td><?php echo date_format($eventList->registration_end_date,"d/m/Y h:i:A");?></td>
+                <td><?php echo date_format($eventList->event_start_date,"d/m/Y h:i:A");?></td>
+                <td><?php echo date_format($eventList->event_end_date,"d/m/Y h:i:A");?></td>
                 <td><?= $eventList->active ? __('Yes') : __('No'); ?></td>
                 <td><?= $this->Number->format($eventList->action_by) ?></td>
                 <td><?= h($eventList->created) ?></td>

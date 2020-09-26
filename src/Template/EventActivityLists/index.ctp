@@ -27,7 +27,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($eventActivityList->description) ?></td>
                         <td><?= $eventActivityList->active ? __('Yes') : __('No'); ?></td>
                                     <td><?= $this->Number->format($eventActivityList->action_by) ?></td>
-            <td><?= h($eventActivityList->created) ?></td>
+            <td><?php echo date_format($eventActivityList->created,"d/m/Y h:i:A"); ?></td>
             <td><?= h($eventActivityList->action_ip) ?></td>
             <td>
                 <?= $eventActivityList->has('event_list') ? $this->Html->link($eventActivityList->event_list->description, ['controller' => 'EventLists', 'action' => 'view', $eventActivityList->event_list->id]) : '' ?>
@@ -35,7 +35,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td>
                 <?= $eventActivityList->has('activity_list') ? $this->Html->link($eventActivityList->activity_list->description, ['controller' => 'ActivityLists', 'action' => 'view', $eventActivityList->activity_list->id]) : '' ?>
             </td>
-            <td><?= h($eventActivityList->modified) ?></td>
+            <td><?php echo date_format($eventActivityList->modified,"d/m/Y h:i:A"); ?></td>
             <td><?= $this->Number->format($eventActivityList->registration_fees) ?></td>
             <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $eventActivityList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
