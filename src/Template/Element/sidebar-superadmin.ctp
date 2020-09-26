@@ -64,17 +64,17 @@
 
             </ul>
         </li>
-        <li>
+      <!--  <li>
             <a href="#TieSheets" data-toggle="collapse" aria-expanded="false">
                 <i class="glyphicon glyphicon-map-marker"></i>
                 Tie Sheets
             </a>
-            <ul class="collapse list-unstyled" id="TieSheets">
-                <li><?= $this->Html->link(__('Team Tie Sheets'), ['controller' => 'TeamTieSheets', 'action' => 'index']) ?> </li>
-                <li><?= $this->Html->link(__('Player Tie Sheet'), ['controller' => 'PlayerTieSheets', 'action' => 'index']) ?> </li>
+         <ul class="collapse list-unstyled" id="TieSheets">
+                <li><?//= $this->Html->link(__('Team Tie Sheets'), ['controller' => 'TeamTieSheets', 'action' => 'index']) ?> </li>
+                <li><?//= $this->Html->link(__('Player Tie Sheet'), ['controller' => 'PlayerTieSheets', 'action' => 'index']) ?> </li>
 
-            </ul>
-        </li>
+            </ul>-->
+        </li>  
         <li>
             <a href="#reports" data-toggle="collapse" aria-expanded="false">
                 <i class="glyphicon glyphicon-screenshot"></i>
