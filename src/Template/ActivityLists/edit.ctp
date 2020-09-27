@@ -33,7 +33,7 @@ echo $this->Form->create($activityList);
             echo $this->Form->control('is_weight_category');
             ?>
         </div>
-          <div class=col-md-2>
+          <div class=col-md-2 id="weightcategorydiv">
                 <?php
                 echo $this->Form->input('weight_category_list_id', ['type'=>'select','empty'=>'Select','options' => $weightCategoryLists]);
                 ?>
@@ -64,3 +64,20 @@ echo $this->Form->create($activityList);
     $this->Form->button(__("Save"));
 ?>
 <?= $this->Form->end() ?>
+<script type="text/javascript">
+    //             for datepicker
+  
+    $(document).ready(function () {
+        //alert('in');
+     //   $("#weightcategorydiv").hide();
+        $("#is-weight-category").click(function () {
+           // alert('hh');
+            if ($(this).is(":checked")) {
+                $("#weightcategorydiv").show();
+            } else {
+                $("#weightcategorydiv").hide();
+            }
+        });
+    });
+
+</script>

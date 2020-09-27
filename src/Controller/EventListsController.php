@@ -50,10 +50,21 @@ class EventListsController extends AppController
     {
         $eventList = $this->EventLists->newEntity();
         if ($this->request->is('post')) {
+           
+            
                  $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
                  $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
-                 
-            $eventList = $this->EventLists->patchEntity($eventList, $this->request->getData());
+                 //debug($this->request->data['event_year']['year']);
+                 $this->request->data['event_year']=$this->request->data['event_year']['year'];
+                 //die;
+               // $this->request->data['event_year'] =date_format('Y',$this->request->data['event_year']);//die;
+                 $this->request->data['event_start_date']=date('Y/m/d',strtotime($this->request->data['event_start_date']));
+                 $this->request->data['event_end_date']=date('Y/m/d',strtotime($this->request->data['event_end_date']));
+                 $this->request->data['registration_start_date']=date('Y/m/d',strtotime($this->request->data['registration_start_date']));
+                 $this->request->data['registration_end_date']=date('Y/m/d',strtotime($this->request->data['registration_end_date']));
+                // print_r($this->request->data);die;
+            $eventList = $this->EventLists->patchEntity($eventList, $this->request->Data());
+           // print_r($eventList);die;
             if ($this->EventLists->save($eventList)) {
                 $this->Flash->success(__('The event list has been saved.'));
 
@@ -76,13 +87,19 @@ class EventListsController extends AppController
         $eventList = $this->EventLists->get($id, [
             'contain' => []
         ]);
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
                  $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
                  $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
                                 $currentTimeStamp = Time::now();
                                 $currentTimeStamp->i18nFormat();
                                 $this->request->data['modified'] = $currentTimeStamp;
-
+                                $this->request->data['event_year']=$this->request->data['event_year']['year'];
+                               // $this->request->data['event_year']=date_format('Y',strtotime($this->request->data['event_year']));
+                                $this->request->data['event_start_date']=date('Y/m/d',strtotime($this->request->data['event_start_date']));
+                                $this->request->data['event_end_date']=date('Y/m/d',strtotime($this->request->data['event_end_date']));
+                                $this->request->data['registration_start_date']=date('Y/m/d',strtotime($this->request->data['registration_start_date']));
+                                $this->request->data['registration_end_date']=date('Y/m/d',strtotime($this->request->data['registration_end_date']));
                  
             $eventList = $this->EventLists->patchEntity($eventList, $this->request->getData());
             if ($this->EventLists->save($eventList)) {

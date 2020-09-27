@@ -26,16 +26,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <tr>
                 <td><?= $this->Number->format($eventList->event_year) ?></td>
                 <td><?= h($eventList->description) ?></td>
-                <td> <?php echo date_format($eventList->registration_start_date,"d/m/Y h:i:A");?>
+                <td> <?php echo date_format($eventList->registration_start_date,"d/m/Y");?>
                 </td>
-                <td><?php echo date_format($eventList->registration_end_date,"d/m/Y h:i:A");?></td>
-                <td><?php echo date_format($eventList->event_start_date,"d/m/Y h:i:A");?></td>
-                <td><?php echo date_format($eventList->event_end_date,"d/m/Y h:i:A");?></td>
+                <td><?php echo date_format($eventList->registration_end_date,"d/m/Y");?></td>
+                <td><?php echo date_format($eventList->event_start_date,"d/m/Y");?></td>
+                <td><?php echo date_format($eventList->event_end_date,"d/m/Y");?></td>
                 <td><?= $eventList->active ? __('Yes') : __('No'); ?></td>
                 <td><?= $this->Number->format($eventList->action_by) ?></td>
-                <td><?= h($eventList->created) ?></td>
+                <td><?php echo date_format($eventList->created,"d/m/Y h:i:A");?></td>
                 <td><?= h($eventList->action_ip) ?></td>
-                <td><?= h($eventList->modified) ?></td>
+                <td><?php echo date_format($eventList->modified,"d/m/Y h:i:A"); ?></td>
                 <td><?= $this->Number->format($eventList->id) ?></td>
                 <td class="actions"> 
                     <?= $this->Html->link('View Activities', ['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $eventList->id], ['View Event Activities', 'type' => 'button', 'class' => 'btn  btn-info']) ?>

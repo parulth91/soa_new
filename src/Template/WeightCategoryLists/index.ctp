@@ -59,3 +59,16 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         'onclick' => "location.href='" . $this->Url->build('/weightCategoryLists/add') . "'"));
     ?>
 </div>
+<script type="text/javascript">
+    //             for datepicker
+    $(document).ready(function () {
+   
+           var max_weight = $('#max_weight').value;
+            var min_weight = $('#min_weight').value;
+
+            if (min_weight < max_weight){
+               alert('Minimum weight should be lass than Maximum Weight')
+            }
+        });
+        
+ </script>       

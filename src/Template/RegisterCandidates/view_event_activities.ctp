@@ -28,10 +28,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <td><?= h($List['event_list']['description']) ?></td>
                 <td><?= h($List['activity_list']['description']) ?></td>
                 <td><?= h($List['activity_list']['game_type_list']['description']) ?></td>
-                <td><?= h($List['event_list']['event_start_date']) ?></td>
-                <td><?= h($List['event_list']['event_end_date']) ?></td>
-                <td><?= h($List['event_list']['registration_start_date']) ?></td>
-                <td><?= h($List['event_list']['registration_end_date']) ?></td>
+                <td><?php echo date_format($List['event_list']['event_start_date'],"d/m/Y"); ?></td>
+                <td><?php echo date_format($List['event_list']['event_end_date'],"d/m/Y"); ?></td>
+                <td><?php echo date_format($List['event_list']['registration_start_date'],"d/m/Y"); ?></td>
+                <td><?php echo date_format($List['event_list']['registration_end_date'],"d/m/Y");?></td>
 
 
 

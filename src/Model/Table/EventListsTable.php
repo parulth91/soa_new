@@ -48,7 +48,7 @@ class EventListsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('event_year')
+           //->integer('event_year')
             ->requirePresence('event_year', 'create')
             ->notEmpty('event_year');
 
@@ -59,23 +59,23 @@ class EventListsTable extends Table
             ->add('description', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->dateTime('registration_start_date')
-            ->requirePresence('registration_start_date', 'create')
+           // ->dateTime('registration_start_date')
+            //->requirePresence('registration_start_date', 'create')
             ->notEmpty('registration_start_date');
 
         $validator
-            ->dateTime('registration_end_date')
-            ->requirePresence('registration_end_date', 'create')
+            //->dateTime('registration_end_date')
+           // ->requirePresence('registration_end_date', 'create')
             ->notEmpty('registration_end_date');
 
         $validator
-            ->dateTime('event_start_date')
-            ->requirePresence('event_start_date', 'create')
+         //   ->dateTime('event_start_date')
+          //  ->requirePresence('event_start_date', 'create')
             ->notEmpty('event_start_date');
 
         $validator
-            ->dateTime('event_end_date')
-            ->requirePresence('event_end_date', 'create')
+          //  ->dateTime('event_end_date')
+          //  ->requirePresence('event_end_date', 'create')
             ->notEmpty('event_end_date');
 
         $validator
