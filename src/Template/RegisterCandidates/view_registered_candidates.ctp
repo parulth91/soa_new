@@ -30,7 +30,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <?= $registerCandidateEventActivity->has('event_activity_list') ? $this->Html->link($registerCandidateEventActivity->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $registerCandidateEventActivity->event_activity_list->id]) : '' ?>
             </td>
             <td><?= h($registerCandidateEventActivity->full_name) ?></td>
-            <td><?= h($registerCandidateEventActivity->dob) ?></td>
+            <td><?php echo date_format($registerCandidateEventActivity->dob,"d/m/Y");?></td>
             <td>
                 <?= $registerCandidateEventActivity->has('gender_list') ? $this->Html->link($registerCandidateEventActivity->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $registerCandidateEventActivity->gender_list->id]) : '' ?>
             </td>

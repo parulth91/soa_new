@@ -38,7 +38,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?php echo date_format($eventActivityList->modified,"d/m/Y h:i:A"); ?></td>
             <td><?= $this->Number->format($eventActivityList->registration_fees) ?></td>
             <td class="actions">
-                <?= $this->Html->link('', ['action' => 'view', $eventActivityList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
+            
                 <?= $this->Html->link('', ['action' => 'edit', $eventActivityList->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
                 <?= $this->Form->postLink('', ['action' => 'delete', $eventActivityList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventActivityList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
             </td>
