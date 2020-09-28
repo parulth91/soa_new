@@ -18,12 +18,12 @@ echo $this->Form->create($activityList);
             echo $this->Form->control('description');
             ?>
         </div>
-                <div class=col-md-2>
+                <div class=col-md-2 id="min_playerdiv">
             <?php
             echo $this->Form->control('minimum_player_participating');
             ?>
         </div>
-                <div class=col-md-2>
+                <div class=col-md-2 id="max_playerdiv">
             <?php
             echo $this->Form->control('maximum_player_participating');
             ?>
@@ -69,6 +69,8 @@ echo $this->Form->create($activityList);
   
     $(document).ready(function () {
         $("#weightcategorydiv").hide();
+        $("#min_playerdiv").hide();
+        $("#max_playerdiv").hide();
         $("#is-weight-category").click(function () {
            // alert('hh');
             if ($(this).is(":checked")) {
@@ -77,6 +79,29 @@ echo $this->Form->create($activityList);
                 $("#weightcategorydiv").hide();
             }
         });
-    });
+ $("#game-type-list-id").change(function() {
+
+        if ($(this).val() == '1')
+        {
+            //alert('2');    
+                $("#min_playerdiv").show();
+                $("#max_playerdiv").show();
+                $("#maximum-player-participating").prop("readonly", false); 
+                $("#minimum-player-participating").prop("readonly", false); 
+                document.getElementById("maximum-player-participating").defaultValue = "";
+                document.getElementById("minimum-player-participating").defaultValue = "";
+        }
+        if ($(this).val() == '2')
+        {
+                $("#min_playerdiv").show();
+                $("#max_playerdiv").show();
+                $("#maximum-player-participating").prop("readonly", true); 
+                $("#minimum-player-participating").prop("readonly", true); 
+                document.getElementById("maximum-player-participating").defaultValue = "1";
+                document.getElementById("minimum-player-participating").defaultValue = "1";
+        }
+});
+});
+  
 
 </script>

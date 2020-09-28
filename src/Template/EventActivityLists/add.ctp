@@ -18,11 +18,7 @@ echo $this->Form->create($eventActivityList);
             echo $this->Form->control('description');
             ?>
         </div>
-                <div class=col-md-2>
-            <?php
-            echo $this->Form->control('active');
-            ?>
-        </div>
+                
           <div class=col-md-2>
                 <?php
                 echo $this->Form->input('event_lists_id', ['type'=>'select','empty'=>'Select','options' => $eventLists]);
@@ -38,7 +34,11 @@ echo $this->Form->create($eventActivityList);
             echo $this->Form->control('registration_fees');
             ?>
         </div>
-            
+      <div class=col-md-2>
+            <?php
+            echo $this->Form->control('active');
+            ?>
+        </div>      
 </fieldset>
 <?=
     $this->Form->button(__("Add"));

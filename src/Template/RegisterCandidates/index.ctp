@@ -8,6 +8,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     <thead>
         <tr>
             <th><?= $this->Paginator->sort('id'); ?></th>
+            <th><?= $this->Paginator->sort('registration_number'); ?></th>
+            <th><?= $this->Paginator->sort('full_name'); ?></th>
             <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
             <th><?= $this->Paginator->sort('weight'); ?></th>
             <th><?= $this->Paginator->sort('age'); ?></th>
@@ -23,6 +25,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <?php foreach ($registerCandidateEventActivities as $registerCandidateEventActivity): ?>
         <tr>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
+            <td><?= h($registerCandidateEventActivity->registration_number) ?></td>
+            <td><?= h($registerCandidateEventActivity->full_name) ?></td>
             <td>
                 <?= $registerCandidateEventActivity->has('event_activity_list') ? $this->Html->link($registerCandidateEventActivity->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $registerCandidateEventActivity->event_activity_list->id]) : '' ?>
             </td>
@@ -56,8 +60,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
 <div>
     <?php
-    echo $this->Form->submit('Add registerCandidateEventActivities', array('type' => 'button',
-        'class' => 'btn  btn-info',
-        'onclick' => "location.href='" . $this->Url->build('/registerCandidateEventActivities/add') . "'"));
+   // echo $this->Form->submit('Add registerCandidateEventActivities', array('type' => 'button',
+   //     'class' => 'btn  btn-info',
+      //  'onclick' => "location.href='" . $this->Url->build('/registerCandidateEventActivities/add') . "'"));
     ?>
 </div>

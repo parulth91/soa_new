@@ -52,7 +52,9 @@ class ActivityListsController extends AppController
     public function add()
     {
         $activityList = $this->ActivityLists->newEntity();
+       // debug($this->request->is('post'));//die;
         if ($this->request->is('post')) {
+           
                  $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
                  $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
                  

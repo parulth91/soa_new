@@ -18,6 +18,16 @@ echo $this->Form->create($registerCandidateEventActivity);
                 echo $this->Form->input('event_activity_list_id', ['type'=>'select','empty'=>'Select','options' => $eventActivityLists]);
                 ?>
             </div>
+            <div class=col-md-2>
+            <?php
+            echo $this->Form->control('registration_number');
+            ?>
+        </div>
+            <div class=col-md-2>
+            <?php
+            echo $this->Form->control('full_name');
+            ?>
+        </div>
                 <div class=col-md-2>
             <?php
             echo $this->Form->control('weight');
@@ -39,3 +49,11 @@ echo $this->Form->create($registerCandidateEventActivity);
     $this->Form->button(__("Save"));
 ?>
 <?= $this->Form->end() ?>
+<script type="text/javascript">
+  
+    $(document).ready(function () {
+        $("#registration-number").prop("readonly", true); 
+
+    });      
+
+ </script>   

@@ -6,6 +6,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <table class="table table-striped" cellpadding="0" cellspacing="0">
     <thead>
         <tr>
+            <th><?= $this->Paginator->sort('id'); ?></th>
             <th><?= $this->Paginator->sort('event_year'); ?></th>
             <th><?= $this->Paginator->sort('description'); ?></th>
             <th><?= $this->Paginator->sort('registration_start_date'); ?></th>
@@ -17,13 +18,14 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('action_ip'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
-            <th><?= $this->Paginator->sort('id'); ?></th>
+            
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($eventLists as $eventList): ?>
             <tr>
+                <td><?= $this->Number->format($eventList->id) ?></td>
                 <td><?= $this->Number->format($eventList->event_year) ?></td>
                 <td><?= h($eventList->description) ?></td>
                 <td> <?php echo date_format($eventList->registration_start_date,"d/m/Y");?>
@@ -36,7 +38,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <td><?php echo date_format($eventList->created,"d/m/Y h:i:A");?></td>
                 <td><?= h($eventList->action_ip) ?></td>
                 <td><?php echo date_format($eventList->modified,"d/m/Y h:i:A"); ?></td>
-                <td><?= $this->Number->format($eventList->id) ?></td>
+              
                 <td class="actions"> 
                     <?= $this->Html->link('View Activities', ['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $eventList->id], ['View Event Activities', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
                     <?= $this->Html->link('', ['action' => 'view', $eventList->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
