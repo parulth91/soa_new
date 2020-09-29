@@ -355,8 +355,8 @@ class RegisterCandidatesController extends AppController {
     public function eventActivtiesTeamAttendance($id = null) {
         //to display team list
         $connection = ConnectionManager::get('default');
-        $eventTeamlisttable = TableRegistry::get('event_team_details');
-        $teamDetails = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
+        $eventTeamListTable = TableRegistry::get('event_team_details');
+        $teamDetails = $eventTeamListTable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
         $this->set('teamDetails', $teamDetails);
 
 
@@ -381,6 +381,10 @@ class RegisterCandidatesController extends AppController {
             }
             // }
             //  else{
+            if (count($registeredCandidateLists->toArray())) {
+                $teamMinAttendanceCheck = $registeredCandidateLists->toArray()['0']['event_activity_list']->activity_list->minimum_player_participating;
+            }
+            //debug($registeredCandidateLists->toArray());die;
             if (isset($this->request->data['update_attendance_button'])) {
                 //for update attendance status of registered candidates
 
@@ -396,7 +400,7 @@ class RegisterCandidatesController extends AppController {
                         }
                     endforeach;
 
-
+                    $totalPresent = count($idChecked);
 
                     if ($idChecked) {
                         //debug($idChecked);
@@ -411,24 +415,37 @@ class RegisterCandidatesController extends AppController {
                         );
                     }
 
+                    $eventTeamDetailsTable = TableRegistry::get('event_team_details');
+                    if ($teamMinAttendanceCheck <= $totalPresent) {
+                        $data_update = $eventTeamDetailsTable->updateAll(
+                                ['attendance_status ' => 'true'], ['id' => $eventTeamId]
+                        );
+                    } else {
+                        $data_update = $eventTeamDetailsTable->updateAll(
+                                ['attendance_status ' => 'false'], ['id' => $eventTeamId]
+                        );
+                    }
+
 
                     $this->Flash->success(__('Attendance Status has been saved .'));
-                    $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                            ->contain([
-                                'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
-                            ])->where([
-                                'EventActivityLists.id' => $id,
-                                'event_team_detail_id' => $eventTeamId
-                            ])
-                            ->order(['RegisterCandidates.id']);
-                    //debug($registeredCandidateLists);die;
-                    if (isset($registeredCandidateLists)) {
-                        $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-                        $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
-                    }
                 }
                 // }
                 // }
+            }
+
+            $registeredCandidateLists = $this->RegisterCandidates->find('all')
+                    ->contain([
+                        'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
+                    ])->where([
+                        'EventActivityLists.id' => $id,
+                        'event_team_detail_id' => $eventTeamId
+                    ])
+                    ->order(['RegisterCandidates.id']);
+//            debug($teamMinAttendanceCheck);
+//            die;
+            if (isset($registeredCandidateLists)) {
+                $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
+                $this->set(compact('registeredCandidatePaginate', 'teamMinAttendanceCheck'));
             }
         }
     }

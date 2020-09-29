@@ -151,7 +151,10 @@ class MyTeamsController extends AppController {
                             'EventTeamDetails' => [],
                             'EventLists' => [],
                             'EventTeamDetails' => [],
-                            'RegisterCandidateEventActivities' => []
+                            'RegisterCandidateEventActivities' => [],
+                            'EventTeamDetails' => function ($q) {
+                                return $q->where(['EventTeamDetails.attendance_status' => true]);
+                            }
                         ])->where(['event_activity_lists.id' => $id])->toArray();
         //debug($eventActivityLists[0]);die;
          $tieSheetHeader = $eventActivityLists[0]->event_list['description'].'('.$eventActivityLists[0]->description.')';
@@ -174,6 +177,7 @@ class MyTeamsController extends AppController {
                 ->toArray();
         $tieSheetUpdateReguiredFlag = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id, 'update_tiesheet' => true])->count();
         $playersId = null;
+        debug($team_data);die;
         foreach ($team_data as $key_team => $value_team) {
             //debug($value_team->description);die;
             $playersId[] = $value_team->id;
