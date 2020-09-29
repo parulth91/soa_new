@@ -40,12 +40,13 @@ echo $this->Form->create(
 
                 <th><?= $this->Paginator->sort('S.NO'); ?></th>
                 <th><?= $this->Paginator->sort('Id'); ?></th>
+                <th><?= $this->Paginator->sort('Registration Number'); ?></th>
+                <th><?= $this->Paginator->sort('State'); ?></th>
                 <th><?= $this->Paginator->sort('GameType'); ?></th>
                 <th><?= $this->Paginator->sort('Activity'); ?></th>
                 <th><?= $this->Paginator->sort('Name'); ?></th>
                 <th><?= $this->Paginator->sort('Age'); ?></th>
                 <th><?= $this->Paginator->sort('Weight'); ?></th>
-                <th><?= $this->Paginator->sort('Registration Number'); ?></th>
                 <th><?= $this->Paginator->sort('Attendance Status'); ?></th>
                 <th class="actions"><?= __('Actions'); ?></th>
             </tr>
@@ -56,9 +57,12 @@ echo $this->Form->create(
                 <?php 
                 
                 $i=1;
-                foreach ($registeredCandidatePaginate as $registeredCandidateView) : ?>
+                foreach ($registeredCandidatePaginate as $registeredCandidateView) :
+               // debug($registeredCandidateView);die; ?>
                 <td><?= $i ?></td>
                 <td><?= $this->Number->format($registeredCandidateView->id) ?></td>
+                <td><?= h($registeredCandidateView->registration_number) ?></td>
+                <td><?= h($registeredCandidateView['state_list']['description']) ?></td>
                 <td>
                         <?= $registeredCandidateView->event_activity_list->activity_list->game_type_list->description; ?>
                 </td>
@@ -66,7 +70,6 @@ echo $this->Form->create(
                 <td><?= $registeredCandidateView->full_name; ?></td>
                 <td><?= $registeredCandidateView->age;  ?></td>
                 <td><?= $registeredCandidateView->weight;  ?></td>
-                <td><?= h($registeredCandidateView->registration_number) ?></td>
                 <td><?php if ($registeredCandidateView->attendance_status == 'true') {
                             echo "Present";
                         } else {

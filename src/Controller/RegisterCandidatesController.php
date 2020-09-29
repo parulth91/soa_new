@@ -32,7 +32,7 @@ class RegisterCandidatesController extends AppController {
 
     public function viewRegisteredCandidates($id = null) {
         $Result = $this->RegisterCandidates->find()->contain([
-                    'EventActivityLists'
+                    'EventActivityLists','StateLists','EventTeamDetails','GenderLists'
                 ])
                 ->where(['RegisterCandidates.event_activity_list_id' => $id]);
         //        $this->paginate = [
@@ -435,7 +435,7 @@ class RegisterCandidatesController extends AppController {
 
     public function eventActivtiesIndividualAttendance($id = null) {
         $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                ->contain([
+                ->contain(['StateLists',
                     'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
                 ])->where(['event_activity_list_id' => $id])
                 ->order(['RegisterCandidates.state_list_id']);
