@@ -59,6 +59,7 @@ class MyPlayer extends Entity
         'event_activity_list' => true,
         'winner_player' => true,
         'player1' => true,
-        'player2' => true
+        'player2' => true,
+        'update_tiesheet' => true
     ];
 }

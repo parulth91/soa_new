@@ -57,6 +57,7 @@ class TeamTieSheet extends Entity
         'event_activity_list' => true,
         'winner_event_team_detail' => true,
         'team1_event_team_detail' => true,
-        'team2_event_team_detail' => true
+        'team2_event_team_detail' => true,
+        'update_tiesheet' => true
     ];
 }

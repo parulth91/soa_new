@@ -30,9 +30,8 @@ class Knockout {
     /* Tournament bracket structure. */
 
     protected $bracket = array(
-        /*
-          0 => array(),   // Play-in round
-         */
+        // 0 => array(),   // Play-in round
+
         1 => array(), // First round
             /*
               N => array(     // Round N
@@ -168,7 +167,7 @@ class Knockout {
 
         $match = $round = 0;
         $swap = $foundIt = false;
-
+        //debug($this->bracket);
         foreach ($this->bracket as $r_idx => $r) {
             foreach ($r as $m_idx => $m) {
                 if ($m['c1'] === $c1 && $m['c2'] === $c2 || $m['c1'] === $c2 && $m['c2'] === $c1 && $swap = true) {
@@ -185,10 +184,13 @@ class Knockout {
             }
         }
 
-        if ($foundIt && $this->setResByMatch($match, $round, $s1, $s2))
+        if ($foundIt && $this->setResByMatch($match, $round, $s1, $s2)) {
+            //x  unset($this->bracket);
             return true;
-        else
+        } else {
+            //unset($this->bracket);
             return false;
+        }
     }
 
     protected function getRoundsInfo() {
@@ -398,7 +400,7 @@ class KnockoutGD extends Knockout {
             $rx -= $lw; // Move back one round/column.
         }
         array_pop($this->roundsInfo); // Remove fictitious round entry again.
-
+        unset($this->bracket);
         return $this->im;
     }
 
@@ -531,6 +533,7 @@ class KnockoutGD extends Knockout {
 
         $data['rounds'] = $this->roundsInfo;
         $data['round_matches'] = $this->bracket;
+        unset($this->bracket);
         return $data;
     }
 

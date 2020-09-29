@@ -166,14 +166,16 @@ class MyTeamsController extends AppController {
 
         //$teamTieSheetTable = TableRegistry::get('team_tie_sheets');
         $teamTieSheetTable = $this->MyTeams;
-        $teamTieSheetLists = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])->toArray();
-
+        $teamTieSheetLists = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])
+                 ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
+                ->toArray();
+        $tieSheetUpdateReguiredFlag = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id, 'update_tiesheet' => true])->count();
         $playersId = null;
         foreach ($team_data as $key_team => $value_team) {
             $playersId[] = $value_team->id;
         }
         if (empty($playersId)) {
-            debug($playersId);
+            //debug($playersId);
             $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
             die;
         }
@@ -186,11 +188,14 @@ class MyTeamsController extends AppController {
                 $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
             }
         } elseif (!empty($teamTieSheetLists)) {
-            if ($this->updateMyTeamTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
-                
-            } else {
-                $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
-            }
+            
+             if ($tieSheetUpdateReguiredFlag > 0) {
+                if ($this->updateMyTeamTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
+
+                } else {
+                    $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
+                }
+             }
         }
         //die;
         $this->getTeamsTieSheet($playersId, $eventDetails, true, $teamTieSheetLists);
