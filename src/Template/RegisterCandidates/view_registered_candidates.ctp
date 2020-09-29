@@ -13,6 +13,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('dob'); ?></th>
             <th><?= $this->Paginator->sort('gender_list_id'); ?></th>
             <th><?= $this->Paginator->sort('registration_number'); ?></th>
+            <th><?= $this->Paginator->sort('State_id'); ?></th>
             <th><?= $this->Paginator->sort('event_team_detail_id'); ?></th>
             <th><?= $this->Paginator->sort('weight'); ?></th>
             <th><?= $this->Paginator->sort('age'); ?></th>
@@ -23,7 +24,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($registerCandidateEventActivities as $registerCandidateEventActivity): ?>
+        <?php //debug($registerCandidateEventActivities);//die; 
+        foreach ($registerCandidateEventActivities as $registerCandidateEventActivity): ?>
         <tr>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
             <td>
@@ -32,11 +34,20 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?= h($registerCandidateEventActivity->full_name) ?></td>
             <td><?php echo date_format($registerCandidateEventActivity->dob,"d/m/Y");?></td>
             <td>
-                <?= $registerCandidateEventActivity->has('gender_list') ? $this->Html->link($registerCandidateEventActivity->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $registerCandidateEventActivity->gender_list->id]) : '' ?>
+                <?= h($registerCandidateEventActivity['gender_list']['description']) 
+                //= $registerCandidateEventActivity->has('gender_list') ? $this->Html->link($registerCandidateEventActivity->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $registerCandidateEventActivity->gender_list->id]) : '' ?>
             </td>
             <td><?= h($registerCandidateEventActivity->registration_number) ?></td>
+            <td><?= h($registerCandidateEventActivity['state_list']['description']) ?></td>
             <td>
-                <?= $registerCandidateEventActivity->has('event_team_detail') ? $this->Html->link($registerCandidateEventActivity->event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $registerCandidateEventActivity->event_team_detail->id]) : '' ?>
+                <?php
+                 if($registerCandidateEventActivity['event_team_detail']['description']!='')
+                   {  echo $registerCandidateEventActivity['event_team_detail']['description'];}
+                   else{
+                       echo 'Not Applicable';
+                   }
+                   //= $registerCandidateEventActivity->has('event_team_detail') ? $this->Html->link($registerCandidateEventActivity->event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $registerCandidateEventActivity->event_team_detail->id]) : '' 
+                ?>
             </td>
             <td><?= $this->Number->format($registerCandidateEventActivity->weight) ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->age) ?></td>

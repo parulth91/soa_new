@@ -34,11 +34,12 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
         <tr>
             <td><?= __('Created') ?></td>
-            <td><?= h($registerCandidateEventActivity->created) ?></td>
+            <td><?php echo date_format($registerCandidateEventActivity->created,"d/m/Y");
+            //= h($registerCandidateEventActivity->created) ?></td>
         </tr>
         <tr>
             <td><?= __('Modified') ?></td>
-            <td><?= h($registerCandidateEventActivity->modified) ?></td>
+            <td> <?php echo date_format($registerCandidateEventActivity->modified,"d/m/Y"); ?></td>
         </tr>
         <tr>
             <td><?= __('Active') ?></td>

@@ -87,8 +87,9 @@ if (!empty($teamDetails)) {
                   echo '0';
                 }
                 ?></td>
-            <td class="actions"><?php echo $this->Form->checkbox(
-                                  'attendance_status' . "[$registeredCandidateView->id]" . '[checkid]',
+            <td class="actions"><?php
+             echo $this->Form->checkbox(
+                                  'attendance_status' . "[$registeredCandidateView->id]",
                                   ['value' => "$registeredCandidateView->id "]
                                 ); ?></td>
         </tr>
@@ -108,8 +109,9 @@ if (!empty($teamDetails)) {
 
   </fieldset>
   <script>
-    //             for datepicker
+
     $(document).ready(function() {
+   
       $("#update_attendance_button").click(function(e) {
       //  alert('butoonupadte');
         // document.getElementById('event-team-id').value='';
