@@ -30,11 +30,7 @@ echo $this->Form->create($activityList);
                         echo $this->Form->input('age_group_list_id', ['type'=>'select','empty'=>'Select','options' => $ageGroupLists]);
                         ?>
         </div>
-        <div class=col-md-2 id="weightcategorydiv">
-                        <?php
-                        echo $this->Form->input('weight_category_list_id', ['type'=>'select','empty'=>'Select','options' => $weightCategoryLists]);
-                        ?>
-        </div>
+   
         <div class=col-md-2>
                     <?php
                     echo $this->Form->control('active');
@@ -64,6 +60,11 @@ echo $this->Form->create($activityList);
             echo $this->Form->control('is_weight_category');
             ?>
         </div>
+        <div class=col-md-2 id="weightcategorydiv">
+                        <?php
+                        echo $this->Form->input('weight_category_list_id', ['type'=>'select','empty'=>'Select','options' => $weightCategoryLists]);
+                        ?>
+        </div>
     </div>
 
 
@@ -79,9 +80,19 @@ echo $this->Form->create($activityList);
     //             for datepicker
 
     $(document).ready(function () {
+        var gametypeval = $("#game-type-list-id").val();
+        //alert(gametypeval);
+        if(gametypeval==2)
+        {
+               $("#min_playerdiv").hide();
+                $("#max_playerdiv").hide();
+        }
+        else{
+               
+        }
         $("#weightcategorydiv").hide();
-        $("#min_playerdiv").hide();
-        $("#max_playerdiv").hide();
+        //$("#min_playerdiv").hide();
+        //$("#max_playerdiv").hide();
         $("#is-weight-category").click(function () {
             // alert('hh');
             if ($(this).is(":checked")) {
@@ -101,24 +112,21 @@ echo $this->Form->create($activityList);
                 document.getElementById("maximum-player-participating").defaultValue = "";
                 document.getElementById("minimum-player-participating").defaultValue = "";
             }
-            if ($(this).val() == '1')
+            if ($(this).val() == '1')//for Team
             {
                 //alert('2');    
                 $("#min_playerdiv").show();
                 $("#max_playerdiv").show();
-                $("#maximum-player-participating").prop("readonly", false);
-                $("#minimum-player-participating").prop("readonly", false);
                 document.getElementById("maximum-player-participating").defaultValue = "";
                 document.getElementById("minimum-player-participating").defaultValue = "";
             }
-            if ($(this).val() == '2')
+            if ($(this).val() == '2')//for individual
             {
-                $("#min_playerdiv").show();
-                $("#max_playerdiv").show();
-                document.getElementById("maximum-player-participating").Value = 1;
-                document.getElementById("minimum-player-participating").Value = 1;
-                $("#maximum-player-participating").prop("readonly", true);
-                $("#minimum-player-participating").prop("readonly", true);
+                $("#min_playerdiv").hide();
+                $("#max_playerdiv").hide();
+                
+                document.getElementById("maximum-player-participating").defaultValue = "1";
+                document.getElementById("minimum-player-participating").defaultValue = "1";
                
             }
         });

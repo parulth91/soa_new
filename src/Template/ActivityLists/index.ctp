@@ -11,6 +11,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= $this->Paginator->sort('description'); ?></th>
             <th><?= $this->Paginator->sort('minimum_player_participating'); ?></th>
             <th><?= $this->Paginator->sort('maximum_player_participating'); ?></th>
+            <th><?= $this->Paginator->sort('game_type_list_id'); ?></th>
             <th><?= $this->Paginator->sort('is_weight_category'); ?></th>
             <th><?= $this->Paginator->sort('weight_category_list_id'); ?></th>
             <th><?= $this->Paginator->sort('active'); ?></th>
@@ -23,12 +24,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($activityLists as $activityList): ?>
+        <?php foreach ($activityLists as $activityList): //debug($activityList);?>
         <tr>
             <td><?= $this->Number->format($activityList->id) ?></td>
             <td><?= h($activityList->description) ?></td>
             <td><?= $this->Number->format($activityList->minimum_player_participating) ?></td>
             <td><?= $this->Number->format($activityList->maximum_player_participating) ?></td>
+            <td><?= h($activityList['game_type_list']['description']) ?></td>
                         <td><?= $activityList->is_weight_category ? __('Yes') : __('No'); ?></td>
                                     <td>
                 <?= $activityList->has('weight_category_list') ? $this->Html->link($activityList->weight_category_list->description, ['controller' => 'WeightCategoryLists', 'action' => 'view', $activityList->weight_category_list->id]) : '' ?>
