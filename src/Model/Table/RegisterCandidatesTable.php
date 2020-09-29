@@ -57,13 +57,13 @@ class RegisterCandidatesTable extends Table
         $this->belongsTo('ResultStatusLists', [
             'foreignKey' => 'result_status_list_id'
         ]);
-         $this->hasMany('MyPlayers', [
+         $this->hasMany('Player1s', [
             'foreignKey' => 'player1_id'
         ]);
-         $this->hasMany('MyPlayers', [
+         $this->hasMany('Player2s', [
             'foreignKey' => 'player2_id'
         ]);
-         $this->hasMany('MyPlayers', [
+         $this->hasMany('WinnerPlayers', [
             'foreignKey' => 'winner_player_id'
         ]);
     }

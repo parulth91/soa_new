@@ -154,7 +154,8 @@ class MyTeamsController extends AppController {
                             'RegisterCandidateEventActivities' => []
                         ])->where(['event_activity_lists.id' => $id])->toArray();
         //debug($eventActivityLists[0]);die;
-        $this->myTeamTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_team_details, $eventActivityLists[0]->description);
+         $tieSheetHeader = $eventActivityLists[0]->event_list['description'].'('.$eventActivityLists[0]->description.')';
+        $this->myTeamTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_team_details, $tieSheetHeader);
 
         die;
     }
@@ -166,13 +167,17 @@ class MyTeamsController extends AppController {
 
         //$teamTieSheetTable = TableRegistry::get('team_tie_sheets');
         $teamTieSheetTable = $this->MyTeams;
-        $teamTieSheetLists = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])
-                 ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
+        $teamTieSheetLists = $teamTieSheetTable->find('all')
+                ->contain(['Team1EventTeamDetails','Team2EventTeamDetails'])
+                ->where(['MyTeams.event_activity_list_id' => $event_activity_list_id])
+                ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
                 ->toArray();
         $tieSheetUpdateReguiredFlag = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id, 'update_tiesheet' => true])->count();
         $playersId = null;
         foreach ($team_data as $key_team => $value_team) {
+            //debug($value_team->description);die;
             $playersId[] = $value_team->id;
+            $teamName[] = $value_team->description;
         }
         if (empty($playersId)) {
             //debug($playersId);
@@ -198,7 +203,7 @@ class MyTeamsController extends AppController {
              }
         }
         //die;
-        $this->getTeamsTieSheet($playersId, $eventDetails, true, $teamTieSheetLists);
+        $this->getTeamsTieSheet($teamName, $eventDetails, true, $teamTieSheetLists);
     }
 
     public function createMyTeamTieSheet($data = null, $eventDetails = null, $score = null, $event_activity_list_id) {
@@ -390,7 +395,12 @@ class MyTeamsController extends AppController {
 // Now, lets fill in some match results. This can be done two ways: either by directly specifying round and match indicies or by specifying competitor names.
 
         foreach ($teamTieSheetLists as $key => $value) {
-            $KO->setResByCompets($value['team1_event_team_detail_id'], $value['team2_event_team_detail_id'], $value['team1_score'], $value['team2_score']);
+         //   debug($value->team2_event_team_detail->description);die;
+            $KO->setResByCompets(
+                    $value->team1_event_team_detail->description, 
+                    $value->team2_event_team_detail->description, 
+                    $value['team1_score'], 
+                    $value['team2_score']);
             //$returnData = $KO->getData($eventDetails);
         }
 

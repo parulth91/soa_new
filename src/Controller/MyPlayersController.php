@@ -192,9 +192,10 @@ class MyPlayersController extends AppController {
                             'EventTeamDetails' => [],
                             'RegisterCandidateEventActivities' => []
                         ])->where(['event_activity_lists.id' => $id])->toArray();
-        //debug($eventActivityLists[0]);die;
+        //debug($eventActivityLists[0]->event_list['description']);die;
         //$this->myPlayersTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_player_details, $eventActivityLists[0]->description);
-        $this->myPlayersTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->register_candidate_event_activities, $eventActivityLists[0]->description);
+        $tieSheetHeader = $eventActivityLists[0]->event_list['description'].'('.$eventActivityLists[0]->description.')';
+        $this->myPlayersTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->register_candidate_event_activities, $tieSheetHeader);
 
         die;
     }
@@ -202,20 +203,24 @@ class MyPlayersController extends AppController {
     public function myPlayersTieSheets($event_list_id = null, $event_activity_list_id = null, $player_data = null, $eventDetails = null) {
 
         $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
-        $playerTieSheetLists = $playerTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id])
+        $playerTieSheetLists = $playerTieSheetTable->find('all')
+                ->contain(['Player1s','Player2s'])
+                ->where(['player_tie_sheets.event_activity_list_id' => $event_activity_list_id])
+                
                 ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
                 ->toArray();
         $tieSheetUpdateReguiredFlag = $playerTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id, 'update_tiesheet' => true])->count();
         $playersId = null;
         foreach ($player_data as $key_player => $value_player) {
+          
             $playersId[] = $value_player->id;
+            $playerRegNo[] = $value_player->registration_number;
         }
         if (empty($playersId)) {
-            debug($playersId);
             $this->Flash->error(__('No player participated till now in this game. The player tie sheet could not be saved. Please, add players and try again.'));
-            die;
+             return false;
         }
-        //debug($playerTieSheetLists);die;
+       // debug($playerTieSheetLists);die;
 //round 1 check and new data entered in database
         if (empty($playerTieSheetLists)) {
             if ($this->createMyPlayersTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
@@ -234,7 +239,7 @@ class MyPlayersController extends AppController {
             }
         }
         //die;
-        $this->getPlayersTieSheet($playersId, $eventDetails, true, $playerTieSheetLists);
+        $this->getPlayersTieSheet($playerRegNo, $eventDetails, true, $playerTieSheetLists);
     }
 
     public function createMyPlayersTieSheet($data = null, $eventDetails = null, $score = null, $event_activity_list_id) {
@@ -445,14 +450,14 @@ class MyPlayersController extends AppController {
         foreach ($playerTieSheetLists as $key => $value) {
             if($value['player1_id']==67 && $value['player2_id']== 57){
                 //debug($competitors);
-              //  debug($value);
+                //debug($value->player2['registration_number']);die;
                // debug($bracket);
                 
               //  debug($KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']));
               // debug("hi");
             }
             
-            $KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']);
+            $KO->setResByCompets($value->player1['registration_number'], $value->player2['registration_number'], $value['player1_score'], $value['player2_score']);
             //$returnData = $KO->getData($eventDetails);
         }
  //die;

@@ -55,15 +55,15 @@ class MyPlayersTable extends Table {
 //            'foreignKey' => 'player2_id'
 //        ]);
         $this->belongsTo('WinnerPlayers', [
-            'className' => 'RegisterCandidates',
+            'className' => 'RegisterCandidateEventActivities',
             'foreignKey' => 'winner_player_id'
         ]);
         $this->belongsTo('Player1s', [
-            'className' => 'RegisterCandidates',
+            'className' => 'RegisterCandidateEventActivities',
             'foreignKey' => 'player1_id'
         ]);
         $this->belongsTo('Player2s', [
-            'className' => 'RegisterCandidates',
+            'className' => 'RegisterCandidateEventActivities',
             'foreignKey' => 'player2_id'
         ]);
     }

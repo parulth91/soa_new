@@ -335,16 +335,20 @@ class KnockoutGD extends Knockout {
         // Dimensional parameters.
         $fh = imagefontheight(FONT);
         $fw = imagefontwidth(FONT);
+        $header_hpad=20;
+        $header_vpad=5;
+        
         $lpad = 30; // Line (branch) padding before and after competitor names and after scores.
-        $hpad = 20; // Outer horizontal image padding.
-        $vpad = 60; // Outer vertical image padding.
+        $hpad = 100; // Outer horizontal image padding.
+        $vpad = 100; // Outer vertical image padding.
         $lw = $this->getStrLen() * $fw + 3 * $lpad; // Line (branch) width. Where getStrLen() gets the length of the longest string used in the image.
         // Initial calls.
         $dimensions = $this->getDimens($fh, $lw, $hpad, $vpad);
         $this->im = imagecreate($dimensions['x'], $dimensions['y']);
         $bg = imagecolorallocate($this->im, 255, 255, 255); // Set background color.
         $this->tc = imagecolorallocate($this->im, 0, 0, 0); // Text color.
-        $this->mkStr($dimensions['x'] - $hpad - imagefontwidth(LFONT) * strlen($tourName), $dimensions['y'] - $vpad / 2, $tourName, LFONT); // Print tournament name.
+      //  $this->mkStr($dimensions['x'] - $hpad - imagefontwidth(LFONT) * strlen($tourName), $dimensions['y'] - $vpad / 2, $tourName, LFONT); // Print tournament name.
+        $this->mkStr($header_hpad, $header_vpad, $tourName, LFONT); // Print tournament name.
         // Initial positioning values from which drawing begins.
         $rx = $hpad; // Round X-position.
         $ry = $vpad; // Round Y-position.
