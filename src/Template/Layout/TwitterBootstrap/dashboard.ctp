@@ -71,7 +71,7 @@ echo $this->Html->script(['jquery/validation.js']);
                     </div>
 
 
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="nav navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right btn btn-danger" style=" text-align: center;   padding-left: 12px;">
                             <!--                                <li><a href="#">Page</a></li>
                                                             <li><a href="#">Page</a></li>

@@ -25,7 +25,7 @@ class MyTeamsController extends AppController {
     public function index($id = null) {
         $Result = $this->MyTeams->find()->contain([
                             'EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails'])
-                        ->where(['MyTeams.event_activity_list_id' => $id])->order('round_number');
+                        ->where(['MyTeams.event_activity_list_id' => $id])->order(['round_number' => 'ASC', 'match_number' => 'ASC']);
 //        $this->paginate = [
 //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
 //        ];

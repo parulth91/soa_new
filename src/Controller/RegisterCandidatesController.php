@@ -441,26 +441,36 @@ class RegisterCandidatesController extends AppController
         }
         //for update attendance status of registered candidates
         if ($this->request->is('post')) {
+            //debug($this->request->data);die;
             foreach ($this->request->data['attendance_status'] as $key => $item) :
+                debug($item['checkid']);
                 if ($item['checkid'] != '0') {
-                    $id = $item;
-                    if ($id) {
-                        $updateQuery =  $this->RegisterCandidates->updateAll(
-                            ['attendance_status ' => 'true'],
-                            ['id IN' => $id]
-                        );
-                    } else {
-                        $this->Flash->error(__('Please select At least one.'));
-                    }
+                    $idChecked[] = $key;  
+                }else{
+                     $idUnChecked[] = $key;  
                 }
             endforeach;
-            if ($updateQuery) {
-                $this->Flash->success(__('Attendance Status has been saved .'));
-                //$this->redirect($this->referer());
-                //  return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivtiesIndividualAttendance', $id]);
-            } else {
-                $this->Flash->error(__('The Attendance Status could not be updated. Please, try again.'));
-            }
+            
+           
+         
+            if ($idChecked) {
+                 //debug($idChecked);
+                        $updateQuery =  $this->RegisterCandidates->updateAll(
+                            ['attendance_status ' => 'true'],
+                            ['id IN' => $idChecked]
+                        );
+                    } 
+                    if($idUnChecked) {
+                           //debug($idUnChecked);
+                         $updateQuery =  $this->RegisterCandidates->updateAll(
+                            ['attendance_status ' => 'false'],
+                            ['id IN' => $idUnChecked]
+                        );
+                       
+                    }
+            return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivtiesIndividualAttendance', $id]);
+          
         }
+        
     }
 }

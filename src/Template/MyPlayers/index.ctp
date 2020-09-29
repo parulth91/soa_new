@@ -25,7 +25,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($playerTieSheets as $playerTieSheet): ?>
+        <?php
+        
+        foreach ($playerTieSheets as $playerTieSheet): ?>
             <tr>
 <!--                <td><?= $this->Number->format($playerTieSheet->id) ?></td>-->
                 <td>
@@ -38,15 +40,15 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                
                 <td><?= $this->Number->format($playerTieSheet->match_number) ?></td>
                 <td>
-                    <?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->full_name.'('.$playerTieSheet->player1->id.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?>
+                    <?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->full_name.' ('.$playerTieSheet->player1->registration_number.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?>
                 </td>
                 <td>
-                    <?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->full_name.'('.$playerTieSheet->player2->id.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?>
+                    <?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->full_name.' ('.$playerTieSheet->player2->registration_number.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?>
                 </td>
                   <td><?= $this->Number->format($playerTieSheet->player1_score) ?></td>
                 <td><?= $this->Number->format($playerTieSheet->player2_score) ?></td>
                  <td>
-                    <?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->full_name.'('.$playerTieSheet->winner_player->id.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?>
+                    <?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->full_name.' ('.$playerTieSheet->winner_player->registration_number.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?>
                 </td>
                 <td><?= $playerTieSheet->active ? __('Yes') : __('No'); ?></td>
                 <td><?= $this->Number->format($playerTieSheet->action_by) ?></td>

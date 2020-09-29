@@ -7,6 +7,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     <thead>
         <tr>
             <th><?= $this->Paginator->sort('S.N.O'); ?></th>
+            <th><?= $this->Paginator->sort('id'); ?></th>
             <th><?= $this->Paginator->sort('Event'); ?></th>
             <th><?= $this->Paginator->sort('Activity'); ?></th>
             <th><?= $this->Paginator->sort('Game type'); ?></th>
@@ -20,10 +21,12 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     </thead>
     <tbody>
         <?php
+        $i=1;
         foreach ($nameResult as $List):
             //debug($List);
             ?>
             <tr>
+                <td><?= $i ?></td>
                 <td><?= $this->Number->format($List->id) ?></td>
                 <td><?= h($List['event_list']['description']) ?></td>
                 <td><?= h($List['activity_list']['description']) ?></td>
@@ -58,7 +61,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php 
+        $i++;
+        endforeach; ?>
     </tbody>
 </table>
 <div class="paginator">

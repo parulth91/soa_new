@@ -39,7 +39,7 @@ class MyPlayersController extends AppController {
                             , 'Player1s'
                             , 'Player2s'
                         ])
-                        ->where(['MyPlayers.event_activity_list_id' => $id]) ->order(['round_number' => 'ASC', 'match_number' => 'ASC']);
+                        ->where(['MyPlayers.event_activity_list_id' => $id])->order(['round_number' => 'ASC', 'match_number' => 'ASC']);
 //        $this->paginate = [
 //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
 //        ];
@@ -190,12 +190,19 @@ class MyPlayersController extends AppController {
                             'EventTeamDetails' => [],
                             'EventLists' => [],
                             'EventTeamDetails' => [],
-                            'RegisterCandidateEventActivities' => []
-                        ])->where(['event_activity_lists.id' => $id])->toArray();
-        //debug($eventActivityLists[0]->event_list['description']);die;
+                            'RegisterCandidateEventActivities' => [],
+                            'RegisterCandidateEventActivities' => function ($q) {
+                                return $q->where(['RegisterCandidateEventActivities.attendance_status' => true]);
+                            }
+                        ])->where(['event_activity_lists.id' => $id
+                        //, 'register_candidate_event_activities.attendance_status' => true
+                ])->toArray();
+      //  debug($eventActivityLists);die;
         //$this->myPlayersTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_player_details, $eventActivityLists[0]->description);
-        $tieSheetHeader = $eventActivityLists[0]->event_list['description'].'('.$eventActivityLists[0]->description.')';
-        $this->myPlayersTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->register_candidate_event_activities, $tieSheetHeader);
+        $tieSheetHeader = $eventActivityLists[0]->event_list['description'] . '(' . $eventActivityLists[0]->description . ')';
+        $this->myPlayersTieSheets($eventActivityLists[0]->event_lists_id, $id, $eventActivityLists[0]->register_candidate_event_activities, $tieSheetHeader);
+            
+       
 
         die;
     }
@@ -204,37 +211,43 @@ class MyPlayersController extends AppController {
 
         $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
         $playerTieSheetLists = $playerTieSheetTable->find('all')
-                ->contain(['Player1s','Player2s'])
+                ->contain(['Player1s', 'Player2s'])
                 ->where(['player_tie_sheets.event_activity_list_id' => $event_activity_list_id])
-                
                 ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
                 ->toArray();
         $tieSheetUpdateReguiredFlag = $playerTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id, 'update_tiesheet' => true])->count();
         $playersId = null;
         foreach ($player_data as $key_player => $value_player) {
-          
+
             $playersId[] = $value_player->id;
             $playerRegNo[] = $value_player->registration_number;
         }
-        if (empty($playersId)) {
-            $this->Flash->error(__('No player participated till now in this game. The player tie sheet could not be saved. Please, add players and try again.'));
-             return false;
+ //debug(count($playersId));
+           // die;
+        if (count($playersId) <= 1) {
+           $this->Flash->error(__('No player participated till now in this game. The player tie sheet could not be saved. Please, add players and try again.'));
+          
+            return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $eventActivityLists[0]->event_lists_id ]);
+        
+            
         }
-       // debug($playerTieSheetLists);die;
+         //debug($playerTieSheetLists);die;
 //round 1 check and new data entered in database
         if (empty($playerTieSheetLists)) {
             if ($this->createMyPlayersTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
-                
+              
             } else {
                 $this->Flash->error(__('Unable to create Tie sheet. The player tie sheet could not be saved. Please, try again.'));
+                return false;
             }
         } elseif (!empty($playerTieSheetLists)) {
             // if result is updated then update the tie sheet data
             if ($tieSheetUpdateReguiredFlag > 0) {
                 if ($this->updateMyPlayersTieSheet($playersId, $eventDetails, true, $playerTieSheetLists, $event_activity_list_id) == true) {
-                    
+                  
                 } else {
                     $this->Flash->error(__('Unable to update the tie sheet. The player tie sheet could not be saved. Please, try again.'));
+                    return false;
                 }
             }
         }
@@ -302,7 +315,7 @@ class MyPlayersController extends AppController {
             $KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']);
         }
         $tieSheetRoundData = $KO->getData($eventDetails);
-       // debug($tieSheetRoundData);
+        // debug($tieSheetRoundData);
         foreach ($playerTieSheetLists as $key => $value) {
             $playerTieSheetNew[$key]['player1_id'] = null;
             $playerTieSheetNew[$key]['player2_id'] = null;
@@ -448,19 +461,18 @@ class MyPlayersController extends AppController {
 // Now, lets fill in some match results. This can be done two ways: either by directly specifying round and match indicies or by specifying competitor names.
 
         foreach ($playerTieSheetLists as $key => $value) {
-            if($value['player1_id']==67 && $value['player2_id']== 57){
+            if ($value['player1_id'] == 67 && $value['player2_id'] == 57) {
                 //debug($competitors);
                 //debug($value->player2['registration_number']);die;
-               // debug($bracket);
-                
-              //  debug($KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']));
-              // debug("hi");
+                // debug($bracket);
+                //  debug($KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']));
+                // debug("hi");
             }
-            
+
             $KO->setResByCompets($value->player1['registration_number'], $value->player2['registration_number'], $value['player1_score'], $value['player2_score']);
             //$returnData = $KO->getData($eventDetails);
         }
- //die;
+        //die;
 //$KO->setResByMatch('A', 'E', 1, 0); // Arguments: match index, round index, score 1, score 2.
 // $KO->setResByCompets('A', 'E', 0, 1); // Arguments: competitor 1, competitor 2, score 1, score 2.
 // $bracket = $KO->getBracket();print_r($bracket);
