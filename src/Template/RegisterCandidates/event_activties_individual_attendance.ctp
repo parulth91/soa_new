@@ -118,6 +118,11 @@ echo $this->Form->create(
     <p><?= $this->Paginator->counter() ?></p>
 </div>
 
-<?= $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
+<?php
+if($playerTieSheetEntryCount > 0){
+    $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
+}
+
+
 ?>
 <?= $this->Form->end() ?>
