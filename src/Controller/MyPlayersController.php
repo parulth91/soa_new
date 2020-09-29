@@ -39,7 +39,7 @@ class MyPlayersController extends AppController {
                             , 'Player1s'
                             , 'Player2s'
                         ])
-                        ->where(['MyPlayers.event_activity_list_id' => $id])->order('round_number');
+                        ->where(['MyPlayers.event_activity_list_id' => $id]) ->order(['round_number' => 'ASC', 'match_number' => 'ASC']);
 //        $this->paginate = [
 //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
 //        ];
