@@ -57,12 +57,14 @@ if (!empty($teamDetails)) {
         <tr>
 
           <th>S.NO </th>
+          <th>Id </th>
+          <th>Registration Number</th>
           <th>GameType</th>
           <th>Activity</th>
           <th>Name</th>
           <th>Age</th>
           <th>Weight</th>
-          <th>Registration Number</th>
+          
           <th>Attendance Status</th>
           <th class="actions"><?= __('Actions'); ?></th>
         </tr>
@@ -71,8 +73,13 @@ if (!empty($teamDetails)) {
 
         <tr>
 
-          <?php foreach ($registeredCandidatePaginate as $registeredCandidateView) : ?>
+          <?php 
+          $i=1;
+          
+          foreach ($registeredCandidatePaginate as $registeredCandidateView) : ?>
+            <td><?= $i ?></td>
             <td><?= $this->Number->format($registeredCandidateView->id) ?></td>
+             <td><?= h($registeredCandidateView->registration_number) ?></td>
             <td>
               <?= $registeredCandidateView->event_activity_list->activity_list->game_type_list->description; ?>
             </td>
@@ -80,20 +87,36 @@ if (!empty($teamDetails)) {
             <td><?= $registeredCandidateView->full_name; ?></td>
             <td><?= $registeredCandidateView->age;  ?></td>
             <td><?= $registeredCandidateView->weight;  ?></td>
-            <td><?= h($registeredCandidateView->registration_number) ?></td>
-            <td><?php if ($registeredCandidateView->attendance_status == 'true') {
-                  echo $registeredCandidateView->attendance_status;
-                } else {
-                  echo '0';
-                }
-                ?></td>
-            <td class="actions"><?php
-             echo $this->Form->checkbox(
-                                  'attendance_status' . "[$registeredCandidateView->id]",
-                                  ['value' => "$registeredCandidateView->id "]
-                                ); ?></td>
+           
+             <td><?php if ($registeredCandidateView->attendance_status == 'true') {
+                            echo "Present";
+                        } else {
+                            echo "Absent";
+                        }
+                        ?></td>
+                    <?php //echo '<td class="actions">' . $this->Form->checkbox(
+                      //  'attendance_status.' . $registeredCandidateView->id . '.checkid',
+                      //  array('value' => $registeredCandidateView->id)
+                  //  ) . '</td>';
+                    ?>
+                <td class="actions"><?php //debug($registeredCandidateView->id;)
+                        if($registeredCandidateView->attendance_status == 'true')
+                        {
+                        echo $this->Form->checkbox(
+                                              'attendance_status' . "[$registeredCandidateView->id]" ,
+                                              ['value' => "$registeredCandidateView->id ",  'checked' => true]                                      
+                                            );}
+                                            else{
+                                              echo $this->Form->checkbox(
+                                                'attendance_status' . "[$registeredCandidateView->id]" ,
+                                                ['value' => "$registeredCandidateView->id ",'checked' => false]                                      
+                                              );  
+                        } ?>
+                </td>
         </tr>
-      <?php endforeach; ?>
+      <?php 
+      $i++;
+      endforeach; ?>
       </tbody>
 
     </table>
