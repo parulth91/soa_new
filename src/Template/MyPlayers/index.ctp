@@ -6,7 +6,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <table class="table table-striped" cellpadding="0" cellspacing="0">
     <thead>
         <tr>
-<!--            <th><?= $this->Paginator->sort('id'); ?></th>-->
+<th>SNO.</th>
             <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
              <th><?= $this->Paginator->sort('round_description'); ?></th>
             <th><?= $this->Paginator->sort('round_number'); ?></th>
@@ -26,10 +26,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     </thead>
     <tbody>
         <?php
-        
+        $i=1;
         foreach ($playerTieSheets as $playerTieSheet): ?>
             <tr>
-<!--                <td><?= $this->Number->format($playerTieSheet->id) ?></td>-->
+               <td><?= $i ?></td>
                 <td>
                     <?= $playerTieSheet->has('event_activity_list') ? $this->Html->link($playerTieSheet->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $playerTieSheet->event_activity_list->id]) : '' ?>
                 </td>
@@ -40,15 +40,15 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                
                 <td><?= $this->Number->format($playerTieSheet->match_number) ?></td>
                 <td>
-                    <?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->full_name.' ('.$playerTieSheet->player1->registration_number.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?>
+                    <?= $playerTieSheet->has('player1') ? $this->Html->link($playerTieSheet->player1->registration_number.' ('.$playerTieSheet->player1->full_name.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player1->id]) : '' ?>
                 </td>
                 <td>
-                    <?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->full_name.' ('.$playerTieSheet->player2->registration_number.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?>
+                    <?= $playerTieSheet->has('player2') ? $this->Html->link($playerTieSheet->player2->registration_number.' ('.$playerTieSheet->player2->full_name.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->player2->id]) : '' ?>
                 </td>
                   <td><?= $this->Number->format($playerTieSheet->player1_score) ?></td>
                 <td><?= $this->Number->format($playerTieSheet->player2_score) ?></td>
                  <td>
-                    <?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->full_name.' ('.$playerTieSheet->winner_player->registration_number.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?>
+                    <?= $playerTieSheet->has('winner_player') ? $this->Html->link($playerTieSheet->winner_player->registration_number.' ('.$playerTieSheet->winner_player->full_name.')', ['controller' => 'RegisterCandidateEventActivities', 'action' => 'view', $playerTieSheet->winner_player->id]) : '' ?>
                 </td>
                 <td><?= $playerTieSheet->active ? __('Yes') : __('No'); ?></td>
                 <td><?= $this->Number->format($playerTieSheet->action_by) ?></td>
@@ -63,7 +63,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     <?php // $this->Form->postLink('', ['action' => 'delete', $playerTieSheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $playerTieSheet->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php
+        $i++;
+        endforeach; ?>
     </tbody>
 </table>
 <div class="paginator">

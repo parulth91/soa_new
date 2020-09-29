@@ -32,7 +32,7 @@ class RegisterCandidatesController extends AppController {
 
     public function viewRegisteredCandidates($id = null) {
         $Result = $this->RegisterCandidates->find()->contain([
-                    'EventActivityLists','StateLists','EventTeamDetails','GenderLists'
+                    'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
                 ])
                 ->where(['RegisterCandidates.event_activity_list_id' => $id]);
         //        $this->paginate = [
@@ -355,8 +355,8 @@ class RegisterCandidatesController extends AppController {
     public function eventActivtiesTeamAttendance($id = null) {
         //to display team list
         $connection = ConnectionManager::get('default');
-        $eventTeamlisttable = TableRegistry::get('event_team_details');
-        $teamDetails = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
+        $eventTeamListTable = TableRegistry::get('event_team_details');
+        $teamDetails = $eventTeamListTable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
         $this->set('teamDetails', $teamDetails);
 
 
@@ -381,6 +381,10 @@ class RegisterCandidatesController extends AppController {
             }
             // }
             //  else{
+            if (count($registeredCandidateLists->toArray())) {
+                $teamMinAttendanceCheck = $registeredCandidateLists->toArray()['0']['event_activity_list']->activity_list->minimum_player_participating;
+            }
+            //debug($registeredCandidateLists->toArray());die;
             if (isset($this->request->data['update_attendance_button'])) {
                 //for update attendance status of registered candidates
 
@@ -396,7 +400,7 @@ class RegisterCandidatesController extends AppController {
                         }
                     endforeach;
 
-
+                    $totalPresent = count($idChecked);
 
                     if ($idChecked) {
                         //debug($idChecked);
@@ -411,40 +415,61 @@ class RegisterCandidatesController extends AppController {
                         );
                     }
 
+                    $eventTeamDetailsTable = TableRegistry::get('event_team_details');
+                    if ($teamMinAttendanceCheck <= $totalPresent) {
+                        $data_update = $eventTeamDetailsTable->updateAll(
+                                ['attendance_status ' => 'true'], ['id' => $eventTeamId]
+                        );
+                    } else {
+                        $data_update = $eventTeamDetailsTable->updateAll(
+                                ['attendance_status ' => 'false'], ['id' => $eventTeamId]
+                        );
+                    }
+
 
                     $this->Flash->success(__('Attendance Status has been saved .'));
-                    $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                            ->contain([
-                                'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
-                            ])->where([
-                                'EventActivityLists.id' => $id,
-                                'event_team_detail_id' => $eventTeamId
-                            ])
-                            ->order(['RegisterCandidates.id']);
-                    //debug($registeredCandidateLists);die;
-                    if (isset($registeredCandidateLists)) {
-                        $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-                        $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
-                    }
                 }
                 // }
                 // }
+            }
+
+            $registeredCandidateLists = $this->RegisterCandidates->find('all')
+                    ->contain([
+                        'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
+                    ])->where([
+                        'EventActivityLists.id' => $id,
+                        'event_team_detail_id' => $eventTeamId
+                    ])
+                    ->order(['RegisterCandidates.id']);
+//            debug($teamMinAttendanceCheck);
+//            die;
+            if (isset($registeredCandidateLists)) {
+                $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
+                $this->set(compact('registeredCandidatePaginate', 'teamMinAttendanceCheck'));
             }
         }
     }
 
     public function eventActivtiesIndividualAttendance($id = null) {
+        
+        
         $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                ->contain(['StateLists',
-                    'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
-                ])->where(['event_activity_list_id' => $id])
-                ->order(['RegisterCandidates.state_list_id']);
-
-        if (isset($registeredCandidateLists)) {
-            $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-            $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate'));
-        }
-        //for update attendance status of registered candidates
+                    ->contain(['StateLists',
+                        'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
+                    ])->where(['event_activity_list_id' => $id])
+                    ->order(['RegisterCandidates.state_list_id']);
+            $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
+            $playerTieSheetEntryCount = $playerTieSheetTable->find('all')
+                            ->contain(['Player1s', 'Player2s'])
+                            ->where(['player_tie_sheets.event_activity_list_id' => $id])
+                            ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
+                            ->count();
+            if (isset($registeredCandidateLists)) {
+                $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
+                $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate', 'playerTieSheetEntryCount'));
+            }
+            
+            
         $idChecked = '';
         $idUnChecked = '';
         if ($this->request->is('post')) {
@@ -472,8 +497,20 @@ class RegisterCandidatesController extends AppController {
                         ['attendance_status ' => 'false'], ['id IN' => $idUnChecked]
                 );
             }
+            
+            //for update attendance status of registered candidates
+
             return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivtiesIndividualAttendance', $id]);
         }
+
+            
+
+
+
+
+
+            
+        
     }
 
 }

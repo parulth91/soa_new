@@ -44,9 +44,16 @@ if (!empty($teamDetails)) {
           Attendance Sheet for <?php if (isset($EventDescription[0]->event_activity_list->event_list->description)) {
                                   echo $EventDescription[0]->event_activity_list->event_list->description;
                                 } else {
+                                    
                                 }
                                 ?>
       </h3>
+        <h4>
+            Minimum players present for team completion is :
+            <?php 
+            echo $teamMinAttendanceCheck;
+            ?>
+        </h4>
     </div>
   </div>
 
