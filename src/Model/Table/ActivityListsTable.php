@@ -79,9 +79,9 @@ class ActivityListsTable extends Table
             ->add('description', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
             $validator
-            ->integer('game-type-list-id')
-            ->requirePresence('game-type-list-id', 'create')
-            ->notEmpty('game-type-list-id');
+            ->integer('game_type_list_id')
+            ->requirePresence('game_type_list_id', 'create')
+            ->notEmpty('game_type_list_id');
 
         $validator
             ->integer('minimum_player_participating')

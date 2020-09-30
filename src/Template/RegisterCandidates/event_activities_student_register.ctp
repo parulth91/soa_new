@@ -16,7 +16,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <?php echo $this->Form->create('submit_form', ['id' => 'submit_form', 'type' => 'post']); ?>
 <?php foreach ($eventActivityLists as $eventActivityListValue) { ?>
     <div class = "pen-title">
-        <h3 align = "center">Registration for <?php echo $eventActivityListValue->event_list->description; //die;              
+        <h3 style="align:center">Registration for <?php echo $eventActivityListValue->event_list->description; //die;              
     ?> 
         </h3>
     </div>
@@ -52,10 +52,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     </th>
                 <?php } ?>
                 <th>
-                    <?php echo $eventActivityListValue->activity_list->age_group_list->minimum_age; ?>
+                    <?php echo $minimumage=$eventActivityListValue->activity_list->age_group_list->minimum_age; ?>
                 </th>
                 <th>
-                    <?php echo $eventActivityListValue->activity_list->age_group_list->maximum_age; ?>
+                    <?php echo $maximumage=$eventActivityListValue->activity_list->age_group_list->maximum_age; ?>
                 </th>          
                 <th>
                     <?php echo $eventActivityListValue->activity_list->minimum_player_participating; ?>
@@ -110,9 +110,33 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         echo $this->Form->input('', [
                             'label' => false,
                             'type' => 'hidden',
+                            'id' => 'maximum_age',
+                            'value' => $maximumage,
+                        ]);
+                      
+                        
+                        //echo $this->Form->control('name');
+                        ?>
+                           <?php
+                        echo $this->Form->input('', [
+                            'label' => false,
+                            'type' => 'hidden',
+                            'id' => 'minimum_age',
+                            'value' => $minimumage,
+                        ]);
+                       
+                        
+                        //echo $this->Form->control('name');
+                        ?>
+                           <?php
+                        echo $this->Form->input('', [
+                            'label' => false,
+                            'type' => 'hidden',
                             'id' => 'maximum_player_participating',
                             'value' => $maximum_player_participating,
                         ]);
+                    
+                        
                         //echo $this->Form->control('name');
                         ?>
                         <?php
@@ -134,11 +158,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                             'type' => 'text',
                             'maxlength' => 10,
                             'oninput' => "setCustomValidity('')",
-                            'placeholder' => "dd-mm-yyyy", "onkeyup" => "return validateDate(this);",
+                            'placeholder' => "dd-mm-yyyy", "onkeyup" => "calAge();",
                             'required' => 'true',
                             'autocomplete' => "off",
                         ]);
                         ?>
+                        <input type="hidden" id="msg" name="msg" > 
+                        <p id="validateage"></p>
                     </td>
                     <?php
                     if ($weightFlag != null) {
@@ -179,27 +205,90 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <script>
     //             for datepicker
     $(document).ready(function () {
+      alert('sctipy');
 
         var d = new Date();
         var year = d.getFullYear() - 10;
         d.setFullYear(year);
         // 'id' => 'dob_' . $i,
         var maximum_player_participating = document.getElementById('maximum_player_participating').value;
-        for (var i = 1; i <= maximum_player_participating; i++) {
+     
+     for (var i = 1; i <= maximum_player_participating; i++) {
             //alert(i);
             $("#dob_" + i).datepicker({
                 dateFormat: 'dd-mm-yy',
                 autoPick: false,
                 changeMonth: true,
                 changeYear: true,
-                defaultDate: d,
-                maxYear: d,
-                maxDate: new Date(2019, 5, 30),
-                yearRange: "c-60:c+19"
+               // defaultDate: d,
+              //  maxYear: d,
+                maxDate: new Date(),
+               // yearRange: '1900:2150',
+
+     onSelect: function () {
+            //alert('dd');
+            var age = getAge(this);
+           /* $('#age').val(age);*/
+            console.log(age);
+            //alert(years);
+          // $("#msg").val(age);
+           //to check given age within range or not
+         //  var candidateage= document.getElementById('msg').value;
+    
+        $("#validateage").html(age+ ' candidate is eligible');
+            var minimumage=document.getElementById('minimum_age').value;
+             var maximumage=document.getElementById('maximum_age').value;
+           
+          //  alert(minimumage);
+          $("#validateage").html(age+ 'candidate is not eligible');
+           if(age >=minimumage && age <=maximumage)
+           {
+            $("#validateage").html(age+ 'candidate is eligible');
+           }
+           else{
+            $("#dob_" + i).val()='';
+
+            $("#validateage").html(age+ 'candidate is not eligible');
+           }
+     }
             });
         }
+        function calAge() {
+            alert('cal');
+				$('.error, .msg').text('');
+                var dob = $("#dob_" + i).val();
+                alert(dob);
+                $("#dob_" + i).change(function () {
+                    alert('ee');
+				if(dob == ''){
+					$('.error').text('Select DOB!');
+				}else{
+					dobDate = new Date(dob);
+					nowDate = new Date();
+					
+					var diff = nowDate.getTime() - dobDate.getTime();
+					
+					var ageDate = new Date(diff); // miliseconds from epoch
+					var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+					
+					$("#msg").html(age+ ' Years');
+				}
+			});
+        }
+     
+        function getAge(dateVal) {
+            
+              var  birthday = new Date(dateVal.value),
+                today = new Date(),
+                ageInMilliseconds = new Date(today - birthday),
+                years = ageInMilliseconds / (24 * 60 * 60 * 1000 * 365.25 ),
+                months = 12 * (years % 1),
+                days = Math.floor(30 * (months % 1));
+                return Math.floor(years);
+           // return Math.floor(years) + ' years ' + Math.floor(months) + ' months ' + days + ' days';
+           
 
+        }
+});
 
-
-    });
 </script>

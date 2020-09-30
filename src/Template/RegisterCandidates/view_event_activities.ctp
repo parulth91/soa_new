@@ -47,12 +47,12 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     <?php
                     if ($List->activity_list->game_type_list->description == 'Team') {
                         //  debug($List->activity_list->game_type_list->description);
-                        echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
+                        echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewTeamRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesTeamAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
                         echo $this->Html->link('Team Tie Sheet', ['controller' => 'MyTeams', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
                         echo $this->Html->link('Result', ['controller' => 'MyTeams', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
                     } elseif ($List->activity_list->game_type_list->description == 'Individual') {
-                        echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
+                        echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewIndividualRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesIndividualAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
                         echo $this->Html->link('Players Tie Sheet', ['controller' => 'MyPlayers', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
                         echo $this->Html->link('Result', ['controller' => 'MyPlayers', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);

@@ -7,6 +7,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 <table class="table table-striped" cellpadding="0" cellspacing="0">
     <thead>
         <tr>
+            <th>S.NO </th>
             <th><?= $this->Paginator->sort('id'); ?></th>
             <th><?= $this->Paginator->sort('description'); ?></th>
             <th><?= $this->Paginator->sort('minimum_player_participating'); ?></th>
@@ -24,8 +25,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($activityLists as $activityList): //debug($activityList);?>
+        <?php $i=1;
+        foreach ($activityLists as $activityList): //debug($activityList);?>
         <tr>
+             <td><?php echo $i; ?></td>
             <td><?= $this->Number->format($activityList->id) ?></td>
             <td><?= h($activityList->description) ?></td>
             <td><?= $this->Number->format($activityList->minimum_player_participating) ?></td>
@@ -49,7 +52,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <?= $this->Form->postLink('', ['action' => 'delete', $activityList->id], ['confirm' => __('Are you sure you want to delete # {0}?', $activityList->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
             </td>
         </tr>
-        <?php endforeach; ?>
+        <?php $i++;
+    endforeach; ?>
     </tbody>
 </table>
 <div class="paginator">

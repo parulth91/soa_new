@@ -4,8 +4,9 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
 <?php echo $this->Form->create('team_list_form'); ?>
 <?php
-if (!empty($teamDetails)) {
-?>
+if (!empty($teamDetails)) 
+{
+  ?>
   <div class="row">
     <?php
     if (isset($registeredCandidatePaginate)) {
@@ -37,7 +38,8 @@ if (!empty($teamDetails)) {
     ?>
     <div class="pen-title">
       <h3>
-        <?php if ($registeredCandidatePaginate != '') {
+        <?php if ($registeredCandidatePaginate != '') 
+       {
           $EventDescription   = $registeredCandidatePaginate->toArray();
           //debug($EventDescription[0]->event_activity_list->event_list);die;
         ?>
