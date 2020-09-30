@@ -114,8 +114,8 @@ echo $this->Form->create($activityList);
             {
                 $("#min_playerdiv").show();
                 $("#max_playerdiv").show();
-                document.getElementById("maximum-player-participating").Value = 1;
-                document.getElementById("minimum-player-participating").Value = 1;
+                document.getElementById("maximum-player-participating").defaultValue = 1;
+                document.getElementById("minimum-player-participating").defaultValue = 1;
                 $("#maximum-player-participating").prop("readonly", true);
                 $("#minimum-player-participating").prop("readonly", true);
                

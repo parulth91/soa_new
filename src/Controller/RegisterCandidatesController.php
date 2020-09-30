@@ -451,25 +451,25 @@ class RegisterCandidatesController extends AppController {
     }
 
     public function eventActivtiesIndividualAttendance($id = null) {
-        
-        
+
+
         $registeredCandidateLists = $this->RegisterCandidates->find('all')
-                    ->contain(['StateLists',
-                        'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
-                    ])->where(['event_activity_list_id' => $id])
-                    ->order(['RegisterCandidates.state_list_id']);
-            $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
-            $playerTieSheetEntryCount = $playerTieSheetTable->find('all')
-                            ->contain(['Player1s', 'Player2s'])
-                            ->where(['player_tie_sheets.event_activity_list_id' => $id])
-                            ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
-                            ->count();
-            if (isset($registeredCandidateLists)) {
-                $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-                $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate', 'playerTieSheetEntryCount'));
-            }
-            
-            
+                ->contain(['StateLists',
+                    'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
+                ])->where(['event_activity_list_id' => $id])
+                ->order(['RegisterCandidates.state_list_id']);
+        $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
+        $playerTieSheetEntryCount = $playerTieSheetTable->find('all')
+                ->contain(['Player1s', 'Player2s'])
+                ->where(['player_tie_sheets.event_activity_list_id' => $id])
+                ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
+                ->count();
+        if (isset($registeredCandidateLists)) {
+            $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
+            $this->set(compact('registeredCandidatePaginate', '$registeredCandidatePaginate', 'playerTieSheetEntryCount'));
+        }
+
+
         $idChecked = '';
         $idUnChecked = '';
         if ($this->request->is('post')) {
@@ -497,20 +497,29 @@ class RegisterCandidatesController extends AppController {
                         ['attendance_status ' => 'false'], ['id IN' => $idUnChecked]
                 );
             }
-            
+
             //for update attendance status of registered candidates
 
             return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivtiesIndividualAttendance', $id]);
         }
+    }
 
-            
+    public function finalize($id = null) {
+        $eventActivityListTable = TableRegistry::get('event_activity_lists');
+        $eventActivityLists = $eventActivityListTable->find('all')->select(['event_lists_id'])
+                        ->contain([
+                           
+                        ])->where(['event_activity_lists.id' => $id]);
 
+        //debug($_SESSION['Auth']['User']);
+        $event_lists_id = $eventActivityLists->toArray()['0']->event_lists_id;
+        //s debug($eventActivityListsArray);die;
+        $data_update = $eventActivityListTable->updateAll(
+                ['finalize_attendance ' => 'true'], ['id' => $id]
+        );
 
-
-
-
-            
-        
+        $this->Flash->success(__('Attendance Sheet has been finalize now you cannot take further attendance. Status has been saved .'));
+        return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $event_lists_id]);
     }
 
 }

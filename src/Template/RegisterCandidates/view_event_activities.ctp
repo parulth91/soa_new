@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
@@ -25,22 +26,22 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         foreach ($nameResult as $List):
             //debug($List);
             ?>
-            <tr>
-                <td><?= $i ?></td>
-                <td><?= $this->Number->format($List->id) ?></td>
-                <td><?= h($List['event_list']['description']) ?></td>
-                <td><?= h($List['activity_list']['description']) ?></td>
-                <td><?= h($List['activity_list']['game_type_list']['description']) ?></td>
-                <td><?php echo date_format($List['event_list']['event_start_date'],"d/m/Y"); ?></td>
-                <td><?php echo date_format($List['event_list']['event_end_date'],"d/m/Y"); ?></td>
-                <td><?php echo date_format($List['event_list']['registration_start_date'],"d/m/Y"); ?></td>
-                <td><?php echo date_format($List['event_list']['registration_end_date'],"d/m/Y");?></td>
+        <tr>
+            <td><?= $i ?></td>
+            <td><?= $this->Number->format($List->id) ?></td>
+            <td><?= h($List['event_list']['description']) ?></td>
+            <td><?= h($List['activity_list']['description']) ?></td>
+            <td><?= h($List['activity_list']['game_type_list']['description']) ?></td>
+            <td><?php echo date_format($List['event_list']['event_start_date'],"d/m/Y"); ?></td>
+            <td><?php echo date_format($List['event_list']['event_end_date'],"d/m/Y"); ?></td>
+            <td><?php echo date_format($List['event_list']['registration_start_date'],"d/m/Y"); ?></td>
+            <td><?php echo date_format($List['event_list']['registration_end_date'],"d/m/Y");?></td>
 
 
 
 
 
-                <td class="actions">
+            <td class="actions">
 
                     <?= $this->Html->link('Register', ['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $List->id], ['Register Now', 'type' => 'button', 'class' => 'btn  btn-info']) ?>
 
@@ -49,18 +50,42 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         //  debug($List->activity_list->game_type_list->description);
                         echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesTeamAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
-                        echo $this->Html->link('Team Tie Sheet', ['controller' => 'MyTeams', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
-                        echo $this->Html->link('Result', ['controller' => 'MyTeams', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
-                    } elseif ($List->activity_list->game_type_list->description == 'Individual') {
+                          echo  $this->Form->postLink('Finalize', [
+                            'controller' => 'RegisterCandidates',
+                            'action' => 'finalize', 
+                            $List->id], 
+                                ['confirm' => __('Are you sure you want to Finalize attendance? After this taking attendence will not be  possible# {0}?',$List['activity_list']['description']),
+                                    'title' => __('Delete'),
+                                    'class' => 'btn btn-info'
+                                    ]);
+                             if($List->finalize_attendance ==true){
+                                     echo $this->Html->link('Tie Sheet', ['controller' => 'MyTeams', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
+                                     echo $this->Html->link('Result', ['controller' => 'MyTeams', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
+                    
+                            }
+                        } elseif ($List->activity_list->game_type_list->description == 'Individual') {
                         echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesIndividualAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
-                        echo $this->Html->link('Players Tie Sheet', ['controller' => 'MyPlayers', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
-                        echo $this->Html->link('Result', ['controller' => 'MyPlayers', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
-                    }
+                       
+                        
+                        echo  $this->Form->postLink('Finalize', [
+                            'controller' => 'RegisterCandidates',
+                            'action' => 'finalize', 
+                            $List->id], 
+                                ['confirm' => __('Are you sure you want to Finalize attendance? After this taking attendence will not be  possible# {0}?',$List['activity_list']['description']),
+                                    'title' => __('Delete'),
+                                    'class' => 'btn btn-info'
+                                    ]);
+                        if($List->finalize_attendance==true){
+                                 echo $this->Html->link('Tie Sheet', ['controller' => 'MyPlayers', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
+                                 echo $this->Html->link('Result', ['controller' => 'MyPlayers', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
+                       
+                            }
+                        }
                     ?>
 
-                </td>
-            </tr>
+            </td>
+        </tr>
         <?php 
         $i++;
         endforeach; ?>

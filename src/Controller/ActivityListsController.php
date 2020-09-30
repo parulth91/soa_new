@@ -52,13 +52,19 @@ class ActivityListsController extends AppController
     public function add()
     {
         $activityList = $this->ActivityLists->newEntity();
-       // debug($this->request->is('post'));//die;
+       
         if ($this->request->is('post')) {
-           
+          
                  $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
                  $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
-                 
+           //  debug($this->request->data());die;
+              if($this->request->data['game_type_list_id'] == 2){
+
+                $this->request->data['minimum_player_participating'] = 1;
+                $this->request->data['maximum_player_participating'] = 1;
+            }
             $activityList = $this->ActivityLists->patchEntity($activityList, $this->request->getData());
+           // debug($activityList);die;
             if ($this->ActivityLists->save($activityList)) {
                 $this->Flash->success(__('The activity list has been saved.'));
 
