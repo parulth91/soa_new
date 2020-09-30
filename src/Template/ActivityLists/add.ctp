@@ -47,12 +47,12 @@ echo $this->Form->create($activityList);
 
         <div class=col-md-4 id="min_playerdiv">
             <?php
-            echo $this->Form->control('minimum_player_participating',['label'=>'Minimum player in Team']);
+            echo $this->Form->control('minimum_player_participating',['label'=>'Minimum player in Team','type'=>"number"]);
             ?>
         </div>
         <div class=col-md-4 id="max_playerdiv">
             <?php
-            echo $this->Form->control('maximum_player_participating',['label'=>'Maximum player in Team']);
+            echo $this->Form->control('maximum_player_participating',['label'=>'Maximum player in Team','type'=>"number"]);
             ?>
         </div>
     </div>
@@ -78,6 +78,18 @@ echo $this->Form->create($activityList);
     //             for datepicker
 
     $(document).ready(function () {
+            $("minimum-player-participating").keypress(function(){  
+              var maxplayer = document.getElementById("maximum-player-participating").value;
+              var minplayer = document.getElementById("minimum-player-participating").value;
+              if ($(this).val() > maxplayer){
+                $(this).val() == '';
+              }
+              else{
+                $(this).val() == minplayer;
+              }
+                });
+
+
         $("#weightcategorydiv").hide();
         $("#min_playerdiv").hide();
         $("#max_playerdiv").hide();
@@ -100,24 +112,23 @@ echo $this->Form->create($activityList);
                 document.getElementById("maximum-player-participating").defaultValue = "";
                 document.getElementById("minimum-player-participating").defaultValue = "";
             }
-            if ($(this).val() == '1')
+            if ($(this).val() == '1')// for team
             {
                 //alert('2');    
                 $("#min_playerdiv").show();
                 $("#max_playerdiv").show();
-                $("#maximum-player-participating").prop("readonly", false);
-                $("#minimum-player-participating").prop("readonly", false);
-                document.getElementById("maximum-player-participating").defaultValue = "";
-                document.getElementById("minimum-player-participating").defaultValue = "";
+               
+                document.getElementById("maximum-player-participating").Value = "";
+                document.getElementById("minimum-player-participating").Value = "";
             }
-            if ($(this).val() == '2')
+            if ($(this).val() == '2')//for individual
             {
-                $("#min_playerdiv").show();
-                $("#max_playerdiv").show();
+                $("#min_playerdiv").hide();
+                $("#max_playerdiv").hide();
                 document.getElementById("maximum-player-participating").defaultValue = 1;
                 document.getElementById("minimum-player-participating").defaultValue = 1;
-                $("#maximum-player-participating").prop("readonly", true);
-                $("#minimum-player-participating").prop("readonly", true);
+               // $("#maximum-player-participating").prop("readonly", true);
+               // $("#minimum-player-participating").prop("readonly", true);
                
             }
         });

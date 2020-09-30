@@ -1,12 +1,69 @@
 <?php
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
-
 ?>
+<?php echo $this->Form->create('team_list_form'); ?>
+<?php
+if (!empty($teamDetails)) 
+{
+?>
+  <div class="row">
+    <?php
+    if (isset($registeredCandidatePaginate)) {
+      $registeredCandidatePaginate = $registeredCandidatePaginate;
+    } else {
+      $registeredCandidatePaginate = 0;
+    }
+    ?>
+    <fieldset>
+      <div class=col-md-5>
+        <?php
+        //  if ($eventActivityListValue->activity_list->game_type_list->description != 'Individual') {
 
-<table class="table table-striped" cellpadding="0" cellspacing="0">
-    <thead>
-        <tr>
+        echo $this->Form->input('event_team_id', [
+          'type' => 'select',
+          'label' => 'Select Team',
+          'empty' => "Select ",
+          'options' => $teamDetails,
+          'required' => 'true'
+        ]);
+        ?>
+      </div>
+    </fieldset>
+    <?= $this->Form->button("View Registered List", ['name' => 'view_registered_button', 'id' => 'view_registered_button', 'class' => 'btn btn-primary']); ?>
+  <?php } ?>
+  </div>
+  <div id="event_descripion_div" class="pen-title">
+    <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;
+    ?>
+    <div class="pen-title">
+      <h3>
+        <?php  if(isset($registerCandidateEventActivities)) {
+          $EventDescription   = $registerCandidateEventActivities->toArray();
+         // debug($EventDescription);//die;
+        ?>
+          Registered Candidate for <?php if (isset($EventDescription[0]->event_activity_list->description)) {
+                                  echo $EventDescription[0]->event_activity_list->description;
+                                } else {
+                                    
+                                }
+                                ?>
+      </h3>
+       <!-- <h4>
+         //   Minimum players present for team completion is :
+            <?php 
+         //   echo $teamMinAttendanceCheck;
+            ?>
+        </h4>-->
+    </div>
+  </div>
+
+  <fieldset>
+
+    <table class="table table-striped" cellpadding="0" cellspacing="0" id="attendance_list">
+      <thead>
+      <tr>
+             <th>S.NO </th>
             <th><?= $this->Paginator->sort('id'); ?></th>
             <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
             <th><?= $this->Paginator->sort('full_name'); ?></th>
@@ -25,8 +82,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     </thead>
     <tbody>
         <?php //debug($registerCandidateEventActivities);//die; 
+           $i=1;
         foreach ($registerCandidateEventActivities as $registerCandidateEventActivity): ?>
         <tr>
+             <td><?php echo $i; ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
             <td>
                 <?= $registerCandidateEventActivity->has('event_activity_list') ? $this->Html->link($registerCandidateEventActivity->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $registerCandidateEventActivity->event_activity_list->id]) : '' ?>
@@ -59,25 +118,28 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 <?= $this->Html->link('', ['action' => 'edit', $registerCandidateEventActivity->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
                  </td>
         </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-<div class="paginator">
-    <ul class="pagination">
-          <?= $this->Paginator->first('<< ' . __('first')) ?>
-        <?= $this->Paginator->prev('< ' . __('previous')) ?>
-      
-        <?= $this->Paginator->numbers(['before' => '', 'after' => '']) ?>
-        <?= $this->Paginator->next(__('next') . ' >') ?>
-        <?= $this->Paginator->last(__('last') . ' >>') ?>
-    </ul>
-    <p><?= $this->Paginator->counter() ?></p>
-</div>
+      <?php  
+      $i++;
+      endforeach; ?>
+      </tbody>
 
-<div>
-    <?php
-//    echo $this->Form->submit('Add registerCandidateEventActivities', array('type' => 'button',
-//        'class' => 'btn  btn-info',
-//        'onclick' => "location.href='" . $this->Url->build('/registerCandidateEventActivities/add') . "'"));
-    ?>
-</div>
+    </table>
+  <?php } else {
+          echo '<span color="red">';
+          "No record Found";
+          '</span>';
+        } ?>
+  <?= $this->Form->end() ?>
+
+
+  </fieldset>
+  <script>
+
+    $(document).ready(function() {
+   
+      $("#update_attendance_button").click(function(e) {
+      //  alert('butoonupadte');
+        // document.getElementById('event-team-id').value='';
+      });
+    });
+  </script>

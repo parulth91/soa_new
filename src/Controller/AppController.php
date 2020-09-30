@@ -98,7 +98,19 @@ class AppController extends Controller {
 //    ]);
         
     }
-
+    public function exportInExcel($fileName, $headerRow, $data)
+    {
+        header('Content-type: application/ms-excel'); /// you can set csv format
+        header('Content-Disposition: attachment; filename='.$fileName);
+        ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
+        $fileContent = implode("\t ", $headerRow)."\n";
+        foreach($data as $result) {
+            $fileContent .=  implode("\t ", $result)."\n";
+        }
+        ob_end_clean();
+        echo $fileContent;
+        exit;
+    }
     public function json($data) {
         $this->response->type('json');
         $this->response->body(json_encode($data));
