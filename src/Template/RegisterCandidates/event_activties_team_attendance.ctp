@@ -163,7 +163,7 @@ $("#paginator").empty();
 
 $('tr').children().eq(9).hide();
  $('table tr').find('td:eq(9)').hide();
- $('#update_attendance_button').hide();
+ $('table tr').find('td:eq(9)').hide();
 window.print();
 
 document.body.innerHTML = originalContents;

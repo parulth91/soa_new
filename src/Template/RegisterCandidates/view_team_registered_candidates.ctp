@@ -60,18 +60,24 @@ if (!empty($teamDetails))
         <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;
         ?>
         <div class="pen-title">
-            <h3>
-            <?php  if(isset($registerCandidateEventActivities)) {
-              $EventDescription   = $registerCandidateEventActivities->toArray();
-            // debug($EventDescription);//die;
-            ?>
-                Registered Candidate for <?php if (isset($EventDescription[0]->event_activity_list->description)) {
-                                      echo $EventDescription[0]->event_activity_list->description;
-                                    } else {
-                                        
-                                    }
-                                    ?>
-            </h3>
+        <h3>
+        <?php if(isset($registerCandidateEventActivities))
+        {
+             $registerCandidateEventActivities =$registerCandidateEventActivities;
+             $query_count = count($registerCandidateEventActivities);
+         if($query_count)         
+            {              
+                    $EventDescription   = $registerCandidateEventActivities->toArray();
+                  // debug($EventDescription);//die;
+                  ?>
+                    Registered Candidate for <?php if (isset($EventDescription[0]->event_activity_list->description)) {
+                                            echo $EventDescription[0]->event_activity_list->description;
+                                        }
+                                       else {
+                                              
+                                          } 
+                                          ?>
+                </h3>
             <!-- <h4>
               //   Minimum players present for team completion is :
                 <?php 
@@ -136,19 +142,17 @@ if (!empty($teamDetails))
               endforeach; ?>
                 </tbody>
             </table>
-      <?php } else {
-              echo '<span color="red">';
-              "No record Found";
-              '</span>';
-            } ?>
+            <?php }
+      else{
+        ?><h4 style="color:red; text-align:center;   outline: 2px solid red;">No record Found</h4>
+   <?php   }
+      }
+        else {
+        }?>  
       <?= $this->Form->end() ?>
   </fieldset>
-</div>  
-
-
-<script>
-
-  
+</div> 
+<script>  
 function printDiv(divName) {
 
      var printContents = document.getElementById(divName).innerHTML;
