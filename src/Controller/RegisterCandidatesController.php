@@ -35,44 +35,54 @@ class RegisterCandidatesController extends AppController {
         $eventTeamlisttable = TableRegistry::get('event_team_details');
         $teamDetails = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
         $this->set('teamDetails', $teamDetails);
+        $statelisttable = TableRegistry::get('state_lists');
+        $stateDetails = $statelisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->order('description')->toArray();
+        $this->set('stateDetails', $stateDetails);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $eventTeamId = $this->request->data['event_team_id'];
+            $stateId = $this->request->data['state_list_id'];
             $Result = $this->RegisterCandidates->find()->contain([
                         'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
                     ])
                     ->where(['RegisterCandidates.event_activity_list_id' => $id,
-                        'event_team_detail_id' => $eventTeamId])
+                              'event_team_detail_id' => $eventTeamId,'RegisterCandidates.state_list_id'=>$stateId])
                     //        $this->paginate = [
                     //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
                     //        ];
                     ->order(['RegisterCandidates.id']);
 
-            if (isset($Result)) {
-                $registerCandidateEventActivities = $this->paginate($Result);
-                //debug($playerTieSheets);die;
-                $this->set(compact('registerCandidateEventActivities'));
-            }
+           
         }
-    }
-
-    public function viewIndividualRegisteredCandidates($id = null) {
-        $connection = ConnectionManager::get('default');
-        $Result = $this->RegisterCandidates->find()->contain([
-                    'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
-                ])
-                ->where(['RegisterCandidates.event_activity_list_id' => $id])
-                //        $this->paginate = [
-                //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
-                //        ];
-                ->order(['RegisterCandidates.id']);
-
         if (isset($Result)) {
             $registerCandidateEventActivities = $this->paginate($Result);
             $this->set(compact('registerCandidateEventActivities'));
         }
     }
 
+    public function viewIndividualRegisteredCandidates($id = null) {
+        $connection = ConnectionManager::get('default');
+        $statelisttable = TableRegistry::get('state_lists');
+        $stateDetails = $statelisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->order('description')->toArray();
+        $this->set('stateDetails', $stateDetails);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $stateId = $this->request->data['state_list_id'];
+            $Result = $this->RegisterCandidates->find()->contain([
+                        'EventActivityLists', 'StateLists', 'GenderLists'
+                    ])
+                    ->where(['RegisterCandidates.event_activity_list_id' => $id,
+                              'RegisterCandidates.state_list_id'=>$stateId])
+                    //        $this->paginate = [
+                    //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
+                    //        ];
+                    ->order(['RegisterCandidates.id']);
+
+        }
+        if (isset($Result)) {
+            $registerCandidateEventActivities = $this->paginate($Result);
+            $this->set(compact('registerCandidateEventActivities'));
+        }
+    }
     /**
      * View method
      *
@@ -315,7 +325,7 @@ class RegisterCandidatesController extends AppController {
                 }
                 // $this->request->data[$key];die;
             }
-//debug($this->request->data);die;
+             //debug($this->request->data);die;
             //register candidates check
             $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
