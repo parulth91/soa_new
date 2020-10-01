@@ -3,6 +3,11 @@
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
+<div style="float:right;">
+<div class="topmargin30">
+<input type="button" onclick="printDiv('printableArea')" value="Print"class="btn btn-primary" />
+</div>
+</div>
 <?php
 $registeredCandidateData   = $registeredCandidatePaginate->toArray();
 //debug($registeredCandidateData);'url' => array('controller' => 'posts', 'action' => 'add', $post_id
@@ -13,7 +18,7 @@ echo $this->Form->create(
     //  $registeredCandidateData[0]->event_activity_list_id
     //]]
 ); ?>
-
+<div id="printableArea">
 <div id="event_descripion_div" class="pen-title">
     <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;
     ?>
@@ -106,7 +111,8 @@ echo $this->Form->create(
 
 
 </fieldset>
-<div class="paginator">
+</div>
+<div class="paginator" id="paginator">
     <ul class="pagination">
         <?= $this->Paginator->first('<< ' . __('first')) ?>
         <?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -126,3 +132,29 @@ if($playerTieSheetEntryCount > 0){
 
 ?>
 <?= $this->Form->end() ?>
+<script>
+function printDiv(divName) {
+
+var printContents = document.getElementById(divName).innerHTML;
+var originalContents = document.body.innerHTML;
+
+document.body.innerHTML = printContents;
+
+$("#paginator").empty(); 
+
+$('tr').children().eq(9).hide();
+ $('table tr').find('td:eq(9)').hide();
+ $('#update_attendance_button').hide();
+window.print();
+
+document.body.innerHTML = originalContents;
+}
+
+    $(document).ready(function () {
+
+        $("#update_attendance_button").click(function (e) {
+            //  alert('butoonupadte');
+            // document.getElementById('event-team-id').value='';
+        });
+    });
+</script>

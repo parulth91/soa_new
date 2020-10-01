@@ -3,6 +3,11 @@
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
+<div style="float:right;">
+<div class="topmargin30">
+<input type="button" onclick="printDiv('printableArea')" value="Print"class="btn btn-primary" />
+</div>
+</div>
 <?php echo $this->Form->create('team_list_form'); ?>
  <?php
     if (isset($registeredCandidatePaginate)) {
@@ -38,6 +43,7 @@ if (!empty($teamDetails)) {
       
   } ?>
 </div>
+<div id="printableArea">
 <div id="event_descripion_div" class="pen-title">
     <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;
     ?>
@@ -144,7 +150,24 @@ if (!empty($teamDetails)) {
 
 
 </fieldset>
+ </div>
 <script>
+function printDiv(divName) {
+
+var printContents = document.getElementById(divName).innerHTML;
+var originalContents = document.body.innerHTML;
+
+document.body.innerHTML = printContents;
+
+$("#paginator").empty(); 
+
+$('tr').children().eq(9).hide();
+ $('table tr').find('td:eq(9)').hide();
+ $('#update_attendance_button').hide();
+window.print();
+
+document.body.innerHTML = originalContents;
+}
 
     $(document).ready(function () {
 
