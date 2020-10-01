@@ -11,7 +11,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <tr>
             <th><?= "Sno" ?></th>
             <th><?= $this->Paginator->sort('id'); ?></th>
-            <th><?= $this->Paginator->sort('event_activity_list_id', 'Event Activty'); ?></th>
+            <th><?= $this->Paginator->sort('event_activity_list_id', '  Event Activty'); ?></th>
             <th><?= $this->Paginator->sort('round_number'); ?></th>
             <th><?= $this->Paginator->sort('round_description'); ?></th>
             <th><?= $this->Paginator->sort('team1_score'); ?></th>
