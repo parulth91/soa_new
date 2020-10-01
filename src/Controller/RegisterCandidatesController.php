@@ -37,43 +37,42 @@ class RegisterCandidatesController extends AppController {
         $this->set('teamDetails', $teamDetails);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-                $eventTeamId = $this->request->data['event_team_id'];
-                $Result = $this->RegisterCandidates->find()->contain([
-                            'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
-                        ])
-                        ->where(['RegisterCandidates.event_activity_list_id' => $id,
-                                  'event_team_detail_id'=> $eventTeamId])
-                //        $this->paginate = [
-                //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
-                //        ];
-                ->order(['RegisterCandidates.id']);
-              
-                if (isset($Result)) {
+            $eventTeamId = $this->request->data['event_team_id'];
+            $Result = $this->RegisterCandidates->find()->contain([
+                        'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
+                    ])
+                    ->where(['RegisterCandidates.event_activity_list_id' => $id,
+                        'event_team_detail_id' => $eventTeamId])
+                    //        $this->paginate = [
+                    //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
+                    //        ];
+                    ->order(['RegisterCandidates.id']);
+
+            if (isset($Result)) {
                 $registerCandidateEventActivities = $this->paginate($Result);
                 //debug($playerTieSheets);die;
-                $this->set(compact('registerCandidateEventActivities'));}
+                $this->set(compact('registerCandidateEventActivities'));
+            }
         }
     }
 
     public function viewIndividualRegisteredCandidates($id = null) {
         $connection = ConnectionManager::get('default');
-                $Result = $this->RegisterCandidates->find()->contain([
-                            'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
-                        ])
-                        ->where(['RegisterCandidates.event_activity_list_id' => $id])
+        $Result = $this->RegisterCandidates->find()->contain([
+                    'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
+                ])
+                ->where(['RegisterCandidates.event_activity_list_id' => $id])
                 //        $this->paginate = [
                 //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
                 //        ];
                 ->order(['RegisterCandidates.id']);
-              
-                if (isset($Result)) {
-                $registerCandidateEventActivities = $this->paginate($Result);
-                $this->set(compact('registerCandidateEventActivities'));}
 
-               
-        
+        if (isset($Result)) {
+            $registerCandidateEventActivities = $this->paginate($Result);
+            $this->set(compact('registerCandidateEventActivities'));
+        }
     }
-  
+
     /**
      * View method
      *
@@ -282,34 +281,41 @@ class RegisterCandidatesController extends AppController {
             } else {
                 $EventTeamDetails = null;
             }
+            //debug($this->request->data);
             foreach ($this->request->data as $key => $data) {
                 // debug($data); //die;
                 foreach ($data as $entityData) {
                     //debug($this->request->data[$key]); //die;
-                    $age = date_diff(date_create($data['dob']), date_create($age_calculation_end_date))->format('%y');
-                    if ((int) $age < $mimimum_age || $age > $maximum_age) {
-                        $this->Flash->error(__('Age of candidate ' . $data['full_name'] . 'of Age ' . $age . ' should me between minimum and maximum age of acivity.'));
-                        return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                    if (!empty($data['full_name'])) {
+
+
+                        $age = date_diff(date_create($data['dob']), date_create($age_calculation_end_date))->format('%y');
+                        if ((int) $age < $mimimum_age || $age > $maximum_age) {
+                            $this->Flash->error(__('Age of candidate ' . $data['full_name'] . 'of Age ' . $age . ' should me between minimum and maximum age of acivity.'));
+                            return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                        }
+                        $this->request->data[$key]['dob'] = date("Y-m-d", strtotime($this->request->data[$key]['dob']));
+                        $this->request->data[$key]['age'] = $age;
+                        $this->request->data[$key]['event_activity_list_id'] = $id;
+                        $this->request->data[$key]['state_list_id'] = $registering_user_state_id;
+                        $this->request->data[$key]['action_by'] = $_SESSION['Auth']['User']['id'];
+                        $this->request->data[$key]['action_ip'] = $_SERVER['REMOTE_ADDR'];
+                        $this->request->data[$key]['active'] = true;
+
+                        $this->request->data[$key]['event_qualifying_status'] = false;
+                        $this->request->data[$key]['attendance_status'] = false;
+                        $this->request->data[$key]['certificate_download_status'] = false;
+
+
+                        $registration_number = $this->cList->getRegNoSeq($registering_user_state_id);
+                        $this->request->data[$key]['registration_number'] = $registration_number;
+                    } else {
+                        unset($this->request->data[$key]);
                     }
-                    $this->request->data[$key]['dob'] = date("Y-m-d", strtotime($this->request->data[$key]['dob']));
-                    $this->request->data[$key]['age'] = $age;
-                    $this->request->data[$key]['event_activity_list_id'] = $id;
-                    $this->request->data[$key]['state_list_id'] = $registering_user_state_id;
-                    $this->request->data[$key]['action_by'] = $_SESSION['Auth']['User']['id'];
-                    $this->request->data[$key]['action_ip'] = $_SERVER['REMOTE_ADDR'];
-                    $this->request->data[$key]['active'] = true;
-
-                    $this->request->data[$key]['event_qualifying_status'] = false;
-                    $this->request->data[$key]['attendance_status'] = false;
-                    $this->request->data[$key]['certificate_download_status'] = false;
-
-
-                    $registration_number = $this->cList->getRegNoSeq($registering_user_state_id);
-                    $this->request->data[$key]['registration_number'] = $registration_number;
                 }
                 // $this->request->data[$key];die;
             }
-
+//debug($this->request->data);die;
             //register candidates check
             $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
@@ -349,7 +355,8 @@ class RegisterCandidatesController extends AppController {
                         if (empty($registerCandidateEventActivities['errors'])) {
                             if ($this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
                                 $this->Flash->success(__('The register candidate event activity has been saved.'));
-                                return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                                return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewTeamRegisteredCandidates', $id]);
+                                // return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
                             }
                         }
                     }
@@ -361,7 +368,7 @@ class RegisterCandidatesController extends AppController {
                 // debug($registerCandidateEventActivities);die;
                 if ($this->RegisterCandidates->saveMany($registerCandidateEventActivities)) {
                     $this->Flash->success(__('The register candidate event activity has been saved.'));
-                    return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'eventActivitiesStudentRegister', $id]);
+                    return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewIndividualRegisteredCandidates', $id]);
                 } else {
                     $this->Flash->error(__('The register candidate event activity could not be saved. Please, try again.'));
                 }
@@ -539,7 +546,6 @@ class RegisterCandidatesController extends AppController {
         $eventActivityListTable = TableRegistry::get('event_activity_lists');
         $eventActivityLists = $eventActivityListTable->find('all')->select(['event_lists_id'])
                         ->contain([
-                           
                         ])->where(['event_activity_lists.id' => $id]);
 
         //debug($_SESSION['Auth']['User']);

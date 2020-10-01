@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
@@ -7,7 +8,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 if (!empty($teamDetails)) 
 {
 ?>
-  <div class="row">
+<div class="row">
     <?php
     if (isset($registeredCandidatePaginate)) {
       $registeredCandidatePaginate = $registeredCandidatePaginate;
@@ -16,7 +17,11 @@ if (!empty($teamDetails))
     }
     ?>
     <fieldset>
-      <div class=col-md-5>
+        <p style="color: red">
+            Note: View Your Team Details after submission.
+
+        </p>
+        <div class=col-md-5>
         <?php
         //  if ($eventActivityListValue->activity_list->game_type_list->description != 'Individual') {
 
@@ -28,100 +33,101 @@ if (!empty($teamDetails))
           'required' => 'true'
         ]);
         ?>
-      </div>
+        </div>
     </fieldset>
-    <?= $this->Form->button("View Registered List", ['name' => 'view_registered_button', 'id' => 'view_registered_button', 'class' => 'btn btn-primary']); ?>
+    <?= $this->Form->button("View Registered Team", ['name' => 'view_registered_button', 'id' => 'view_registered_button', 'class' => 'btn btn-primary']); ?>
   <?php } ?>
-  </div>
-  <div id="event_descripion_div" class="pen-title">
+</div>
+<div id="event_descripion_div" class="pen-title">
     <?php //debug($registeredCandidateLists->event_activity_list->event_list->description);die;
     ?>
     <div class="pen-title">
-      <h3>
+        <h3>
         <?php  if(isset($registerCandidateEventActivities)) {
           $EventDescription   = $registerCandidateEventActivities->toArray();
          // debug($EventDescription);//die;
         ?>
-          Registered Candidate for <?php if (isset($EventDescription[0]->event_activity_list->description)) {
+            Registered Candidate for <?php if (isset($EventDescription[0]->event_activity_list->description)) {
                                   echo $EventDescription[0]->event_activity_list->description;
                                 } else {
                                     
                                 }
                                 ?>
-      </h3>
-       <!-- <h4>
-         //   Minimum players present for team completion is :
+        </h3>
+        <!-- <h4>
+          //   Minimum players present for team completion is :
             <?php 
          //   echo $teamMinAttendanceCheck;
             ?>
-        </h4>-->
+         </h4>-->
     </div>
-  </div>
+</div>
 
-  <fieldset>
+<fieldset>
 
     <table class="table table-striped" cellpadding="0" cellspacing="0" id="attendance_list">
-      <thead>
-      <tr>
-             <th>S.NO </th>
-            <th><?= $this->Paginator->sort('id'); ?></th>
-            <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
-            <th><?= $this->Paginator->sort('full_name'); ?></th>
-            <th><?= $this->Paginator->sort('dob'); ?></th>
-            <th><?= $this->Paginator->sort('gender_list_id'); ?></th>
-            <th><?= $this->Paginator->sort('registration_number'); ?></th>
-            <th><?= $this->Paginator->sort('State_id'); ?></th>
-            <th><?= $this->Paginator->sort('event_team_detail_id'); ?></th>
-            <th><?= $this->Paginator->sort('weight'); ?></th>
-            <th><?= $this->Paginator->sort('age'); ?></th>
-            <th><?= $this->Paginator->sort('event_qualifying_status'); ?></th>
-            <th><?= $this->Paginator->sort('attendance_status'); ?></th>
-            <th><?= $this->Paginator->sort('certificate_download_status'); ?></th>
-            <th class="actions"><?= __('Actions'); ?></th>
-        </tr>
-    </thead>
-    <tbody>
+        <thead>
+            <tr>
+                <th>S.NO </th>
+                <th><?= $this->Paginator->sort('id'); ?></th>
+                <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
+                <th><?= $this->Paginator->sort('full_name'); ?></th>
+                <th><?= $this->Paginator->sort('dob'); ?></th>
+                <th><?= $this->Paginator->sort('gender_list_id'); ?></th>
+                <th><?= $this->Paginator->sort('registration_number'); ?></th>
+                <th><?= $this->Paginator->sort('State_id'); ?></th>
+                <th><?= $this->Paginator->sort('event_team_detail_id'); ?></th>
+                <th><?= $this->Paginator->sort('weight'); ?></th>
+                <th><?= $this->Paginator->sort('age'); ?></th>
+                <th><?= $this->Paginator->sort('event_qualifying_status'); ?></th>
+                <th><?= $this->Paginator->sort('attendance_status'); ?></th>
+                <th><?= $this->Paginator->sort('certificate_download_status'); ?></th>
+                <th class="actions"><?= __('Actions'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
         <?php //debug($registerCandidateEventActivities);//die; 
            $i=1;
         foreach ($registerCandidateEventActivities as $registerCandidateEventActivity): ?>
-        <tr>
-             <td><?php echo $i; ?></td>
-            <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
-            <td>
+            <tr>
+                <td><?php echo $i; ?></td>
+                <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
+                <td>
                 <?= $registerCandidateEventActivity->has('event_activity_list') ? $this->Html->link($registerCandidateEventActivity->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $registerCandidateEventActivity->event_activity_list->id]) : '' ?>
-            </td>
-            <td><?= h($registerCandidateEventActivity->full_name) ?></td>
-            <td><?php echo date_format($registerCandidateEventActivity->dob,"d/m/Y");?></td>
-            <td>
+                </td>
+                <td><?= h($registerCandidateEventActivity->full_name) ?></td>
+                <td><?php echo date_format($registerCandidateEventActivity->dob,"d/m/Y");?></td>
+                <td>
                 <?= h($registerCandidateEventActivity['gender_list']['description']) 
                 //= $registerCandidateEventActivity->has('gender_list') ? $this->Html->link($registerCandidateEventActivity->gender_list->description, ['controller' => 'GenderLists', 'action' => 'view', $registerCandidateEventActivity->gender_list->id]) : '' ?>
-            </td>
-            <td><?= h($registerCandidateEventActivity->registration_number) ?></td>
-            <td><?= h($registerCandidateEventActivity['state_list']['description']) ?></td>
-            <td>
+                </td>
+                <td><?= h($registerCandidateEventActivity->registration_number) ?></td>
+                <td><?= h($registerCandidateEventActivity['state_list']['description']) ?></td>
+                <td>
                 <?php
                  if($registerCandidateEventActivity['event_team_detail']['description']!='')
-                   {  echo $registerCandidateEventActivity['event_team_detail']['description'];}
+                   {  
+                     echo $registerCandidateEventActivity['event_team_detail']['description'];}
                    else{
                        echo 'Not Applicable';
                    }
                    //= $registerCandidateEventActivity->has('event_team_detail') ? $this->Html->link($registerCandidateEventActivity->event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $registerCandidateEventActivity->event_team_detail->id]) : '' 
                 ?>
-            </td>
-            <td><?= $this->Number->format($registerCandidateEventActivity->weight) ?></td>
-            <td><?= $this->Number->format($registerCandidateEventActivity->age) ?></td>
-                        <td><?= $registerCandidateEventActivity->event_qualifying_status ? __('Yes') : __('No'); ?></td>
-                                                <td><?= $registerCandidateEventActivity->attendance_status ? __('Yes') : __('No'); ?></td>
-                                                <td><?= $registerCandidateEventActivity->certificate_download_status ? __('Yes') : __('No'); ?></td>
-                                    <td class="actions">
+                </td>
+                <td><?= $this->Number->format($registerCandidateEventActivity->weight) ?></td>
+                <td><?= $this->Number->format($registerCandidateEventActivity->age) ?></td>
+                <td><?= $registerCandidateEventActivity->event_qualifying_status ? __('Yes') : __('No'); ?></td>
+                <td><?= $registerCandidateEventActivity->attendance_status ? __('Yes') : __('No'); ?></td>
+                <td><?= $registerCandidateEventActivity->certificate_download_status ? __('Yes') : __('No'); ?></td>
+                <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $registerCandidateEventActivity->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                 <?= $this->Html->link('', ['action' => 'edit', $registerCandidateEventActivity->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
-                 </td>
-        </tr>
+                </td>
+            </tr>
       <?php  
       $i++;
       endforeach; ?>
-      </tbody>
+        </tbody>
 
     </table>
   <?php } else {
@@ -132,14 +138,14 @@ if (!empty($teamDetails))
   <?= $this->Form->end() ?>
 
 
-  </fieldset>
-  <script>
+</fieldset>
+<script>
 
-    $(document).ready(function() {
-   
-      $("#update_attendance_button").click(function(e) {
-      //  alert('butoonupadte');
-        // document.getElementById('event-team-id').value='';
-      });
+    $(document).ready(function () {
+
+        $("#update_attendance_button").click(function (e) {
+            //  alert('butoonupadte');
+            // document.getElementById('event-team-id').value='';
+        });
     });
-  </script>
+</script>
