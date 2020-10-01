@@ -323,6 +323,7 @@ class RegisterCandidatesController extends AppController {
             //event team detals entiity creation for insertion
             if (!empty($EventTeamDetails)) {
 
+                $EventTeamDetails['description'] = trim($EventTeamDetails['description']);
                 $EventTeamDetails['event_activity_list_id'] = $id;
                 $EventTeamDetails['state_list_id'] = $registering_user_state_id;
                 $EventTeamDetails['action_by'] = $_SESSION['Auth']['User']['id'];
@@ -481,9 +482,14 @@ class RegisterCandidatesController extends AppController {
                     ->order(['RegisterCandidates.id']);
 //            debug($teamMinAttendanceCheck);
 //            die;
+            $teamTieSheetTable = TableRegistry::get('team_tie_sheets');
+            $teamTieSheetEntryCount = $teamTieSheetTable->find('all')
+                    ->where(['team_tie_sheets.event_activity_list_id' => $id])
+                    ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
+                    ->count();
             if (isset($registeredCandidateLists)) {
                 $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-                $this->set(compact('registeredCandidatePaginate', 'teamMinAttendanceCheck'));
+                $this->set(compact('registeredCandidatePaginate', 'teamMinAttendanceCheck','teamTieSheetEntryCount'));
             }
         }
     }

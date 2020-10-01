@@ -133,7 +133,14 @@ if (!empty($teamDetails)) {
         </tbody>
 
     </table>
-    <?= $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
+    <?php
+    
+       // debug($teamTieSheetEntryCount);
+    if($teamTieSheetEntryCount == 0){
+       // debug($teamTieSheetEntryCount);
+        echo $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
+    }
+    
     ?>
   <?php } else {
           echo '<span color="red">';
