@@ -48,10 +48,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 if ($eventActivityListValue->activity_list->weight_category_list != null) {
                     ?>
             <th id="weightminlabel">
-                        <?php echo $eventActivityListValue->activity_list->weight_category_list->minimum_weight; ?>
+                        <?php echo $minimum_weight = $eventActivityListValue->activity_list->weight_category_list->minimum_weight; ?>
             </th>
             <th id="weightmaxlabel">
-                        <?php echo $eventActivityListValue->activity_list->weight_category_list->maximum_weight; ?>
+                        <?php echo $maximum_weight = $eventActivityListValue->activity_list->weight_category_list->maximum_weight; ?>
             </th>
                 <?php } ?>
             <th>
@@ -200,8 +200,10 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                             <?php
                             echo $this->Form->input('RegisterCandidate_' . $i . '[weight]', [
                                 'label' => false,
-                                'type' => 'integer',
+                                'type' => 'number',
                                  'id' => 'weight_' . $i,
+                                'min'=> $minimum_weight,
+                                'max'=> $maximum_weight,
                             ]);
                             ?>
                 </td>
@@ -228,7 +230,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
     </table>
 </fieldset>
 <p style="color: red">
-    Note: After saving team their is no provison of modifying team. So kindly enter data after confirmation only.
+    Note: After saving team their is no provision of modifying team. So kindly enter data after confirmation only.
 
 </p>
 <?= $this->Form->button(__("Save")); ?>
@@ -240,14 +242,12 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         // alert('sctipy');
 
         var team_description = "<?php echo $eventActivityListValue->activity_list->game_type_list->description;  ?>";
-       // alert(team_description);
+        // alert(team_description);
         var maximum_weight = "<?php echo $weightFlag->maximum_weight;  ?>";
         var minimum_weight = "<?php echo $weightFlag->minimum_weight;  ?>";
-        
-alert(maximum_weight);
-        if (maximum_weight !="" && minimum_weight != "")  {
-alert(minimum_weight);
-        }
+
+
+
         var d = new Date();
         var year = d.getFullYear() - 10;
         d.setFullYear(year);
@@ -271,9 +271,13 @@ alert(minimum_weight);
             $("#dob_" + i).prop('required', true);
             $("#full_name_" + i).prop('required', true);
             $("#gender_list_id_" + i).prop('required', true);
-
+            if (maximum_weight != "" && minimum_weight != "") {
+                $("#weight_" + i).prop('required', true);
+            }
 
         }
+
+
 
         for (var i = 1; i <= maximum_player_participating; i++) {
             //alert(i);
