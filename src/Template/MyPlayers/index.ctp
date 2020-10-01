@@ -2,7 +2,11 @@
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
-
+<div>
+    <?php
+    echo $this->Html->link('Tie Sheet', ['controller' => 'MyPlayers', 'action' => 'tieSheet', $id], ['Tie Sheet', 'type' => 'button', 'class' => 'btn  btn-danger']);
+         ?>                       
+</div>
 <table class="table table-striped" cellpadding="0" cellspacing="0">
     <thead>
         <tr>

@@ -32,7 +32,7 @@ class MyTeamsController extends AppController {
         $teamTieSheets = $this->paginate($Result);
 
 
-        $this->set(compact('teamTieSheets'));
+        $this->set(compact('teamTieSheets','id'));
     }
 
     /**

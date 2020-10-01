@@ -45,7 +45,7 @@ class MyPlayersController extends AppController {
 //        ];
         $playerTieSheets = $this->paginate($Result);
         //debug($playerTieSheets);die;
-        $this->set(compact('playerTieSheets'));
+        $this->set(compact('playerTieSheets','id'));
     }
 
     /**
