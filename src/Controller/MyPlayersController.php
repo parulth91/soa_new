@@ -472,19 +472,22 @@ class MyPlayersController extends AppController {
          */
 
 // Now, lets fill in some match results. This can be done two ways: either by directly specifying round and match indicies or by specifying competitor names.
-
+        //debug($competitors);
         foreach ($playerTieSheetLists as $key => $value) {
-            debug($value);
-            //if ($value['player1_id'] == 67 && $value['player2_id'] == 57) {
+           // debug($value);
+            if ($value['player1_id'] == 290 && $value['player2_id'] == 303) {
                 //debug($competitors);
-                //debug($value->player2['registration_number']);die;
+//                debug($value);
+//                debug($value->player1['registration_number']);
+//                debug($value->player2['registration_number']);
                 // debug($bracket);
                 //  debug($KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']));
                 // debug("hi");
-            //}
+//                die;
+            }
 
-            $KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']);
-            //$KO->setResByCompets($value->player1['registration_number'], $value->player2['registration_number'], $value['player1_score'], $value['player2_score']);
+            //$KO->setResByCompets($value['player1_id'], $value['player2_id'], $value['player1_score'], $value['player2_score']);
+            $KO->setResByCompets($value->player1['registration_number'], $value->player2['registration_number'], $value['player1_score'], $value['player2_score']);
             //$returnData = $KO->getData($eventDetails);
         }
         //die;
