@@ -9,28 +9,39 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
   ?>
 <div style="float:right;">
 <div class="topmargin30">
-<?php echo $this->Form->create('submit_form', ['id' => 'submit_form', 'type' => 'post']); 
-echo $this->Form->button('print', [
-    'name'=>'print',
-   'value'=>'print',
-   'id'=> "print",
-  'class' => 'btn btn-primary']);?>
+<input type="button" onclick="printDiv('printableArea')" value="Print"class="btn btn-primary" />
 </div>
 </div>
+<div class="row">
 <?= $this->Form->end() ?>
+<div class=col-md-5>
+<?php echo $this->Form->create('state_wise_form'); 
+  echo $this->Form->input('state_list_id', ['id'=>'state_list_id',
+  'type' => 'select',
+  'label' => 'Select State',
+  'empty' => "Select ",
+  'options' => $stateDetails,
+  'required' => 'true'
+
+]);?></div>
+
+
     <?php
-    if (isset($registeredCandidatePaginate)) {
-      $registeredCandidatePaginate = $registeredCandidatePaginate;
+    if (isset($registerCandidateEventActivities)) {
+      $registerCandidateEventActivities = $registerCandidateEventActivities;
     } else {
-      $registeredCandidatePaginate = 0;
+      $registerCandidateEventActivities = 0;
     }
     ?>
-   
+    </div>
+    <?= $this->Form->button("View Registered Individual", ['name' => 'view_state_button', 'id' => 'view_state_button', 'class' => 'btn btn-primary'
+                                                       ]);   ?>
+   <div id="printableArea">
     <div id="event_descripion_div" class="pen-title">
   
     <div class="pen-title">
       <h3>
-        <?php  if(isset($registerCandidateEventActivities)) {
+        <?php  if($registerCandidateEventActivities != "0") {
           $EventDescription   = $registerCandidateEventActivities->toArray();
          // debug($EventDescription);//die;
         ?>
@@ -45,28 +56,30 @@ echo $this->Form->button('print', [
   </div>
 
   <fieldset>
-<table class="table table-striped" cellpadding="0" cellspacing="0">
+ <?php if($registerCandidateEventActivities != "0")  {?>
+  <table class="table table-striped" cellpadding="0" cellspacing="0" id="candidate_list">
+
     <thead>
         <tr>
              <th>S.NO </th>
-            <th><?= $this->Paginator->sort('id'); ?></th>
-            <th><?= $this->Paginator->sort('event_activity_list_id'); ?></th>
-            <th><?= $this->Paginator->sort('full_name'); ?></th>
-            <th><?= $this->Paginator->sort('dob'); ?></th>
-            <th><?= $this->Paginator->sort('gender_list_id'); ?></th>
-            <th><?= $this->Paginator->sort('registration_number'); ?></th>
-            <th><?= $this->Paginator->sort('State_id'); ?></th>
-            <th><?= $this->Paginator->sort('weight'); ?></th>
-            <th><?= $this->Paginator->sort('age'); ?></th>
-            <th><?= $this->Paginator->sort('event_qualifying_status'); ?></th>
-            <th><?= $this->Paginator->sort('attendance_status'); ?></th>
-            <th><?= $this->Paginator->sort('certificate_download_status'); ?></th>
+            <th> Id</th>
+            <th>Event Activity</th>
+            <th>Full Name</th>
+            <th>DOB</th>
+            <th>Gender</th>
+            <th>Registration Number</th>
+            <th>State</th>
+            <th>Weight</th>
+            <th>Age </th>
+            <th>Event Qualifying Status </th>
+            <th>Attendance Status </th>
+            <th>Certificate Download Status </th>
             <th class="actions"><?= __('Actions'); ?></th>
         </tr>
     </thead>
     <tbody>
-        <?php 
-           $i=1;
+         <?php 
+         $i=1;
         foreach ($registerCandidateEventActivities as $registerCandidateEventActivity): ?>
         <tr>
             <td><?php echo $i; ?></td>
@@ -85,10 +98,10 @@ echo $this->Form->button('print', [
           
             <td><?= $this->Number->format($registerCandidateEventActivity->weight) ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->age) ?></td>
-                        <td><?= $registerCandidateEventActivity->event_qualifying_status ? __('Yes') : __('No'); ?></td>
-                                                <td><?= $registerCandidateEventActivity->attendance_status ? __('Yes') : __('No'); ?></td>
-                                                <td><?= $registerCandidateEventActivity->certificate_download_status ? __('Yes') : __('No'); ?></td>
-                                    <td class="actions">
+              <td><?= $registerCandidateEventActivity->event_qualifying_status ? __('Yes') : __('No'); ?></td>
+                <td><?= $registerCandidateEventActivity->attendance_status ? __('Yes') : __('No'); ?></td>
+                 <td><?= $registerCandidateEventActivity->certificate_download_status ? __('Yes') : __('No'); ?></td>
+                <td class="actions">
                 <?= $this->Html->link('', ['action' => 'view', $registerCandidateEventActivity->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
                 <?= $this->Html->link('', ['action' => 'edit', $registerCandidateEventActivity->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
                  </td>
@@ -96,20 +109,49 @@ echo $this->Form->button('print', [
         <?php
          $i++;
          endforeach;
-        ?>
+       ?>
     </tbody>
 </table>
+        <?php }
+        else {
+              ?>
+              <h3 style="color:red">No record Found</h3>
+        <?php   }?>  
+  <?= $this->Form->end() ?>
 </fieldset>
-<div class="paginator">
-    <ul class="pagination">
-          <?= $this->Paginator->first('<< ' . __('first')) ?>
-        <?= $this->Paginator->prev('< ' . __('previous')) ?>
-      
-        <?= $this->Paginator->numbers(['before' => '', 'after' => '']) ?>
-        <?= $this->Paginator->next(__('next') . ' >') ?>
-        <?= $this->Paginator->last(__('last') . ' >>') ?>
-    </ul>
-    <p><?= $this->Paginator->counter() ?></p>
-</div>
+
 
 <div>
+<div>
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+     $('tr').children().eq(13).hide();
+      $('table tr').find('td:eq(13)').hide();
+     $("#paginator").empty(); 
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+$(document).ready(function() {
+  if(document.getElementById("state_list_id").value =="" )
+  {
+     $(".pen-title").hide();
+      $("#candidate_list").hide();
+  }
+    $("#view_state_button").click(function(){
+    if(document.getElementById("state_list_id").value =="" )
+     {
+      $(".pen-title").hide();
+      $("#candidate_list").hide();
+   }
+  else{
+    $(".pen-title").show();
+    $("#candidate_list").show();
+  }
+  });
+ }); 
+</script>
