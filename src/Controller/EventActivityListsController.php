@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+
 /**
  * EventActivityLists Controller
  *
@@ -10,16 +13,14 @@ use Cake\I18n\Time;
  *
  * @method \App\Model\Entity\EventActivityList[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class EventActivityListsController extends AppController
-{
+class EventActivityListsController extends AppController {
 
     /**
      * Index method
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
-    {
+    public function index() {
         $this->paginate = [
             'contain' => ['EventLists', 'ActivityLists']
         ];
@@ -35,8 +36,7 @@ class EventActivityListsController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $eventActivityList = $this->EventActivityLists->get($id, [
             'contain' => ['EventLists', 'ActivityLists', 'EventTeamDetails', 'RegisterCandidateEventActivities', 'RegisterCandidates', 'TeamTieSheets']
         ]);
@@ -49,13 +49,24 @@ class EventActivityListsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
         $eventActivityList = $this->EventActivityLists->newEntity();
         if ($this->request->is('post')) {
-                 $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
-                 $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
-                 
+            
+            $eventId=$this->request->data['event_lists_id'];
+            $eventListTable = TableRegistry::get('event_lists');
+            $eventList = $eventListTable->find('all')->select(['description'])->where(['id' => $eventId])->toArray();
+            $eventDescription = $eventList[0]->description;
+            
+            $activityId=$this->request->data['activity_lists_id'];
+            $activityListTable = TableRegistry::get('activity_lists');
+            $activityList = $activityListTable->find('all')->select(['description'])->where(['id' => $activityId])->toArray();
+            $activityDescription = $activityList[0]->description;
+            $this->request->data['description'] = $eventDescription . ' ~ ' . $activityDescription;
+            
+            $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
+            $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
+
             $eventActivityList = $this->EventActivityLists->patchEntity($eventActivityList, $this->request->getData());
             if ($this->EventActivityLists->save($eventActivityList)) {
                 $this->Flash->success(__('The event activity list has been saved.'));
@@ -64,8 +75,8 @@ class EventActivityListsController extends AppController
             }
             $this->Flash->error(__('The event activity list could not be saved. Please, try again.'));
         }
-        $eventLists = $this->EventActivityLists->EventLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $activityLists = $this->EventActivityLists->ActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $eventLists = $this->EventActivityLists->EventLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
+        $activityLists = $this->EventActivityLists->ActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
         $this->set(compact('eventActivityList', 'eventLists', 'activityLists'));
     }
 
@@ -76,19 +87,32 @@ class EventActivityListsController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         $eventActivityList = $this->EventActivityLists->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-                 $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
-                 $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
-                                $currentTimeStamp = Time::now();
-                                $currentTimeStamp->i18nFormat();
-                                $this->request->data['modified'] = $currentTimeStamp;
 
-                 
+
+            $eventId=$this->request->data['event_lists_id'];
+            $eventListTable = TableRegistry::get('event_lists');
+            $eventList = $eventListTable->find('all')->select(['description'])->where(['id' => $eventId])->toArray();
+            $eventDescription = $eventList[0]->description;
+            
+            $activityId=$this->request->data['activity_lists_id'];
+            $activityListTable = TableRegistry::get('activity_lists');
+            $activityList = $activityListTable->find('all')->select(['description'])->where(['id' => $activityId])->toArray();
+            $activityDescription = $activityList[0]->description;
+            $this->request->data['description'] = $eventDescription . ' ~ ' . $activityDescription;
+           // debug($this->request->data['description'])   ;die;
+            
+            $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
+            $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
+            $currentTimeStamp = Time::now();
+            $currentTimeStamp->i18nFormat();
+            $this->request->data['modified'] = $currentTimeStamp;
+
+
             $eventActivityList = $this->EventActivityLists->patchEntity($eventActivityList, $this->request->getData());
             if ($this->EventActivityLists->save($eventActivityList)) {
                 $this->Flash->success(__('The event activity list has been saved.'));
@@ -97,8 +121,8 @@ class EventActivityListsController extends AppController
             }
             $this->Flash->error(__('The event activity list could not be saved. Please, try again.'));
         }
-        $eventLists = $this->EventActivityLists->EventLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
-        $activityLists = $this->EventActivityLists->ActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active'=>true])->order('description');
+        $eventLists = $this->EventActivityLists->EventLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
+        $activityLists = $this->EventActivityLists->ActivityLists->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['active' => true])->order('description');
         $this->set(compact('eventActivityList', 'eventLists', 'activityLists'));
     }
 
@@ -109,8 +133,7 @@ class EventActivityListsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $eventActivityList = $this->EventActivityLists->get($id);
         if ($this->EventActivityLists->delete($eventActivityList)) {
@@ -121,4 +144,5 @@ class EventActivityListsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
 }
