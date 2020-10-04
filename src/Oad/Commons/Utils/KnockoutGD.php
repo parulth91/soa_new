@@ -213,11 +213,11 @@ class Knockout {
 
         for ($r = 1, $n = count($this->bracket[1]) * 2; $n > 1; $r++, $n /= 2) {
             switch ($n) {
-                case 128: $name = 'Round of 16';
+                case 128: $name = 'Round of 128';
                     break;
-                case 64: $name = 'Round of 16';
+                case 64: $name = 'Round of 64';
                     break;
-                case 32: $name = 'Round of 16';
+                case 32: $name = 'Round of 32';
                     break;
                 case 16: $name = 'Round of 16';
                     break;
