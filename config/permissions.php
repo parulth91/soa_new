@@ -89,7 +89,10 @@ return [
                 'general',
                 'viewRegisteredCandidates',
                 'eventActivitiesStudentRegister',
-                'viewEventActivities'
+                'viewEventActivities',
+                'viewTeamRegisteredCandidates',
+                'viewIndividualRegisteredCandidates'
+                
                 
                 ],
         ],
