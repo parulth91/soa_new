@@ -13,6 +13,10 @@ echo $this->Html->script(['jquery/validation.js']);
 //echo $this->Html->script(['jspdf']);
 //echo $this->Html->script(['pdfFromHTML']);
 
+echo $this->Html->script(['bracket/jquery.bracket.min.js']);
+echo $this->Html->script(['bracket/jquery-1.11.3.min']);
+echo $this->Html->css('jquery.bracket.min') 
+
 ?>
 
     <?= $this->Html->script('calendarjs/jquery-ui') ?> 

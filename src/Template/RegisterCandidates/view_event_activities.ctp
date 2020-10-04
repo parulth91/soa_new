@@ -50,7 +50,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         //  debug($List->activity_list->game_type_list->description);
                         echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewTeamRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesTeamAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
-                          echo  $this->Form->postLink('Finalize', [
+                          echo  $this->Form->postLink('Delete Tie', [
                             'controller' => 'RegisterCandidates',
                             'action' => 'finalize', 
                             $List->id], 
@@ -58,18 +58,18 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                                     'title' => __('Delete'),
                                     'class' => 'btn btn-info'
                                     ]);
-                             if($List->finalize_attendance == true){
+                             //if($List->finalize_attendance == false){
                                      echo $this->Html->link('Tie Sheet', ['controller' => 'MyTeams', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
                                      echo $this->Html->link('Result', ['controller' => 'MyTeams', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
                     
-                            }
+                           // }
                        
                      } elseif ($List->activity_list->game_type_list->description == 'Individual') {
                         echo $this->Html->link('View', ['controller' => 'RegisterCandidates', 'action' => 'viewIndividualRegisteredCandidates', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-primary']);
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesIndividualAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
                        
                         
-                        echo  $this->Form->postLink('Finalize', [
+                        echo  $this->Form->postLink('Delete Tie', [
                             'controller' => 'RegisterCandidates',
                             'action' => 'finalize', 
                             $List->id], 
@@ -77,11 +77,11 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                                     'title' => __('Delete'),
                                     'class' => 'btn btn-info'
                                     ]);
-                        if($List->finalize_attendance== true){
+                       // if($List->finalize_attendance== false){
                                  echo $this->Html->link('Tie Sheet', ['controller' => 'MyPlayers', 'action' => 'tieSheet', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-danger']);
                                  echo $this->Html->link('Result', ['controller' => 'MyPlayers', 'action' => 'index', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-success']);
                        
-                            }
+                           // }
                         }
                     ?>
 

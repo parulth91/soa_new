@@ -46,13 +46,11 @@ class RegisterCandidatesController extends AppController {
                         'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
                     ])
                     ->where(['RegisterCandidates.event_activity_list_id' => $id,
-                              'event_team_detail_id' => $eventTeamId,'RegisterCandidates.state_list_id'=>$stateId])
+                        'event_team_detail_id' => $eventTeamId, 'RegisterCandidates.state_list_id' => $stateId])
                     //        $this->paginate = [
                     //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
                     //        ];
                     ->order(['RegisterCandidates.id']);
-
-           
         }
         if (isset($Result)) {
             $registerCandidateEventActivities = $this->paginate($Result);
@@ -71,18 +69,18 @@ class RegisterCandidatesController extends AppController {
                         'EventActivityLists', 'StateLists', 'GenderLists'
                     ])
                     ->where(['RegisterCandidates.event_activity_list_id' => $id,
-                              'RegisterCandidates.state_list_id'=>$stateId])
+                        'RegisterCandidates.state_list_id' => $stateId])
                     //        $this->paginate = [
                     //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
                     //        ];
                     ->order(['RegisterCandidates.id']);
-
         }
         if (isset($Result)) {
             $registerCandidateEventActivities = $this->paginate($Result);
             $this->set(compact('registerCandidateEventActivities'));
         }
     }
+
     /**
      * View method
      *
@@ -325,7 +323,7 @@ class RegisterCandidatesController extends AppController {
                 }
                 // $this->request->data[$key];die;
             }
-             //debug($this->request->data);die;
+            //debug($this->request->data);die;
             //register candidates check
             $registerCandidates = $this->RegisterCandidates->newEntities($this->request->data);
             $registerCandidateEventActivities = $this->RegisterCandidates->patchEntities($registerCandidates, $this->request->data);
@@ -499,7 +497,7 @@ class RegisterCandidatesController extends AppController {
                     ->count();
             if (isset($registeredCandidateLists)) {
                 $registeredCandidatePaginate = $this->paginate($registeredCandidateLists);
-                $this->set(compact('registeredCandidatePaginate', 'teamMinAttendanceCheck','teamTieSheetEntryCount'));
+                $this->set(compact('registeredCandidatePaginate', 'teamMinAttendanceCheck', 'teamTieSheetEntryCount'));
             }
         }
     }
@@ -567,9 +565,11 @@ class RegisterCandidatesController extends AppController {
         //debug($_SESSION['Auth']['User']);
         $event_lists_id = $eventActivityLists->toArray()['0']->event_lists_id;
         //s debug($eventActivityListsArray);die;
-        $data_update = $eventActivityListTable->updateAll(
-                ['finalize_attendance ' => 'true'], ['id' => $id]
-        );
+//        $data_update = $eventActivityListTable->updateAll(
+//                ['finalize_attendance ' => 'true'], ['id' => $id]
+//        );
+        $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
+        $data_delete = $playerTieSheetTable->deleteAll(['event_activity_list_id' => $id]);
 
         $this->Flash->success(__('Attendance Sheet has been finalize now you cannot take further attendance. Status has been saved .'));
         return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $event_lists_id]);

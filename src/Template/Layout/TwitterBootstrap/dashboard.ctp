@@ -9,6 +9,14 @@ echo $this->Html->css('bootstrap/bootstrap.css');
 echo $this->Html->css('bootstrap/font.css');
 echo $this->Html->script(['jquery/jquery.js', 'jquery/jquery-1.12.0.min']);
 echo $this->Html->script(['jquery/validation.js']);
+
+//bracket generator
+
+        
+echo $this->Html->script(['underscore-min']);
+echo $this->Html->script(['clipboard.min']);
+
+
 //echo $this->Html->script(['jquery-2.1.3']);
 //echo $this->Html->script(['jspdf']);
 //echo $this->Html->script(['pdfFromHTML']);
@@ -57,7 +65,7 @@ echo $this->Html->script(['jquery/validation.js']);
                         <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
                             <h3><i class="glyphicon glyphicon-menu-hamburger">
                                     &nbsp;<i class="glyphicon glyphicon-king">
-                                        &nbsp;Welcome </i>
+                                        &nbsp;Welcome 1</i>
                                     &nbsp;<?php 
                                    
                                     echo ucwords($_SESSION['Auth']['User']['username']);  
