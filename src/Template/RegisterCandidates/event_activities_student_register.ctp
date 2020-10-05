@@ -297,6 +297,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                 minDate: mimimum_date,
                 maxDate: maximum_date
             });
+        }
             // defaultDate: d,
             //  maxYear: d,
             // maxDate: new Date(),

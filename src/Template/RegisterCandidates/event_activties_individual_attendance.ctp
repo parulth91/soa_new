@@ -42,18 +42,17 @@ echo $this->Form->create(
     <table class="table table-striped" cellpadding="0" cellspacing="0" id="attendance_list">
         <thead>
             <tr>
-
-                <th><?= $this->Paginator->sort('S.NO'); ?></th>
-                <th><?= $this->Paginator->sort('Id'); ?></th>
-                <th><?= $this->Paginator->sort('Registration Number'); ?></th>
-                <th><?= $this->Paginator->sort('State'); ?></th>
-                <th><?= $this->Paginator->sort('GameType'); ?></th>
-                <th><?= $this->Paginator->sort('Activity'); ?></th>
-                <th><?= $this->Paginator->sort('Name'); ?></th>
-                <th><?= $this->Paginator->sort('Age'); ?></th>
-                <th><?= $this->Paginator->sort('Weight'); ?></th>
-                <th><?= $this->Paginator->sort('Attendance Status'); ?></th>
-                <th class="actions"><?= __('Actions'); ?></th>
+                <th>S.NO</th>
+                <th>Id</th>
+                <th>Registration Number</th>
+                <th>State</th>
+                <th>GameType</th>
+                <th>Activity</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Weight</th>
+                <th>Attendance Status</th>
+                <th class="actions">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -125,12 +124,8 @@ echo $this->Form->create(
 </div>
 
 <?php
-
-        //debug($playerTieSheetEntryCount);
-if($playerTieSheetEntryCount <= 0){
-    
-       // debug($playerTieSheetEntryCount);
-    echo $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
+if($playerTieSheetEntryCount > 0){
+    $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
 }
 
 
@@ -146,8 +141,8 @@ document.body.innerHTML = printContents;
 
 $("#paginator").empty(); 
 
-$('tr').children().eq(9).hide();
- $('table tr').find('td:eq(9)').hide();
+$('tr').children().eq(10).hide();
+ $('table tr').find('td:eq(10)').hide();
  $('#update_attendance_button').hide();
 window.print();
 

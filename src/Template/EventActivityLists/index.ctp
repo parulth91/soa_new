@@ -26,7 +26,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <?php $i=1;
         foreach ($eventActivityLists as $eventActivityList): ?>
         <tr>
-           <td><?php echo $i; ?></td>
+            <td><?php echo $i; ?></td>
             <td><?= $this->Number->format($eventActivityList->id) ?></td>
             <td><?= h($eventActivityList->description) ?></td>
               <td>
