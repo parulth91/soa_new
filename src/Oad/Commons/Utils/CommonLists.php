@@ -13,10 +13,77 @@ use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\I18n\Date;
 use PDO;
+define('BYE_PLAYER_ID', 999999999);
+
 
 class CommonLists {
+    
 
-  
+    public function getBracket($participants) {
+        $participantsCount = count($participants);
+        $rounds = ceil(log($participantsCount) / log(2));
+        $bracketSize = pow(2, $rounds);
+        $requiredByes = $bracketSize - $participantsCount;
+//        echo sprintf('Number of participants: %d<br/>%s', $participantsCount, PHP_EOL);
+//        echo sprintf('Number of rounds: %d<br/>%s', $rounds, PHP_EOL);
+//        echo sprintf('Bracket size: %d<br/>%s', $bracketSize, PHP_EOL);
+//        echo sprintf('Required number of byes: %d<br/>%s', $requiredByes, PHP_EOL);
+        if ($participantsCount < 2) {
+            return array();
+        }
+        $matches = array(array(1, 2));
+        for ($round = 1; $round < $rounds; $round++) {
+            $roundMatches = array();
+            $sum = pow(2, $round + 1) + 1;
+            foreach ($matches as $match) {
+                $home = $this->changeIntoBye($match[0], $participantsCount);
+                $away = $this->changeIntoBye($sum - $match[0], $participantsCount);
+                $roundMatches[] = array($home, $away);
+                $home = $this->changeIntoBye($sum - $match[1], $participantsCount);
+                $away = $this->changeIntoBye($match[1], $participantsCount);
+                $roundMatches[] = array($home, $away);
+            }
+            $matches = $roundMatches;
+        }
+        return $matches;
+    }
+
+    public function changeIntoBye($seed, $participantsCount) {
+        //return $seed <= $participantsCount ?  $seed : sprintf('%d (= bye)', $seed);  
+        return $seed <= $participantsCount ? $seed : null;
+    }
+
+    public function finalPlayerList($totalPlayers = null, $playerList = null) {
+        //debug($playerList);
+        //define('NUMBER_OF_PARTICIPANTS', $totalPlayers);
+        $participants = range(1, $totalPlayers);
+        $bracket = $this->getBracket($participants);
+        $i = 0;
+        foreach ($bracket as $key => $value) {
+            foreach ($value as $key1 => $value1) {
+
+                if ($value1 == null) {
+                    $newArray[$i] = null;
+                } else {
+                    $newArray[$i] = $value1;
+                }
+                $i++;
+            }
+        }
+        $random = BYE_PLAYER_ID;
+        foreach ($newArray as $key => $value) {
+            if ($value != null) {
+                $newArray[$key] = array_pop($playerList);
+            } else {
+                //$newArray[$key] = null;
+                $newArray[$key] = $random;
+                $random++;
+            }
+        }
+        $finalPlayerlist = $newArray;
+        //debug($finalPlayerlist);
+        return $finalPlayerlist;
+    }
 
     //code for generating sequence number
     public function getRegNoSeq($state_id) {

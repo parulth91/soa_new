@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this \Cake\View\View */
 $this->extend('../Layout/TwitterBootstrap/dashboard');
 ?>
@@ -12,14 +13,17 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <th><?= "Sno" ?></th>
             <th><?= $this->Paginator->sort('id'); ?></th>
             <th><?= $this->Paginator->sort('event_activity_list_id', '  Event Activty'); ?></th>
-            <th><?= $this->Paginator->sort('round_number'); ?></th>
+
             <th><?= $this->Paginator->sort('round_description'); ?></th>
-            <th><?= $this->Paginator->sort('team1_score'); ?></th>
-            <th><?= $this->Paginator->sort('team2_score'); ?></th>
-            <th><?= $this->Paginator->sort('winner_event_team_detail_id','Winner Team'); ?></th>
+            <th><?= $this->Paginator->sort('round_number'); ?></th>
             <th><?= $this->Paginator->sort('match_number'); ?></th>
             <th><?= $this->Paginator->sort('team1_event_team_detail_id','Team 1'); ?></th>
             <th><?= $this->Paginator->sort('team2_event_team_detail_id','Team 2'); ?></th>
+            <th><?= $this->Paginator->sort('team1_score'); ?></th>
+            <th><?= $this->Paginator->sort('team2_score'); ?></th>
+            <th><?= $this->Paginator->sort('winner_event_team_detail_id','Winner Team'); ?></th>
+
+
             <th><?= $this->Paginator->sort('active'); ?></th>
             <th><?= $this->Paginator->sort('action_by'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
@@ -29,29 +33,54 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <?php 
         $i=1;
         foreach ($teamTieSheets as $teamTieSheet): ?>
-            <tr>
-                <td><?= $i ?></td>
-                <td><?= $this->Number->format($teamTieSheet->id) ?></td>
-                <td>
+        <tr>
+            <td><?= $i ?></td>
+            <td><?= $this->Number->format($teamTieSheet->id) ?></td>
+            <td>
                     <?= $teamTieSheet->has('event_activity_list') ? $this->Html->link($teamTieSheet->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $teamTieSheet->event_activity_list->id]) : '' ?>
-                </td>
-                <td><?= $this->Number->format($teamTieSheet->round_number) ?></td>
-                <td><?= h($teamTieSheet->round_description) ?></td>
-                <td><?= $this->Number->format($teamTieSheet->team1_score) ?></td>
-                <td><?= $this->Number->format($teamTieSheet->team2_score) ?></td>
-                <td>
+            </td>
+
+            <td><?= h($teamTieSheet->round_description) ?></td>
+            <td><?= $this->Number->format($teamTieSheet->round_number) ?></td>
+            <td><?= $this->Number->format($teamTieSheet->match_number) ?></td>
+            <td>
+                 <?php
+                     if($teamTieSheet->bye_player_id != null && $teamTieSheet->team1_event_team_detail == null){
+                         if($teamTieSheet->team1_event_team_detail == null){
+                             echo "<p style='color:red'>BYE</p>";
+                         }
+                     }else{
+                         if($teamTieSheet->team1_event_team_detail !=null){
+                              echo $teamTieSheet->has('team1_event_team_detail') ? $this->Html->link($teamTieSheet->team1_event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->team1_event_team_detail->id]) : '' ;
+                         }
+                        
+                     }
+                    ?>
+
+            </td>
+            <td>
+                   <?php
+                     if($teamTieSheet->bye_player_id != null && $teamTieSheet->team2_event_team_detail == null){
+                         if($teamTieSheet->team2_event_team_detail == null){
+                             echo "<p style='color:red'>BYE</p>";
+                         }
+                     }else{
+                         if($teamTieSheet->team2_event_team_detail !=null){
+                              echo $teamTieSheet->has('team2_event_team_detail') ? $this->Html->link($teamTieSheet->team2_event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->team2_event_team_detail->id]) : '' ;
+                         }
+                        
+                     }
+                    ?>  </td>
+            <td><?= $this->Number->format($teamTieSheet->team1_score) ?></td>
+            <td><?= $this->Number->format($teamTieSheet->team2_score) ?></td>
+            <td>
                     <?= $teamTieSheet->has('winner_event_team_detail') ? $this->Html->link($teamTieSheet->winner_event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->winner_event_team_detail->id]) : '' ?>
-                </td>
-                <td><?= $this->Number->format($teamTieSheet->match_number) ?></td>
-                <td>
-                    <?= $teamTieSheet->has('team1_event_team_detail') ? $this->Html->link($teamTieSheet->team1_event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->team1_event_team_detail->id]) : '' ?>
-                </td>
-                <td>
-                    <?= $teamTieSheet->has('team2_event_team_detail') ? $this->Html->link($teamTieSheet->team2_event_team_detail->description, ['controller' => 'EventTeamDetails', 'action' => 'view', $teamTieSheet->team2_event_team_detail->id]) : '' ?>
-                </td>
-                <td><?= $teamTieSheet->active ? __('Yes') : __('No'); ?></td>
-                <td><?= $this->Number->format($teamTieSheet->action_by) ?></td>
-                <td class="actions">
+            </td>
+
+
+            <td><?= $teamTieSheet->active ? __('Yes') : __('No'); ?></td>
+            <td><?= $this->Number->format($teamTieSheet->action_by) ?></td>
+            <td class="actions">
                     <?= $this->Html->link('', ['action' => 'view', $teamTieSheet->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
 
                     <?php
@@ -61,8 +90,8 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                     }
                     ?>
                     <?php // $this->Form->postLink('', ['action' => 'delete', $teamTieSheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $teamTieSheet->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
-                </td>
-            </tr>
+            </td>
+        </tr>
         <?php 
         $i++;
         endforeach; ?>

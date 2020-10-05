@@ -52,7 +52,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         echo $this->Html->link('Attendance', ['action' => 'eventActivtiesTeamAttendance', $List->id], ['Mark Atendance', 'type' => 'button', 'class' => 'btn  btn-warning']);
                           echo  $this->Form->postLink('Delete Tie', [
                             'controller' => 'RegisterCandidates',
-                            'action' => 'finalize', 
+                            'action' => 'finalizeTeam', 
                             $List->id], 
                                 ['confirm' => __('Are you sure you want to Finalize attendance? After this taking attendence will not be  possible# {0}?',$List['activity_list']['description']),
                                     'title' => __('Delete'),
@@ -71,7 +71,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
                         
                         echo  $this->Form->postLink('Delete Tie', [
                             'controller' => 'RegisterCandidates',
-                            'action' => 'finalize', 
+                            'action' => 'finalizeIndividual', 
                             $List->id], 
                                 ['confirm' => __('Are you sure you want to Finalize attendance? After this taking attendence will not be  possible# {0}?',$List['activity_list']['description']),
                                     'title' => __('Delete'),

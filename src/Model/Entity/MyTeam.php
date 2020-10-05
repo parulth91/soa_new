@@ -56,7 +56,8 @@ class MyTeam extends Entity {
         'winner_event_team_detail' => true,
         'team1_event_team_detail' => true,
         'team2_event_team_detail' => true,
-        'update_tiesheet' => true
+        'update_tiesheet' => true,
+        'bye_player_id' => true
     ];
 
 }

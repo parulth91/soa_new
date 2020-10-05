@@ -556,7 +556,26 @@ class RegisterCandidatesController extends AppController {
         }
     }
 
-    public function finalize($id = null) {
+    public function finalizeTeam($id = null) {
+        $eventActivityListTable = TableRegistry::get('event_activity_lists');
+        $eventActivityLists = $eventActivityListTable->find('all')->select(['event_lists_id'])
+                        ->contain([
+                        ])->where(['event_activity_lists.id' => $id]);
+
+        //debug($_SESSION['Auth']['User']);
+        $event_lists_id = $eventActivityLists->toArray()['0']->event_lists_id;
+        //s debug($eventActivityListsArray);die;
+//        $data_update = $eventActivityListTable->updateAll(
+//                ['finalize_attendance ' => 'true'], ['id' => $id]
+//        );
+        $teamTieSheetTable = TableRegistry::get('team_tie_sheets');
+        $data_delete = $teamTieSheetTable->deleteAll(['event_activity_list_id' => $id]);
+
+       $this->Flash->success(__('Team Tie sheet has been deleted. Status has been saved .'));
+        return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $event_lists_id]);
+    }
+
+    public function finalizeIndividual($id = null) {
         $eventActivityListTable = TableRegistry::get('event_activity_lists');
         $eventActivityLists = $eventActivityListTable->find('all')->select(['event_lists_id'])
                         ->contain([
@@ -571,7 +590,7 @@ class RegisterCandidatesController extends AppController {
         $playerTieSheetTable = TableRegistry::get('player_tie_sheets');
         $data_delete = $playerTieSheetTable->deleteAll(['event_activity_list_id' => $id]);
 
-        $this->Flash->success(__('Attendance Sheet has been finalize now you cannot take further attendance. Status has been saved .'));
+        $this->Flash->success(__('Individual Tie sheet has been deleted. Status has been saved .'));
         return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $event_lists_id]);
     }
 

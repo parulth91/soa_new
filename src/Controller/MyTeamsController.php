@@ -32,7 +32,7 @@ class MyTeamsController extends AppController {
         $teamTieSheets = $this->paginate($Result);
 
 
-        $this->set(compact('teamTieSheets','id'));
+        $this->set(compact('teamTieSheets', 'id'));
     }
 
     /**
@@ -159,7 +159,6 @@ class MyTeamsController extends AppController {
         //debug($eventActivityLists[0]);die;
         $tieSheetHeader = $eventActivityLists[0]->event_list['description'] . '(' . $eventActivityLists[0]->description . ')';
         $this->myTeamTieSheets($eventActivityLists[0]->event_list_id, $id, $eventActivityLists[0]->event_team_details, $tieSheetHeader);
-
         die;
     }
 
@@ -176,39 +175,67 @@ class MyTeamsController extends AppController {
                 ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
                 ->toArray();
         $tieSheetUpdateReguiredFlag = $teamTieSheetTable->find('all')->where(['event_activity_list_id' => $event_activity_list_id, 'update_tiesheet' => true])->count();
-        $playersId = null;
-        //debug($teamTieSheetLists);die;
+        $playersIdList = null;
+        $teamName = null;
         foreach ($team_data as $key_team => $value_team) {
             //debug($value_team->description);die;
-            $playersId[] = $value_team->id;
-            $teamName[] = '(' . $value_team->id . ') '.$value_team->description;
+            $playersIdList[] = $value_team->id;
+            $teamName[$value_team->id] = '(' . $value_team->id . ') ' . $value_team->description;
         }
-        if (empty($playersId)) {
+
+
+        if (empty($playersIdList)) {
             //debug($playersId);
             echo "No Team is registered for this Event activity";
             $this->Flash->error(__('The player tie sheet could not be saved. Please, try again.'));
             die;
         }
 
-            //round 1 check and new data entered in database
+        $total_player = count($playersIdList);
+        $finalPlayerList = $this->cList->finalPlayerList($total_player, $playersIdList);
+        // debug($finalPlayerList);
+        $forloop = $finalPlayerList;
+        foreach ($finalPlayerList as $key => $value) {
+            // Having the $key here allows us to reference the
+            // original $items variable.
+            foreach ($teamName as $key1 => $value1) {
+                if ($value == $key1) {
+                    $forloop[$key] = $value1;
+                }
+            }
+        }
+
+        $finalPlayerListForView = $forloop;
+//debug($finalPlayerListForView);die;
+        if (count($teamName) <= 1) {
+            $this->Flash->error(__('No team participated till now in this game. The player tie sheet could not be saved. Please, add players and try again.'));
+
+            return $this->redirect(['controller' => 'RegisterCandidates', 'action' => 'viewEventActivities', $eventActivityLists[0]->event_lists_id]);
+        }
+
+        //round 1 check and new data entered in database
         if (empty($teamTieSheetLists)) {
-            if ($this->createMyTeamTieSheet($playersId, $eventDetails, true, $event_activity_list_id) == true) {
-                
+            if ($this->createMyTeamTieSheet($finalPlayerList, $eventDetails, true, $event_activity_list_id) == true) {
+                $this->tieSheet($event_activity_list_id);
             } else {
                 $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
             }
         } elseif (!empty($teamTieSheetLists)) {
 
-            if (count($tieSheetUpdateReguiredFlag) > 0) {
-                if ($this->updateMyTeamTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
-                    
+            if ($tieSheetUpdateReguiredFlag > 0) {
+                if ($this->updateMyTeamTieSheet($finalPlayerList, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
+                    $teamTieSheetLists = $teamTieSheetTable->find('all')
+                            ->contain(['Team1EventTeamDetails', 'Team2EventTeamDetails'])
+                            ->where(['MyTeams.event_activity_list_id' => $event_activity_list_id])
+                            ->order(['round_number' => 'ASC', 'match_number' => 'ASC'])
+                            ->toArray();
                 } else {
                     $this->Flash->error(__('The team tie sheet could not be saved. Please, try again.'));
                 }
             }
         }
-        //debug($teamTieSheetLists);die;
-        $this->getTeamsTieSheet($teamName, $eventDetails, true, $teamTieSheetLists);
+
+        $this->getTeamsTieSheet($finalPlayerListForView, $eventDetails, true, $teamTieSheetLists);
     }
 
     public function createMyTeamTieSheet($data = null, $eventDetails = null, $score = null, $event_activity_list_id) {
@@ -227,16 +254,43 @@ class MyTeamsController extends AppController {
                 $teamTieSheetData[$i]['round_number'] = $key_round;
                 $teamTieSheetData[$i]['round_description'] = $tieSheetRoundData['rounds'][$key_round]['0'];
                 $teamTieSheetData[$i]['match_number'] = $key_match;
-                $teamTieSheetData[$i]['team1_event_team_detail_id'] = $value_match['c1'];
-                $teamTieSheetData[$i]['team2_event_team_detail_id'] = $value_match['c2'];
-                $teamTieSheetData[$i]['team1_score'] = $value_match['s1'];
-                $teamTieSheetData[$i]['team2_score'] = $value_match['s2'];
+
+                if ($value_match['c1'] >= BYE_PLAYER_ID) {
+                    $teamTieSheetData[$i]['update_tiesheet'] = true;
+                    $teamTieSheetData[$i]['team1_event_team_detail_id'] = null;
+                    $teamTieSheetData[$i]['team1_score'] = 0;
+                    $teamTieSheetData[$i]['bye_player_id'] = $value_match['c1'];
+                     $teamTieSheetData[$i]['winner_event_team_detail_id'] = $value_match['c2'];
+                } else {
+                    $teamTieSheetData[$i]['team1_event_team_detail_id'] = $value_match['c1'];
+                    $teamTieSheetData[$i]['team1_score'] = 1;
+                   
+                }
+                if ($value_match['c2'] >= BYE_PLAYER_ID) {
+                    $teamTieSheetData[$i]['update_tiesheet'] = true;
+                    $teamTieSheetData[$i]['team2_event_team_detail_id'] = null;
+                    $teamTieSheetData[$i]['team2_score'] = 0;
+                    $teamTieSheetData[$i]['bye_player_id'] = $value_match['c2'];
+                    
+                    $teamTieSheetData[$i]['winner_event_team_detail_id'] = $value_match['c1'];
+                } else {
+                    $teamTieSheetData[$i]['team2_event_team_detail_id'] = $value_match['c2'];
+                    $teamTieSheetData[$i]['team2_score'] = 1;
+                }
+
+//                $teamTieSheetData[$i]['team1_event_team_detail_id'] = $value_match['c1'];
+//                $teamTieSheetData[$i]['team2_event_team_detail_id'] = $value_match['c2'];
+//                $teamTieSheetData[$i]['team1_score'] = $value_match['s1'];
+//                $teamTieSheetData[$i]['team2_score'] = $value_match['s2'];
                 $teamTieSheetData[$i]['action_by'] = $_SESSION['Auth']['User']['id'];
                 $teamTieSheetData[$i]['action_ip'] = $_SERVER['REMOTE_ADDR'];
                 $teamTieSheetData[$i]['active'] = true;
+                $teamTieSheetData[$i]['update_tiesheet'] = true;
                 $i++;
             }
         }
+
+        // debug($teamTieSheetData);die;
 //code for saving data in table
         $teamTieSheet = $teamTieSheetTable->newEntities($teamTieSheetData);
         $teamTieSheetFinal = $teamTieSheetTable->patchEntities($teamTieSheet, $teamTieSheetData);
@@ -260,20 +314,50 @@ class MyTeamsController extends AppController {
 // Lets create a knock-out tournament between some of our dear physicists.
         $competitors = $data;
 // Create initial tournament bracket.
- //debug($teamTieSheetLists);die;
+        //debug($teamTieSheetLists);die;
         $KO = new KnockoutGD($competitors);
         foreach ($teamTieSheetLists as $key => $value) {
-           
+            if ($value['bye_player_id'] >= BYE_PLAYER_ID) {
+                //die;
+                if ($value['team1_event_team_detail_id'] == null) {
+                    $value['team1_event_team_detail_id'] = $value['bye_player_id'];
+                }
+                if ($value['team2_event_team_detail_id'] == null) {
+                    $value['team2_event_team_detail_id'] = $value['bye_player_id'];
+                }
+            }
             $KO->setResByCompets($value['team1_event_team_detail_id'], $value['team2_event_team_detail_id'], $value['team1_score'], $value['team2_score']);
         }
         $tieSheetRoundData = $KO->getData($eventDetails);
 
         foreach ($teamTieSheetLists as $key => $value) {
+//            $teamTieSheetData[$key]['id'] = $value['id'];
+//            $teamTieSheetData[$key]['team1_event_team_detail_id'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['c1'];
+//            $teamTieSheetData[$key]['team2_event_team_detail_id'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['c2'];
+
+            $teamTieSheetData[$key]['team1_event_team_detail_id'] = null;
+            $teamTieSheetData[$key]['team2_event_team_detail_id'] = null;
             $teamTieSheetData[$key]['id'] = $value['id'];
-            $teamTieSheetData[$key]['team1_event_team_detail_id'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['c1'];
-            $teamTieSheetData[$key]['team2_event_team_detail_id'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['c2'];
+            //debug($value);
+            if ($value['team1_event_team_detail_id'] >= BYE_PLAYER_ID) {
+                //debug($value);
+                $teamTieSheetData[$key]['team1_event_team_detail_id'] = null;
+                $teamTieSheetData[$key]['team1_score'] = 0;
+            } else {
+                $teamTieSheetData[$key]['team1_event_team_detail_id'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['c1'];
+                $teamTieSheetData[$key]['team1_score'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['s1'];
+            }
+            if ($value['team2_event_team_detail_id'] >= BYE_PLAYER_ID) {
+                $teamTieSheetData[$key]['team2_event_team_detail_id'] = null;
+                $teamTieSheetData[$key]['team2_score'] = 0;
+            } else {
+                $teamTieSheetData[$key]['team2_event_team_detail_id'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['c2'];
+                $teamTieSheetData[$key]['team2_score'] = $tieSheetRoundData['round_matches'][$value['round_number']][$value['match_number']]['s2'];
+            }
+
             $teamTieSheetData[$key]['action_by'] = $_SESSION['Auth']['User']['id'];
             $teamTieSheetData[$key]['action_ip'] = $_SERVER['REMOTE_ADDR'];
+            $teamTieSheetData[$key]['update_tiesheet'] = false;
             $currentTimeStamp = Time::now();
             $currentTimeStamp->i18nFormat();
             $teamTieSheetData[$key]['modified'] = $currentTimeStamp;
@@ -306,7 +390,7 @@ class MyTeamsController extends AppController {
         } else {
             $GDLIB_INSTALLED = (function_exists("gd_info")) ? false : false;
         }
-       
+
 //die;
 // Lets create a knock-out tournament between some of our dear physicists.
         $competitors = $data;
@@ -385,27 +469,47 @@ class MyTeamsController extends AppController {
           If a match entry contains a competitor score of -1, this denotes that the competitor is undecided due to an unplayed match in the preceding round.
           Once the result of the unplayed match is submitted, the undecided competitor will be updated.
          */
- 
+
 // Now, lets fill in some match results. This can be done two ways: either by directly specifying round and match indicies or by specifying competitor names.
-        //  debug($teamTieSheetLists);die;
+        //debug($competitors);
         foreach ($teamTieSheetLists as $key => $value) {
+            //debug($value);
             //debug($value->team1_event_team_detail->description);die;
-            $team1 = $value->team1_event_team_detail_id;
-            $team2 = $value->team2_event_team_detail_id;
-            if(!isset($value->team1_event_team_detail->description) || !isset( $value->team2_event_team_detail->description)){
-                $team1= $value->team1_event_team_detail_id;
-                $team2= $value->team2_event_team_detail_id;
-            }else{
-                $team1= '('.$value->team1_event_team_detail_id.') '. $value->team1_event_team_detail->description;
-             $team2= '('.$value->team2_event_team_detail_id.') '. $value->team2_event_team_detail->description;
+
+            if ($value->team1_event_team_detail_id == null) {
+                $team1 = $value['bye_player_id'];
+            } else {
+                $team1 = '(' . $value->team1_event_team_detail_id . ') ' . $value->team1_event_team_detail->description;
             }
+            if ($value->team2_event_team_detail_id == null) {
+                $team2 = $value['bye_player_id'];
+            } else {
+                $team2 = '(' . $value->team2_event_team_detail_id . ') ' . $value->team2_event_team_detail->description;
+            }
+
+//            if (!isset($value->team1_event_team_detail->description) || !isset($value->team2_event_team_detail->description)) {
+//                $team1 = $value->team1_event_team_detail_id;
+//                $team2 = $value->team2_event_team_detail_id;
+//            } else {
+//            }
             //debug($team1);
-           // debug($team2);
+            // debug($team2);
             $KO->setResByCompets(
                     $team1, $team2, $value['team1_score'], $value['team2_score']);
             //$returnData = $KO->getData($eventDetails);
         }
-        
+
+        foreach ($competitors as $key => $value) {
+            if ($value >= BYE_PLAYER_ID) {
+                $dictionary[$value] = "BYE";
+            } else {
+                $dictionary[$value] = $value;
+            }
+        }
+//        debug($dictionary);
+//        die;
+        $KO->renameCompets($dictionary);
+
         //DEBUG($data);die;
 //$KO->setResByMatch('A', 'E', 1, 0); // Arguments: match index, round index, score 1, score 2.
 // $KO->setResByCompets('A', 'E', 0, 1); // Arguments: competitor 1, competitor 2, score 1, score 2.
