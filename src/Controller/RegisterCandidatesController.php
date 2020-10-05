@@ -80,7 +80,7 @@ class RegisterCandidatesController extends AppController {
         $team_id = $_GET['team_id'];
         $event_actid=$_GET['event_actid'];
         $Result = $this->RegisterCandidates->find()->contain([
-            'EventActivityLists', 'StateLists', 'GenderLists'
+            'EventActivityLists', 'StateLists'
         ])
         ->where(['RegisterCandidates.event_activity_list_id' => $event_actid,
                  'event_team_detail_id' => $team_id,'RegisterCandidates.state_list_id'=>$state_id])

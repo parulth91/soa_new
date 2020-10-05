@@ -165,7 +165,7 @@ $(document).ready(function() {
                   state_id : stateid,
                 },
                 success: function(data) {
-             alert(data);
+            // alert(data);
 
                $("#teamlistdiv").show();
               //  $(data).each(function () {
