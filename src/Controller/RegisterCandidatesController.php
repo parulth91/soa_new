@@ -32,52 +32,81 @@ class RegisterCandidatesController extends AppController {
 
     public function viewTeamRegisteredCandidates($id = null) {
         $connection = ConnectionManager::get('default');
-        $eventTeamlisttable = TableRegistry::get('event_team_details');
-        $teamDetails = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->where(['event_activity_list_id' => $id])->order('description')->toArray();
-        $this->set('teamDetails', $teamDetails);
+
         $statelisttable = TableRegistry::get('state_lists');
         $stateDetails = $statelisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->order('description')->toArray();
         $this->set('stateDetails', $stateDetails);
+        $this->set('id',$id);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $eventTeamId = $this->request->data['event_team_id'];
-            $stateId = $this->request->data['state_list_id'];
-            $Result = $this->RegisterCandidates->find()->contain([
-                        'EventActivityLists', 'StateLists', 'EventTeamDetails', 'GenderLists'
-                    ])
-                    ->where(['RegisterCandidates.event_activity_list_id' => $id,
-                              'event_team_detail_id' => $eventTeamId,'RegisterCandidates.state_list_id'=>$stateId])
-                    //        $this->paginate = [
-                    //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
-                    //        ];
-                    ->order(['RegisterCandidates.id']);
+    }
+/*****************fill team dropdown according to state wise using ajax***********************************/   
+    public function getTeamList(){
+        $connection = ConnectionManager::get('default');
+       $this->viewBuilder()->layout('ajax');
+       // $this->autoRender = false;
+        $state_id = $_GET['state_id'];
+        // debug($state_id);die;
+        $eventTeamlisttable = TableRegistry::get('event_team_details');
+        $teamDetailsResult = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])
+                                  ->where(['state_list_id'=>$state_id
+                                  ])->order('description')->toArray();
+                                                // debug($teamDetailsResult);
+                    //  $teamDetails->hydrate(false);
+                    // echo json_encode($teamDetailsResult);
+                    //  $teamDetailsResult = $teamDetails->toArray();
+          $this->set('teamDetailsResult', $teamDetailsResult);
+                    /*  $select = array('' =>'--Select--');
+                        //$combined  = merge($select,$districtResult);
+                        $final  = array();
+                        foreach( $select as $key=>$each ){
+                            $final[$key]    = $each;
+                        }
+                        foreach( $teamDetailsResult as $key=>$each ){
+                            $final[$key]    = $each;
+                        }
 
-           
-        }
-        if (isset($Result)) {
-            $registerCandidateEventActivities = $this->paginate($Result);
-            $this->set(compact('registerCandidateEventActivities'));
-        }
+                    ///$districtArry = (array_merge($slect,$districtResult));
+                        $this->set('team_list',$final);*/
+
     }
 
+ /*****************for view Team Registered List according to state and team using ajax***********************************/   
+    public function getRegisteredTeamList(){
+        $connection = ConnectionManager::get('default');
+       $this->viewBuilder()->layout('ajax');
+       // $this->autoRender = false;
+       if(isset($_GET['team_id'])){
+        $state_id = $_GET['state_id'];
+        $team_id = $_GET['team_id'];
+        $event_actid=$_GET['event_actid'];
+        $Result = $this->RegisterCandidates->find()->contain([
+            'EventActivityLists', 'StateLists', 'GenderLists'
+        ])
+        ->where(['RegisterCandidates.event_activity_list_id' => $event_actid,
+                 'event_team_detail_id' => $team_id,'RegisterCandidates.state_list_id'=>$state_id])
+        //        $this->paginate = [
+        //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
+        //        ];
+                ->order(['RegisterCandidates.id']);
+            if (isset($Result)) {
+            $registerCandidateEventActivities = $this->paginate($Result);
+            $this->set(compact('registerCandidateEventActivities'));
+            }
+        }
+ }
     public function viewIndividualRegisteredCandidates($id = null) {
         $connection = ConnectionManager::get('default');
-        $statelisttable = TableRegistry::get('state_lists');
-        $stateDetails = $statelisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->order('description')->toArray();
-        $this->set('stateDetails', $stateDetails);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $stateId = $this->request->data['state_list_id'];
+
             $Result = $this->RegisterCandidates->find()->contain([
                         'EventActivityLists', 'StateLists', 'GenderLists'
                     ])
-                    ->where(['RegisterCandidates.event_activity_list_id' => $id,
-                              'RegisterCandidates.state_list_id'=>$stateId])
+                    ->where(['RegisterCandidates.event_activity_list_id' => $id])
                     //        $this->paginate = [
                     //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
                     //        ];
                     ->order(['RegisterCandidates.id']);
 
-        }
+
         if (isset($Result)) {
             $registerCandidateEventActivities = $this->paginate($Result);
             $this->set(compact('registerCandidateEventActivities'));
@@ -505,9 +534,7 @@ class RegisterCandidatesController extends AppController {
     }
 
     public function eventActivtiesIndividualAttendance($id = null) {
-
-
-        $registeredCandidateLists = $this->RegisterCandidates->find('all')
+       $registeredCandidateLists = $this->RegisterCandidates->find('all')
                 ->contain(['StateLists',
                     'EventActivityLists' => ['EventLists', 'ActivityLists' => ['GenderLists', 'GameTypeLists'], 'EventTeamDetails']
                 ])->where(['event_activity_list_id' => $id])

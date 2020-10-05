@@ -14,19 +14,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 </div>
 <div class="row">
 <?= $this->Form->end() ?>
-<div class=col-md-5>
-<?php echo $this->Form->create('state_wise_form'); 
-  echo $this->Form->input('state_list_id', ['id'=>'state_list_id',
-  'type' => 'select',
-  'label' => 'Select State',
-  'empty' => "Select ",
-  'options' => $stateDetails,
-  'required' => 'true'
 
-]);?></div>
-    </div>
-    <?= $this->Form->button("View Registered Individual", ['name' => 'view_state_button', 'id' => 'view_state_button', 'class' => 'btn btn-primary'
-                                                       ]);   ?>
    <div id="printableArea">
     <div id="event_descripion_div" class="pen-title">
   
@@ -116,7 +104,6 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
       }
         else {
         }?>  
-  <?= $this->Form->end() ?>
 </fieldset>
 
 
