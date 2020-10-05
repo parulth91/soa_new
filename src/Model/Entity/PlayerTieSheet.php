@@ -58,6 +58,8 @@ class PlayerTieSheet extends Entity
         'winner_player' => true,
         'player1' => true,
         'player2' => true,
-        'update_tiesheet' =>true
+        'update_tiesheet' =>true,
+        'bye_player_id' =>true
+        
     ];
 }

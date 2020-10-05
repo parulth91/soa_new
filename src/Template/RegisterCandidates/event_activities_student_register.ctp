@@ -243,9 +243,17 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 
         var team_description = "<?php echo $eventActivityListValue->activity_list->game_type_list->description;  ?>";
         // alert(team_description);
-        var maximum_weight = "<?php echo $weightFlag->maximum_weight;  ?>";
-        var minimum_weight = "<?php echo $weightFlag->minimum_weight;  ?>";
-
+        var maximum_weight = "<?php 
+                if(isset($weightFlag->maximum_weight)){
+                     echo $weightFlag->maximum_weight;
+                }
+         ?>";
+        var minimum_weight = "<?php 
+                if(isset($weightFlag->minimum_weight)){
+                     echo $weightFlag->minimum_weight;
+                }
+         ?>";
+      
 
 
         var d = new Date();

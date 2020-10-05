@@ -61,13 +61,25 @@ echo $this->Form->create($teamTieSheet);
                 </td>
                 <td>
                     <?php
-                    echo $this->Form->control('team1_score', ['label' => false]);
-                    ?>
+                            echo $this->Form->input('team1_score', [
+                                'label' => false,
+                                'type' => 'number',
+                                 'id' => 'team1_score',
+                                'min'=> 0
+                            ]);
+                            ?>
+                 
                 </td>
                 <td>
-                    <?php
-                    echo $this->Form->control('team2_score', ['label' => false]);
-                    ?>
+                     <?php
+                            echo $this->Form->input('team2_score', [
+                                'label' => false,
+                                'type' => 'number',
+                                 'id' => 'team2_score',
+                                'min'=> 0
+                            ]);
+                            ?>
+                    
                 </td>
                 <td>
                     <?php

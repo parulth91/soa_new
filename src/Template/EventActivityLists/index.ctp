@@ -10,12 +10,13 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
              <th>S.NO </th>
             <th><?= $this->Paginator->sort('id'); ?></th>
             <th><?= $this->Paginator->sort('description'); ?></th>
+             <th><?= $this->Paginator->sort('event_lists_id'); ?></th>
+            <th><?= $this->Paginator->sort('activity_lists_id'); ?></th>
             <th><?= $this->Paginator->sort('active'); ?></th>
             <th><?= $this->Paginator->sort('action_by'); ?></th>
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('action_ip'); ?></th>
-            <th><?= $this->Paginator->sort('event_lists_id'); ?></th>
-            <th><?= $this->Paginator->sort('activity_lists_id'); ?></th>
+           
             <th><?= $this->Paginator->sort('modified'); ?></th>
             <th><?= $this->Paginator->sort('registration_fees'); ?></th>
             <th class="actions"><?= __('Actions'); ?></th>
@@ -28,16 +29,17 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
             <td><?php echo $i; ?></td>
             <td><?= $this->Number->format($eventActivityList->id) ?></td>
             <td><?= h($eventActivityList->description) ?></td>
-                        <td><?= $eventActivityList->active ? __('Yes') : __('No'); ?></td>
-                                    <td><?= $this->Number->format($eventActivityList->action_by) ?></td>
-            <td><?php echo date_format($eventActivityList->created,"d/m/Y h:i:A"); ?></td>
-            <td><?= h($eventActivityList->action_ip) ?></td>
-            <td>
+              <td>
                 <?= $eventActivityList->has('event_list') ? $this->Html->link($eventActivityList->event_list->description, ['controller' => 'EventLists', 'action' => 'view', $eventActivityList->event_list->id]) : '' ?>
             </td>
             <td>
                 <?= $eventActivityList->has('activity_list') ? $this->Html->link($eventActivityList->activity_list->description, ['controller' => 'ActivityLists', 'action' => 'view', $eventActivityList->activity_list->id]) : '' ?>
             </td>
+                        <td><?= $eventActivityList->active ? __('Yes') : __('No'); ?></td>
+                                    <td><?= $this->Number->format($eventActivityList->action_by) ?></td>
+            <td><?php echo date_format($eventActivityList->created,"d/m/Y h:i:A"); ?></td>
+            <td><?= h($eventActivityList->action_ip) ?></td>
+          
             <td><?php echo date_format($eventActivityList->modified,"d/m/Y h:i:A"); ?></td>
             <td><?= $this->Number->format($eventActivityList->registration_fees) ?></td>
             <td class="actions">

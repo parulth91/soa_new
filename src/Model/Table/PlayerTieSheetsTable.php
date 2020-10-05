@@ -56,11 +56,11 @@ class PlayerTieSheetsTable extends Table
 //        ]);
         $this->belongsTo('WinnerPlayers', [
             'className' => 'RegisterCandidateEventActivities',
-            'foreignKey' => 'winner_event_team_detail_id'
+            'foreignKey' => 'winner_player_id'
         ]);
         $this->belongsTo('Player1s', [
             'className' => 'RegisterCandidateEventActivities',
-            'foreignKey' => 'winner_player_id'
+            'foreignKey' => 'player1_id'
         ]);
         $this->belongsTo('Player2s', [
             'className' => 'RegisterCandidateEventActivities',

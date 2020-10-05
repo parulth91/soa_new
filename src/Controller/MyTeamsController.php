@@ -32,7 +32,7 @@ class MyTeamsController extends AppController {
         $teamTieSheets = $this->paginate($Result);
 
 
-        $this->set(compact('teamTieSheets'));
+        $this->set(compact('teamTieSheets','id'));
     }
 
     /**
@@ -199,7 +199,7 @@ class MyTeamsController extends AppController {
             }
         } elseif (!empty($teamTieSheetLists)) {
 
-            if ($tieSheetUpdateReguiredFlag > 0) {
+            if (count($tieSheetUpdateReguiredFlag) > 0) {
                 if ($this->updateMyTeamTieSheet($playersId, $eventDetails, true, $teamTieSheetLists, $event_activity_list_id) == true) {
                     
                 } else {
@@ -260,10 +260,10 @@ class MyTeamsController extends AppController {
 // Lets create a knock-out tournament between some of our dear physicists.
         $competitors = $data;
 // Create initial tournament bracket.
-
+ //debug($teamTieSheetLists);die;
         $KO = new KnockoutGD($competitors);
         foreach ($teamTieSheetLists as $key => $value) {
-            //debug($teamTieSheetLists);
+           
             $KO->setResByCompets($value['team1_event_team_detail_id'], $value['team2_event_team_detail_id'], $value['team1_score'], $value['team2_score']);
         }
         $tieSheetRoundData = $KO->getData($eventDetails);
