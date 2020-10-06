@@ -62,7 +62,7 @@ if (!empty($stateDetails))
 
 
 
-      <?= $this->Form->end() ?>
+ <?= $this->Form->end() ?>
 <div id="teamlistdata">
 </div>
 </div> 
@@ -80,8 +80,9 @@ function printDiv(divName) {
    $('tr').children().eq(13).hide();
       $('table tr').find('td:eq(13)').hide();
      window.print();
-
+     return false;
      document.body.innerHTML = originalContents;
+     
 }
 
 $(document).ready(function() {

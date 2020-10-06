@@ -65,7 +65,7 @@
             <td><?php echo $i; ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
             <td>
-            <?= $registerCandidateEventActivity->has('event_activity_list') ? $this->Html->link($registerCandidateEventActivity->event_activity_list->description, ['controller' => 'EventActivityLists', 'action' => 'view', $registerCandidateEventActivity->event_activity_list->id]) : '' ?>
+            <?= h($registerCandidateEventActivity->event_activity_list->description) ?>
             </td>
             <td><?= h($registerCandidateEventActivity->full_name) ?></td>
             <td><?php echo date_format($registerCandidateEventActivity->dob,"d/m/Y");?></td>
