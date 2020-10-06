@@ -33,10 +33,18 @@ class RegisterCandidatesController extends AppController {
     public function viewTeamRegisteredCandidates($id = null) {
         $connection = ConnectionManager::get('default');
 
-        $statelisttable = TableRegistry::get('state_lists');
-        $stateDetails = $statelisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->order('description')->toArray();
-        $this->set('stateDetails', $stateDetails);
-        $this->set('id',$id);
+        $eventTeamDetailsTable = TableRegistry::get('event_team_details');
+      //  $stateDetails = $statelisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])->order('description')->toArray();
+      $stateDetails = $eventTeamDetailsTable->find('list',['keyField' => 'state_list_id', 'valueField' => 'state_list.description'])
+                         ->contain(['StateLists'])
+                        ->where(['event_activity_list_id' => $id])
+                            //        $this->paginate = [
+                            //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
+                                        //        ];
+                        ->order(['state_list_id'])->toArray();
+                       // debug($stateDetails);die;
+                    $this->set('stateDetails', $stateDetails);
+                    $this->set('id',$id);
 
     }
 /*****************fill team dropdown according to state wise using ajax***********************************/   
@@ -45,16 +53,17 @@ class RegisterCandidatesController extends AppController {
        $this->viewBuilder()->layout('ajax');
        // $this->autoRender = false;
         $state_id = $_GET['state_id'];
+        $event_activity_list_id = $_GET['event_activity_list_id'];
         // debug($state_id);die;
         $eventTeamlisttable = TableRegistry::get('event_team_details');
         $teamDetailsResult = $eventTeamlisttable->find('list', ['keyField' => 'id', 'valueField' => 'description'])
-                                  ->where(['state_list_id'=>$state_id
+                                  ->where(['state_list_id'=>$state_id, 'event_activity_list_id'=>$event_activity_list_id
                                   ])->order('description')->toArray();
                                                 // debug($teamDetailsResult);
                     //  $teamDetails->hydrate(false);
                     // echo json_encode($teamDetailsResult);
                     //  $teamDetailsResult = $teamDetails->toArray();
-          $this->set('teamDetailsResult', $teamDetailsResult);
+                $this->set('teamDetailsResult', $teamDetailsResult);
                     /*  $select = array('' =>'--Select--');
                         //$combined  = merge($select,$districtResult);
                         $final  = array();

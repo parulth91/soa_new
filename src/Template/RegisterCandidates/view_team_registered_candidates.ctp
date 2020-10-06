@@ -149,6 +149,7 @@ $(document).ready(function() {
   $("#state_list_id").change(function(){
 
             var stateid = $(this).val();
+            var event_activity_list_id= $("#event_act_id").val();
             var baseUrl = "<?php echo $this->Url->build('/register-candidates', true);?>";
            // alert(baseUrl);
             $.ajax({
@@ -163,6 +164,7 @@ $(document).ready(function() {
                 url: baseUrl + '/getTeamList',
                 data: {
                   state_id : stateid,
+                  event_activity_list_id : event_activity_list_id,
                 },
                 success: function(data) {
             // alert(data);
