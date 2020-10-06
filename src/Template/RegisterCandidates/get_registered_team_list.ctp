@@ -65,12 +65,10 @@
             <td><?php echo $i; ?></td>
             <td><?= $this->Number->format($registerCandidateEventActivity->id) ?></td>
             <td>
-<<<<<<< Updated upstream
+
             <?= h($registerCandidateEventActivity->event_activity_list->description) ?>
             </td>
-=======
-            <?= h($registerCandidateEventActivity->event_activity_list->description);?>
->>>>>>> Stashed changes
+
             <td><?= h($registerCandidateEventActivity->full_name) ?></td>
             <td><?php echo date_format($registerCandidateEventActivity->dob,"d/m/Y");?></td>
             <td>
