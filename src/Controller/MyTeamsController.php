@@ -93,6 +93,7 @@ class MyTeamsController extends AppController {
         if ($this->request->is(['patch', 'post', 'put'])) {
             $this->request->data['action_by'] = $_SESSION['Auth']['User']['id'];
             $this->request->data['action_ip'] = $_SERVER['REMOTE_ADDR'];
+             $this->request->data['update_tiesheet'] = true;
             $currentTimeStamp = Time::now();
             $currentTimeStamp->i18nFormat();
             $this->request->data['modified'] = $currentTimeStamp;
@@ -206,7 +207,7 @@ class MyTeamsController extends AppController {
         }
 
         $finalPlayerListForView = $forloop;
-//debug($finalPlayerListForView);die;
+//debug($tieSheetUpdateReguiredFlag);die;
         if (count($teamName) <= 1) {
             $this->Flash->error(__('No team participated till now in this game. The player tie sheet could not be saved. Please, add players and try again.'));
 
@@ -290,7 +291,7 @@ class MyTeamsController extends AppController {
             }
         }
 
-        // debug($teamTieSheetData);die;
+         //debug($teamTieSheetData);die;
 //code for saving data in table
         $teamTieSheet = $teamTieSheetTable->newEntities($teamTieSheetData);
         $teamTieSheetFinal = $teamTieSheetTable->patchEntities($teamTieSheet, $teamTieSheetData);
