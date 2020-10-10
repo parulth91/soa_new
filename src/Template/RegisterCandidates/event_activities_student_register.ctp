@@ -366,7 +366,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
 //            // return Math.floor(years) + ' years ' + Math.floor(months) + ' months ' + days + ' days';
 //
 //
-        }
+        
     });
 
 </script>

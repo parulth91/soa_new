@@ -13,7 +13,7 @@ echo $this->Html->script(['jquery/validation.js']);
 //bracket generator
 
         
-echo $this->Html->script(['underscore-min']);
+//echo $this->Html->script(['underscore-min']);
 echo $this->Html->script(['clipboard.min']);
 
 
