@@ -97,7 +97,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         endforeach; ?>
     </tbody>
 </table>
-<div class="paginator">
+<!--<div class="paginator">
     <ul class="pagination">
         <?= $this->Paginator->first('<< ' . __('first')) ?>
         <?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -107,7 +107,7 @@ $this->extend('../Layout/TwitterBootstrap/dashboard');
         <?= $this->Paginator->last(__('last') . ' >>') ?>
     </ul>
     <p><?= $this->Paginator->counter() ?></p>
-</div>
+</div>-->
 
 <div>
     <?php
