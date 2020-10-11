@@ -33,7 +33,7 @@ class MyPlayersController extends AppController {
 
 
     public function index($id = null) {
-        $Result = $this->MyPlayers->find()->contain([
+        $playerTieSheets = $this->MyPlayers->find()->contain([
                             'EventActivityLists'
                             , 'WinnerPlayers'
                             , 'Player1s'
@@ -43,7 +43,7 @@ class MyPlayersController extends AppController {
 //        $this->paginate = [
 //            'contain' => ['EventActivityLists', 'WinnerEventTeamDetails', 'Team1EventTeamDetails', 'Team2EventTeamDetails']
 //        ];
-        $playerTieSheets = $this->paginate($Result);
+        //$playerTieSheets = $this->paginate($Result);
         //debug($playerTieSheets);die;
         $this->set(compact('playerTieSheets', 'id'));
     }
