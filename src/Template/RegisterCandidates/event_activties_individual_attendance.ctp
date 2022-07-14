@@ -124,8 +124,10 @@ echo $this->Form->create(
 </div>
 
 <?php
-if($playerTieSheetEntryCount > 0){
-    $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
+//debug($playerTieSheetEntryCount);
+if($playerTieSheetEntryCount == '0'){
+    //debug("here");
+    echo $this->Form->button("Save", ['name' => 'update_attendance_button', 'id' => 'update_attendance_button', 'class' => 'btn btn-primary']);
 }
 
 
