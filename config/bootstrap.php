@@ -219,13 +219,13 @@ Type::build('timestamp')
  * Only try to load DebugKit in development mode
  * Debug Kit should not be installed on a production system
  */
-if (Configure::read('debug')) {
-   Plugin::load('DebugKit', ['bootstrap' => true]);
-}
+//if (Configure::read('debug')) {
+  // Plugin::load('DebugKit', ['bootstrap' => true]);
+//}
 Plugin::load('Bootstrap', ['bootstrap' => true]);
 
 
-Plugin::load('vendor/WyriHaximus/TwigView', ['bootstrap' => true]);
+Plugin::load('WyriHaximus/TwigView', ['bootstrap' => true]);
 
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
