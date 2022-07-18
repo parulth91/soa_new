@@ -254,7 +254,7 @@ Plugin::load('Geo', ['bootstrap' => true]);
 Plugin::load('FontAwesome');
 
 //Plugin::load('Acl', ['bootstrap' => true]);
-//Plugin::loadAll();
+Plugin::loadAll();
 //Plugin::load('search');
 //Plugin::load('crud-view');
 //Plugin::load('crudjson-api');
