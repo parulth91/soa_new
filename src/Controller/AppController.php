@@ -96,9 +96,7 @@ class AppController extends Controller {
 //    $this->loadComponent('Search.Prg', [
 //        'actions' => ['index']
 //    ]);
-      public $components = array(
-    'DebugKit.Toolbar'
-);  
+  
     }
     public function exportInExcel($fileName, $headerRow, $data)
     {
