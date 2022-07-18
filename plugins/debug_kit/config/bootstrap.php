@@ -20,7 +20,7 @@ use DebugKit\Middleware\DebugKitMiddleware;
 use DebugKit\Routing\Filter\DebugBarFilter;
 use DebugKit\ToolbarService;
 
-$service = new ToolbarService(EventManager::instance(), (array)Configure::read('DebugKit'));
+$service = new ToolbarService(EventManager::instance(), (array)Configure::read('debug_kit'));
 
 if (!$service->isEnabled() || php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg') {
     return;
