@@ -220,7 +220,7 @@ Type::build('timestamp')
  * Debug Kit should not be installed on a production system
  */
 if (Configure::read('debug')) {
-   Plugin::load('debugKit', ['bootstrap' => true]);
+   Plugin::load('debug_kit', ['bootstrap' => true]);
 }
  Plugin::loadAll();
 Plugin::load('Bootstrap', ['bootstrap' => true]);
