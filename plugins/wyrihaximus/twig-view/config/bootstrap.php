@@ -3,7 +3,7 @@
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\EventManager;
-use WyriHaximus\TwigView\Event;
+use wyrihaximus\twigView\Event;
 
 EventManager::instance()->on(new Event\ExtensionsListener());
 EventManager::instance()->on(new Event\TokenParsersListener());
