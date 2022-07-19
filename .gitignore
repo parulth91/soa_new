@@ -5,4 +5,4 @@
 /tests/*
 /nbproject/*
 /logs/*
- /vendor/*
+/vendor/**/.git
