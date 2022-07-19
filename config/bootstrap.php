@@ -271,5 +271,5 @@ Plugin::load('CakePdf', ['bootstrap' => true]);
         'download' => true
     ]);
 
-    Plugin::load('DatabaseLog', ['bootstrap' => true,'routes' => true]);
+   // Plugin::load('DatabaseLog', ['bootstrap' => true,'routes' => true]);
 
