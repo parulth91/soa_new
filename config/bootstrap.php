@@ -226,8 +226,6 @@ Type::build('timestamp')
 Plugin::load('Bootstrap', ['bootstrap' => true]);
 
 
-Plugin::load('vendor/*', ['bootstrap' => true]);
-
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 
